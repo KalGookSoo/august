@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/_layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Category - insert</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <main layout:fragment="content">
+
+        <form th:method="post" th:action="@{/categories}" th:object="${command}">
+            <label th:for="name">이름</label>
+            <input type="text" th:field="*{name}"/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+            <button type="submit">전송</button>
+        </form>
+
+    </main>
+</body>
+</html>
