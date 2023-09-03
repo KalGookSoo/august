@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -22,31 +23,30 @@ public class SignController {
 
     @GetMapping("/sign-in")
     public String signIn() {
-        this.accountService.test("tester", "1234", "테스터");
         return "sign-in";
     }
 
     @GetMapping("/sign-up")
-    public String signUp() {
+    public String signUp(@ModelAttribute("command") AccountCommand command) {
         return "sign-up";
     }
 
     @PostMapping("/sign-up")
-    public String signUp(Model model, @ModelAttribute("command") AccountCommand command, BindingResult result) {
+    public String signUp(@ModelAttribute("command") @Valid AccountCommand command, BindingResult result) {
 
         if (result.hasErrors()) {
-            return this.signUp();
+            return this.signUp(command);
         }
 
-        Optional<Account> byUsername = this.accountService.findByUsername(command.getUsername());
+        Optional<Account> account = this.accountService.findByUsername(command.getUsername());
 
-        if (byUsername.isEmpty()) {
+        if (account.isPresent()) {
             result.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
-            model.addAttribute("errors", result.getAllErrors());
-            return this.signUp();
+            return this.signUp(command);
         }
 
-        this.accountService.save(command);
+        @SuppressWarnings("unused")
+        Account savedAccount = this.accountService.save(command);
 
         return "sign-in";
 

@@ -4,14 +4,17 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "tb_authority")
 @Setter
 @Getter
 public class Authority {
+
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String name;
 
@@ -30,4 +33,5 @@ public class Authority {
 
     protected Authority() {
     }
+
 }

@@ -2,12 +2,12 @@ package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.AccountCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.Authority;
 import com.kalgookso.august.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +26,7 @@ public class AccountService {
 
     public Account save(AccountCommand command) {
         Account account = new Account(command.getUsername(), this.passwordEncoder.encode(command.getPassword()), command.getName());
+        account.addAuthority(new Authority("ROLE_USER"));
         return this.accountRepository.save(account);
     }
 

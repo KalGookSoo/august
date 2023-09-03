@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>회원가입</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <style>
+        .error {
+            color: red;
+            font-size: small;
+            margin-left: 5px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h2>Sign-up</h2>
+    <form th:action="@{/sign-up}" th:method="post" th:object="${command}">
+        <div>
+            <label th:for="username">Username:</label>
+            <input type="text" th:field="*{username}"><br>
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></span>
+        </div>
+        <div>
+            <label th:for="password">Password:</label>
+            <input type="password" th:field="*{password}"><br>
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
+        </div>
+        <div>
+            <label th:for="name">Name:</label>
+            <input type="text" th:field="*{name}"><br>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+        </div>
+        <div>
+            <button type="submit">Sign-up</button>
+            <a th:href="@{/sign-in}">Sign-in</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

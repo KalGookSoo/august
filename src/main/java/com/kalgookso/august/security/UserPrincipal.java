@@ -1,6 +1,7 @@
 package com.kalgookso.august.security;
 
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Spring Security가 loginProcessingUrl에 명시한 요청이 오면 낚아채서 로그인을 진행시킨다.
@@ -31,9 +33,11 @@ public class UserPrincipal implements UserDetails, Serializable {
 
     @Override
     public Set<? extends GrantedAuthority> getAuthorities() {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        this.account.getAuthorities().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
-        return authorities;
+        return account
+                .getAuthorities()
+                .stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+                .collect(Collectors.toSet());
     }
 
     @Override
