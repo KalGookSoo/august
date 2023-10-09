@@ -24,7 +24,7 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account {
 
     /**

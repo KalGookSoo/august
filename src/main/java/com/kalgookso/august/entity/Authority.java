@@ -8,6 +8,7 @@ import javax.persistence.*;
 /**
  * 권한
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_authority")
 @Setter
