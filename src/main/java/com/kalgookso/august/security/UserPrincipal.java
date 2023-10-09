@@ -1,13 +1,11 @@
 package com.kalgookso.august.security;
 
 import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.entity.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,9 +19,14 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class UserPrincipal implements UserDetails, Serializable {
 
+    /**
+     * 계정
+     */
     private Account account;
 
-    /** 일반 로그인할 때 생성되는 생성자 */
+    /**
+     * 일반 로그인할 때 생성되는 생성자
+     */
     public UserPrincipal(Account account) {
         this.account = account;
     }
@@ -31,6 +34,10 @@ public class UserPrincipal implements UserDetails, Serializable {
     protected UserPrincipal() {
     }
 
+    /**
+     * 계정이 가지고 있는 권한 목록을 반환합니다.
+     * @return
+     */
     @Override
     public Set<? extends GrantedAuthority> getAuthorities() {
         return account
@@ -40,31 +47,55 @@ public class UserPrincipal implements UserDetails, Serializable {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * 계정의 패스워드를 반환합니다.
+     * @return 패스워드
+     */
     @Override
     public String getPassword() {
         return this.account.getPassword();
     }
 
+    /**
+     * 계정명을 반환합니다.
+     * @return 이름
+     */
     @Override
     public String getUsername() {
         return this.account.getUsername();
     }
 
+    /**
+     * 계정이 만료되지 않았는지 여부를 반환합니다.
+     * @return 계정이 만료되지 않았는지 여부
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * 계정이 잠겨있지 않은지 여부를 반환합니다.
+     * @return 계정이 잠겨있지 않은지 여부
+     */
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    /**
+     * 계정의 패스워드가 만료되지 않았는지 여부를 반환합니다.
+     * @return 계정의 패스워드가 만료되지 않았는지 여부
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * 계정이 사용 가능한지 여부를 반환합니다.
+     * @return 계정이 사용 가능한지 여부
+     */
     @Override
     public boolean isEnabled() {
         return true;

@@ -5,15 +5,42 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-@Setter
-@Getter
 public class AccountCommand {
 
-    @NotBlank
-    private String username;
+    @Setter
+    @Getter
+    public static class Post {
 
-    @NotBlank
-    private String password;
+        @NotBlank
+        private String username;
 
-    private String name;
+        @NotBlank
+        private String password;
+
+        @NotBlank
+        private String name;
+
+    }
+
+    @Setter
+    @Getter
+    public static class Put {
+
+        @NotBlank
+        private String name;
+
+    }
+
+    @Setter
+    @Getter
+    public static class Response {
+
+        private String id;
+
+        private String username;
+
+        private String name;
+
+    }
+
 }

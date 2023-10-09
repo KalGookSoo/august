@@ -31,6 +31,12 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Spring Security Filter Chain
+     * @param http {@link HttpSecurity}
+     * @return {@link SecurityFilterChain}
+     * @throws Exception 예외
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

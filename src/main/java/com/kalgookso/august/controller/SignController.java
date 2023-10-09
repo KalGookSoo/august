@@ -27,12 +27,12 @@ public class SignController {
     }
 
     @GetMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") AccountCommand command) {
+    public String signUp(@ModelAttribute("command") AccountCommand.Post command) {
         return "sign-up";
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") @Valid AccountCommand command, BindingResult result) {
+    public String signUp(@ModelAttribute("command") @Valid AccountCommand.Post command, BindingResult result) {
 
         if (result.hasErrors()) {
             return this.signUp(command);
@@ -51,4 +51,5 @@ public class SignController {
         return "sign-in";
 
     }
+
 }
