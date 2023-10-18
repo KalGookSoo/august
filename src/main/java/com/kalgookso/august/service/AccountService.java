@@ -37,26 +37,23 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 테스트용 계정 생성
-     * @param username 계정명
-     * @param password 패스워드
-     * @param name     이름
-     * @return 생성된 계정
+     * 계정을 저장합니다.
+     * @param command 계정 생성 커맨드
+     * @return 저장된 계정
      */
-    public Account test(String username, String password, String name) {
-        Account account = new Account(username, this.passwordEncoder.encode(password), name);
+    public Account create(AccountCommand.Post command) {
+        Account account = this.accountMapper.convert(command);
+        account.setPassword(this.passwordEncoder.encode(command.getPassword()));
+        account.addAuthority(new Authority("ROLE_USER"));
         return this.accountRepository.save(account);
     }
 
     /**
      * 계정을 저장합니다.
-     * @param command 계정 생성 커맨드
+     * @param account 계정
      * @return 저장된 계정
      */
-    public Account save(AccountCommand.Post command) {
-        Account account = this.accountMapper.convert(command);
-        account.setPassword(this.passwordEncoder.encode(command.getPassword()));
-        account.addAuthority(new Authority("ROLE_USER"));
+    public Account save(Account account) {
         return this.accountRepository.save(account);
     }
 
@@ -79,18 +76,6 @@ public class AccountService {
     }
 
     /**
-     * 계정을 수정합니다.
-     * @param id      식별자
-     * @param command 계정 수정 커맨드
-     * @return 수정된 계정
-     */
-    public Account updateById(String id, AccountCommand.Put command) {
-        Account account = this.accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 계정입니다."));
-        Account mergedAccount = this.accountMapper.convert(account, command);
-        return this.accountRepository.save(mergedAccount);
-    }
-
-    /**
      * 계정 전체를 조회합니다.
      * @param pageable 페이징 정보
      * @return 계정 목록
@@ -105,6 +90,26 @@ public class AccountService {
      */
     public void deleteById(String id) {
         this.accountRepository.deleteById(id);
+    }
+
+    /**
+     * 패스워드가 일치하는지 확인합니다.
+     * @param rawPassword     패스워드
+     * @param encodedPassword 인코딩된 패스워드
+     * @return 일치 여부
+     */
+    public boolean isMatch(CharSequence rawPassword, String encodedPassword) {
+        return this.passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 계정에 커맨드 내용을 병합합니다.
+     * @param account 계정
+     * @param command 계정 커맨드
+     * @return 계정
+     */
+    public Account convert(Account account, AccountCommand.Put command) {
+        return this.accountMapper.convert(account, command);
     }
 
 }

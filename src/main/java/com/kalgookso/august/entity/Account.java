@@ -1,8 +1,6 @@
 package com.kalgookso.august.entity;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,7 +21,6 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account {
 
@@ -67,6 +64,10 @@ public class Account {
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Authority> authorities = new HashSet<>();
 
+    public Account() {
+
+    }
+
     /**
      * 권한 추가
      */
@@ -104,4 +105,5 @@ public class Account {
         this.username = username;
         this.addAuthority(authority);
     }
+
 }

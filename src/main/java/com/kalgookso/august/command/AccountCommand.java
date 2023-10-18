@@ -1,14 +1,14 @@
 package com.kalgookso.august.command;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 public class AccountCommand {
 
-    @Setter
     @Getter
+    @AllArgsConstructor
     public static class Post {
 
         @NotBlank
@@ -22,8 +22,8 @@ public class AccountCommand {
 
     }
 
-    @Setter
     @Getter
+    @AllArgsConstructor
     public static class Put {
 
         @NotBlank
@@ -31,15 +31,15 @@ public class AccountCommand {
 
     }
 
-    @Setter
     @Getter
-    public static class Response {
+    @AllArgsConstructor
+    public static class Password {
 
-        private String id;
+        @NotBlank
+        private String originPassword;
 
-        private String username;
-
-        private String name;
+        @NotBlank
+        private String newPassword;
 
     }
 

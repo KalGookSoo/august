@@ -51,7 +51,7 @@ public class SignController {
         }
 
         @SuppressWarnings("unused")
-        Account savedAccount = this.accountService.save(command);
+        Account savedAccount = this.accountService.create(command);
 
         return "sign-in";
 
