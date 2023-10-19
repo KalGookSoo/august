@@ -31,9 +31,6 @@ class AccountControllerTest {
     @MockBean
     private AccountService accountService;
 
-    @MockBean
-    private AccountMapper accountMapper;
-
     @Test
     @DisplayName("")
     void getAll() throws Exception {
