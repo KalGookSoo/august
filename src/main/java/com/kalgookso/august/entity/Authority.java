@@ -2,6 +2,7 @@ package com.kalgookso.august.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -19,7 +20,8 @@ public class Authority {
      * 권한 식별자
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid2")
     private String id;
 
     /**
