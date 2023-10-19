@@ -43,7 +43,7 @@ public class AccountService {
      */
     public Account create(AccountCommand.Post command) {
         Account account = this.accountMapper.convert(command);
-        account.setPassword(this.passwordEncoder.encode(command.getPassword()));
+        account.setPassword(this.encode(command.getPassword()));
         account.addAuthority(new Authority("ROLE_USER"));
         return this.accountRepository.save(account);
     }
@@ -100,6 +100,15 @@ public class AccountService {
      */
     public boolean isMatch(CharSequence rawPassword, String encodedPassword) {
         return this.passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 패스워드를 인코딩합니다.
+     * @param rawPassword 패스워드
+     * @return 인코딩된 패스워드
+     */
+    public String encode(CharSequence rawPassword) {
+        return this.passwordEncoder.encode(rawPassword);
     }
 
     /**
