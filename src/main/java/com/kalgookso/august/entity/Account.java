@@ -60,7 +60,7 @@ public class Account {
      * 권한 목록
      */
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Authority> authorities;
+    private final Set<Authority> authorities = new LinkedHashSet<>();
 
     public Account() {
 
@@ -131,9 +131,6 @@ public class Account {
     }
 
     public Set<Authority> getAuthorities() {
-        if (this.authorities == null) {
-            this.authorities = new LinkedHashSet<>();
-        }
         return this.authorities;
     }
 
