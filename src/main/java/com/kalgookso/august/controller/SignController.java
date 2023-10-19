@@ -3,7 +3,6 @@ package com.kalgookso.august.controller;
 import com.kalgookso.august.command.AccountCommand;
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.service.AccountService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,13 +17,16 @@ import java.util.Optional;
  * 계정 컨트롤러
  */
 @Controller
-@RequiredArgsConstructor
 public class SignController {
 
     /**
      * 계정 서비스
      */
     private final AccountService accountService;
+
+    public SignController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @GetMapping("/sign-in")
     public String signIn() {

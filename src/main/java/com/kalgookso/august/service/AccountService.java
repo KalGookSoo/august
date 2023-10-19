@@ -5,7 +5,6 @@ import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.repository.AccountRepository;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import java.util.Optional;
  * 계정 서비스
  */
 @Service
-@RequiredArgsConstructor
 public class AccountService {
 
     /**
@@ -27,14 +25,24 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     /**
+     * 패스워드 인코더
+     */
+    private final PasswordEncoder passwordEncoder;
+
+    /**
      * 계정 매퍼
      */
     private final AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
 
     /**
-     * 패스워드 인코더
+     * 계정 서비스 생성자
+     * @param accountRepository 계정 저장소
+     * @param passwordEncoder   패스워드 인코더
      */
-    private final PasswordEncoder passwordEncoder;
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     /**
      * 계정을 저장합니다.
@@ -43,7 +51,7 @@ public class AccountService {
      */
     public Account create(AccountCommand.Post command) {
         Account account = this.accountMapper.convert(command);
-        account.setPassword(this.encode(command.getPassword()));
+        account.changePassword(this.encode(command.getPassword()));
         account.addAuthority(new Authority("ROLE_USER"));
         return this.accountRepository.save(account);
     }

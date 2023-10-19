@@ -1,7 +1,5 @@
 package com.kalgookso.august.entity;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,8 +18,6 @@ import java.util.Set;
 @Table(name = "tb_account")
 @DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
-@Setter
-@Getter
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account {
 
@@ -30,7 +26,7 @@ public class Account {
      */
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid2")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String id;
 
     /**
@@ -88,6 +84,7 @@ public class Account {
 
     /**
      * 생성자
+     *
      * @param username 계정명
      * @param password 패스워드
      * @param name     이름
@@ -100,12 +97,51 @@ public class Account {
 
     /**
      * 생성자
+     *
      * @param username  계정명
      * @param authority 권한
      */
     public Account(String username, Authority authority) {
         this.username = username;
         this.addAuthority(authority);
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return this.modifiedAt;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return this.authorities;
+    }
+
+    /**
+     * 계정명을 변경하고 자신을 반환합니다.
+     * @param password 패스워드
+     * @return 계정
+     */
+    public Account changePassword(String password) {
+        this.password = password;
+        return this;
     }
 
 }

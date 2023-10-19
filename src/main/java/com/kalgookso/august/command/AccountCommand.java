@@ -1,14 +1,9 @@
 package com.kalgookso.august.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import javax.validation.constraints.NotBlank;
 
 public class AccountCommand {
 
-    @Getter
-    @AllArgsConstructor
     public static class Post {
 
         @NotBlank
@@ -20,19 +15,39 @@ public class AccountCommand {
         @NotBlank
         private String name;
 
+        public Post(@NotBlank String username, @NotBlank String password, @NotBlank String name) {
+            this.username = username;
+            this.password = password;
+            this.name = name;
+        }
+
+        public @NotBlank String getUsername() {
+            return this.username;
+        }
+
+        public @NotBlank String getPassword() {
+            return this.password;
+        }
+
+        public @NotBlank String getName() {
+            return this.name;
+        }
     }
 
-    @Getter
-    @AllArgsConstructor
     public static class Put {
 
         @NotBlank
         private String name;
 
+        public Put(@NotBlank String name) {
+            this.name = name;
+        }
+
+        public @NotBlank String getName() {
+            return this.name;
+        }
     }
 
-    @Getter
-    @AllArgsConstructor
     public static class Password {
 
         @NotBlank
@@ -41,6 +56,18 @@ public class AccountCommand {
         @NotBlank
         private String newPassword;
 
+        public Password(@NotBlank String originPassword, @NotBlank String newPassword) {
+            this.originPassword = originPassword;
+            this.newPassword = newPassword;
+        }
+
+        public @NotBlank String getOriginPassword() {
+            return this.originPassword;
+        }
+
+        public @NotBlank String getNewPassword() {
+            return this.newPassword;
+        }
     }
 
 }

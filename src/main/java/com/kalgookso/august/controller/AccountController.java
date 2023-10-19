@@ -200,7 +200,7 @@ public class AccountController {
 
         return this.accountService.findById(id).map(account -> {
             if (this.accountService.isMatch(command.getOriginPassword(), account.getPassword())) {
-                account.setPassword(this.accountService.encode(command.getNewPassword()));
+                account.changePassword(this.accountService.encode(command.getNewPassword()));
                 this.accountService.save(account);
             } else {
                 bindingResult.addError(new FieldError("account", "originPassword", "기존 비밀번호가 일치하지 않습니다."));
@@ -218,7 +218,7 @@ public class AccountController {
      * @param attributeValue 에러 메시지
      * @return 뷰
      */
-    private Supplier<String> noContentSupplier(Model model, String attributeValue) {
+    private Supplier<String> noContentSupplier(Model model, @SuppressWarnings("SameParameterValue") String attributeValue) {
         return () -> {
             model.addAttribute("errors", attributeValue);
             return this.getAll(Pageable.unpaged(), model);

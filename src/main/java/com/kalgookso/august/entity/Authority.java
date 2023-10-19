@@ -1,7 +1,5 @@
 package com.kalgookso.august.entity;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,8 +10,6 @@ import javax.persistence.*;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_authority")
-@Setter
-@Getter
 public class Authority {
 
     /**
@@ -21,7 +17,7 @@ public class Authority {
      */
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid2")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String id;
 
     /**
@@ -38,6 +34,7 @@ public class Authority {
 
     /**
      * 생성자
+     *
      * @param name 이름
      */
     public Authority(String name) {
@@ -56,4 +53,27 @@ public class Authority {
     protected Authority() {
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

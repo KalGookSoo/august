@@ -1,7 +1,6 @@
 package com.kalgookso.august.configuration;
 
 
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -20,11 +19,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfiguration.class);
     private final UserDetailsService userDetailsService;
+
+    public SecurityConfiguration(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,6 +35,7 @@ public class SecurityConfiguration {
 
     /**
      * Spring Security Filter Chain
+     *
      * @param http {@link HttpSecurity}
      * @return {@link SecurityFilterChain}
      * @throws Exception 예외
@@ -40,7 +43,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->  authorizationManagerRequestMatcherRegistry
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .requestMatchers(new AntPathRequestMatcher("/accounts/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/managers/**")).hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/admins/**")).hasRole("ADMIN")
@@ -73,7 +76,6 @@ public class SecurityConfiguration {
     /**
      * 정적 리소스에 대해서는 시큐리티 필터를 적용하지 않는다.
      * {@link org.springframework.boot.autoconfigure.security.StaticResourceLocation}
-     *
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
