@@ -22,7 +22,7 @@ public class AugustApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         AccountCommand.Post command = new AccountCommand.Post("tester", "1234", "관리자");
         this.accountService.create(command);
     }

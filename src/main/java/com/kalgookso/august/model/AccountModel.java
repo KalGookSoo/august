@@ -14,32 +14,32 @@ public class AccountModel extends RepresentationModel<AccountModel> {
     /**
      * 계정 식별자
      */
-    private String id;
+    private final String id;
 
     /**
      * 계정명
      */
-    private String username;
+    private final String username;
 
     /**
      * 패스워드
      */
-    private String password;
+    private final String password;
 
     /**
      * 이름
      */
-    private String name;
+    private final String name;
 
     /**
      * 생성 일시
      */
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     /**
      * 수정 일시
      */
-    private LocalDateTime modifiedAt;
+    private final LocalDateTime modifiedAt;
 
     /**
      * Gets id.
@@ -82,6 +82,7 @@ public class AccountModel extends RepresentationModel<AccountModel> {
      *
      * @return the created at
      */
+    @SuppressWarnings("unused")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -91,6 +92,7 @@ public class AccountModel extends RepresentationModel<AccountModel> {
      *
      * @return the modified at
      */
+    @SuppressWarnings("unused")
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }

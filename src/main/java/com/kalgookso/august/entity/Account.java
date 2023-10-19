@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -60,7 +60,7 @@ public class Account {
      * 권한 목록
      */
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities;
 
     public Account() {
 
@@ -131,6 +131,9 @@ public class Account {
     }
 
     public Set<Authority> getAuthorities() {
+        if (this.authorities == null) {
+            this.authorities = new LinkedHashSet<>();
+        }
         return this.authorities;
     }
 
@@ -139,6 +142,7 @@ public class Account {
      * @param password 패스워드
      * @return 계정
      */
+    @SuppressWarnings("UnusedReturnValue")
     public Account changePassword(String password) {
         this.password = password;
         return this;

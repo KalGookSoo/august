@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Nonnull;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * 계정 모델 어셈블러

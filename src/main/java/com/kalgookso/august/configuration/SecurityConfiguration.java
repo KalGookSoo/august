@@ -55,9 +55,7 @@ public class SecurityConfiguration {
                         .loginPage("/sign-in")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .successHandler((request, response, authentication) -> {
-                            response.sendRedirect("/");
-                        })
+                        .successHandler((request, response, authentication) -> response.sendRedirect("/"))
                         .failureHandler((request, response, exception) -> {
                             LOGGER.error(exception.getMessage());
                             response.sendRedirect("/sign-in");

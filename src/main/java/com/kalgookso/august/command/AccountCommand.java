@@ -7,13 +7,13 @@ public class AccountCommand {
     public static class Post {
 
         @NotBlank
-        private String username;
+        private final String username;
 
         @NotBlank
-        private String password;
+        private final String password;
 
         @NotBlank
-        private String name;
+        private final String name;
 
         public Post(@NotBlank String username, @NotBlank String password, @NotBlank String name) {
             this.username = username;
@@ -37,7 +37,7 @@ public class AccountCommand {
     public static class Put {
 
         @NotBlank
-        private String name;
+        private final String name;
 
         public Put(@NotBlank String name) {
             this.name = name;
@@ -51,10 +51,10 @@ public class AccountCommand {
     public static class Password {
 
         @NotBlank
-        private String originPassword;
+        private final String originPassword;
 
         @NotBlank
-        private String newPassword;
+        private final String newPassword;
 
         public Password(@NotBlank String originPassword, @NotBlank String newPassword) {
             this.originPassword = originPassword;

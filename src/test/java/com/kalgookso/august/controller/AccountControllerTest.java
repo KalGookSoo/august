@@ -1,7 +1,6 @@
 package com.kalgookso.august.controller;
 
 import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
