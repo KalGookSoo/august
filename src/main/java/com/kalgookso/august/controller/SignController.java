@@ -40,14 +40,14 @@ public class SignController {
     public String signUp(@ModelAttribute("command") @Valid AccountCommand.Post command, BindingResult result) {
 
         if (result.hasErrors()) {
-            return this.signUp(command);
+            return "sign-up";
         }
 
         Optional<Account> account = this.accountService.findByUsername(command.getUsername());
 
         if (account.isPresent()) {
             result.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
-            return this.signUp(command);
+            return "sign-up";
         }
 
         @SuppressWarnings("unused")

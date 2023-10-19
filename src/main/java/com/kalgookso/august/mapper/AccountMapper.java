@@ -2,6 +2,7 @@ package com.kalgookso.august.mapper;
 
 import com.kalgookso.august.command.AccountCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.model.AccountModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -27,5 +28,7 @@ public interface AccountMapper {
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)
     Account convert(@MappingTarget Account originEntity, AccountCommand.Put command);
+
+    AccountModel convert(Account account);
 
 }

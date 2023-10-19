@@ -3,9 +3,13 @@ package com.kalgookso.august.controller;
 
 import com.kalgookso.august.command.AccountCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.model.AccountModel;
+import com.kalgookso.august.model.assembler.AccountModelAssembler;
 import com.kalgookso.august.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +17,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -29,11 +32,26 @@ public class AccountController {
     private final AccountService accountService;
 
     /**
-     * 계정 컨트롤러 생성자
-     * @param accountService 계정 서비스
+     * 계정 모델 어셈블러
      */
-    public AccountController(AccountService accountService) {
+    private final AccountModelAssembler accountModelAssembler;
+
+    /**
+     * 페이지 리소스 어셈블러
+     */
+    private final PagedResourcesAssembler<Account> pagedResourcesAssembler;
+
+    /**
+     * 계정 컨트롤러 생성자
+     *
+     * @param accountService          계정 서비스
+     * @param accountModelAssembler   계정 모델 어셈블러
+     * @param pagedResourcesAssembler 페이지 리소스 어셈블러
+     */
+    public AccountController(AccountService accountService, AccountModelAssembler accountModelAssembler, PagedResourcesAssembler<Account> pagedResourcesAssembler) {
         this.accountService = accountService;
+        this.accountModelAssembler = accountModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
     /**
@@ -45,7 +63,8 @@ public class AccountController {
     @GetMapping
     public String getAll(Pageable pageable, Model model) {
         Page<Account> page = this.accountService.findAll(pageable);
-        model.addAttribute("page", page);
+        PagedModel<AccountModel> pagedModel = pagedResourcesAssembler.toModel(page, this.accountModelAssembler);
+        model.addAttribute("pagedModel", pagedModel);
         return "accounts/list";
     }
 
@@ -181,7 +200,7 @@ public class AccountController {
 
         return this.accountService.findById(id).map(account -> {
             if (this.accountService.isMatch(command.getOriginPassword(), account.getPassword())) {
-                account.setPassword(command.getNewPassword());
+                account.setPassword(this.accountService.encode(command.getNewPassword()));
                 this.accountService.save(account);
             } else {
                 bindingResult.addError(new FieldError("account", "originPassword", "기존 비밀번호가 일치하지 않습니다."));
