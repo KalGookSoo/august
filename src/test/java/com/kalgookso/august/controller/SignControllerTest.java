@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
@@ -32,16 +33,18 @@ class SignControllerTest {
     @DisplayName("로그인 페이지를 반환합니다.")
     public void testSignInPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-in"))
-               .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.view().name("sign-in"));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("sign-in"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     @DisplayName("회원가입 페이지를 반환합니다.")
     public void testSignUpPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-up"))
-               .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.view().name("sign-up"));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("sign-up"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @AfterEach
