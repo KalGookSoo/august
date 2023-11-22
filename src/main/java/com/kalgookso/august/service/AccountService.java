@@ -68,12 +68,4 @@ public interface AccountService {
      */
     String encode(CharSequence rawPassword);
 
-    /**
-     * 계정에 커맨드 내용을 병합합니다.
-     * @param account 계정
-     * @param command 계정 커맨드
-     * @return 계정
-     */
-    Account convert(Account account, AccountCommand.Put command);
-
 }
