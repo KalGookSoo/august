@@ -45,7 +45,7 @@ public class Account {
      */
     private String name;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Authority> authorities = new LinkedHashSet<>();
 
     /**
@@ -59,17 +59,6 @@ public class Account {
      */
     @LastModifiedDate
     private LocalDateTime modifiedAt;
-
-    /**
-     * 계정명을 변경하고 자신을 반환합니다.
-     * @param password 패스워드
-     * @return 계정
-     */
-    @SuppressWarnings("UnusedReturnValue")
-    public Account changePassword(String password) {
-        this.password = password;
-        return this;
-    }
 
     public String getId() {
         return id;
