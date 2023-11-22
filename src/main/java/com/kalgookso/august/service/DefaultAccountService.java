@@ -19,114 +19,44 @@ import java.util.Optional;
 @Service
 public class DefaultAccountService implements AccountService {
 
-    /**
-     * 계정 저장소
-     */
-    private final AccountRepository accountRepository;
-
-    /**
-     * 패스워드 인코더
-     */
-    private final PasswordEncoder passwordEncoder;
-
-    /**
-     * 계정 매퍼
-     */
-    private final AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
-
-    /**
-     * 계정 서비스 생성자
-     * @param accountRepository 계정 저장소
-     * @param passwordEncoder   패스워드 인코더
-     */
-    public DefaultAccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    /**
-     * 계정을 저장합니다.
-     * @param command 계정 생성 커맨드
-     * @return 저장된 계정
-     */
+    @Override
     public Account create(AccountCommand.Post command) {
-        Account account = this.accountMapper.convert(command);
-        account.changePassword(this.encode(command.getPassword()));
-        account.addAuthority(new Authority("ROLE_USER"));
-        return this.accountRepository.save(account);
+        return null;
     }
 
-    /**
-     * 계정을 저장합니다.
-     * @param account 계정
-     * @return 저장된 계정
-     */
+    @Override
     public Account save(Account account) {
-        return this.accountRepository.save(account);
+        return null;
     }
 
-    /**
-     * 계정명에 해당하는 계정을 반환합니다.
-     * @param username 계정명
-     * @return 계정
-     */
+    @Override
     public Optional<Account> findByUsername(String username) {
-        return this.accountRepository.findByUsername(username);
+        return Optional.empty();
     }
 
-    /**
-     * 식별자에 해당하는 계정을 반환합니다.
-     * @param id 식별자
-     * @return 계정
-     */
+    @Override
     public Optional<Account> findById(String id) {
-        return this.accountRepository.findById(id);
+        return Optional.empty();
     }
 
-    /**
-     * 계정 전체를 조회합니다.
-     * @param pageable 페이징 정보
-     * @return 계정 목록
-     */
+    @Override
     public Page<Account> findAll(Pageable pageable) {
-        return this.accountRepository.findAll(pageable);
+        return null;
     }
 
-    /**
-     * 계정을 삭제합니다.
-     * @param id 식별자
-     */
+    @Override
     public void deleteById(String id) {
-        this.accountRepository.deleteById(id);
+
     }
 
-    /**
-     * 패스워드가 일치하는지 확인합니다.
-     * @param rawPassword     패스워드
-     * @param encodedPassword 인코딩된 패스워드
-     * @return 일치 여부
-     */
+    @Override
     public boolean isMatch(CharSequence rawPassword, String encodedPassword) {
-        return this.passwordEncoder.matches(rawPassword, encodedPassword);
+        return false;
     }
 
-    /**
-     * 패스워드를 인코딩합니다.
-     * @param rawPassword 패스워드
-     * @return 인코딩된 패스워드
-     */
+    @Override
     public String encode(CharSequence rawPassword) {
-        return this.passwordEncoder.encode(rawPassword);
-    }
-
-    /**
-     * 계정에 커맨드 내용을 병합합니다.
-     * @param account 계정
-     * @param command 계정 커맨드
-     * @return 계정
-     */
-    public Account convert(Account account, AccountCommand.Put command) {
-        return this.accountMapper.convert(account, command);
+        return null;
     }
 
 }

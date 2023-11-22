@@ -26,11 +26,9 @@ public class Authority {
     private String name;
 
     /**
-     * 계정
+     * 계정 식별자
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    private String accountId;
 
     /**
      * 생성자
@@ -41,39 +39,32 @@ public class Authority {
         this.name = name;
     }
 
-    /**
-     * 기본 생성자
-     * JPA에서는 기본 생성자가 필요하다.
-     * 기본 생성자를 protected로 설정하여 외부에서 호출하지 못하도록 했다.
-     * JPA는 리플렉션을 사용하기 때문에 기본 생성자가 필요하다.
-     * 기본 생성자를 protected로 설정하면 외부에서 호출하지 못하고 내부에서는 호출할 수 있기 때문에 JPA에서는 문제가 없다.
-     *
-     * @see <a href="https://www.inflearn.com/questions/12886">JPA 기본 생성자</a>
-     */
     protected Authority() {
+
     }
 
     public String getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Account getAccount() {
-        return this.account;
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public String getAccountId() {
+        return accountId;
     }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
 }
