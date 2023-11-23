@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 /**
  * AugustApplication 클래스입니다.
  * 이 클래스는 스프링 부트 애플리케이션의 진입점입니다.
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AugustApplication implements CommandLineRunner {
 
     private final AccountService accountService;  // 계정 서비스
+
     private final PasswordEncoder passwordEncoder;  // 비밀번호 인코더
 
     /**
@@ -45,12 +48,15 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        Account account = new Account();
-        account.setUsername("tester");
-        account.setPassword(this.passwordEncoder.encode("1234"));
-        account.setName("관리자");
-        account.getAuthorities().add(new Authority("ROLE_ADMIN"));
-        this.accountService.save(account);
+        Optional<Account> foundAccount = this.accountService.findByUsername("tester");
+        if (foundAccount.isEmpty()) {
+            Account account = new Account();
+            account.setUsername("tester");
+            account.setPassword(this.passwordEncoder.encode("1234"));
+            account.setName("관리자");
+            account.getAuthorities().add(new Authority("ROLE_ADMIN"));
+            this.accountService.save(account);
+        }
     }
 
 }
