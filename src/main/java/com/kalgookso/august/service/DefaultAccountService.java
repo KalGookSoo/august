@@ -1,16 +1,15 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
- import com.kalgookso.august.repository.AccountCommandRepository;
+import com.kalgookso.august.repository.AccountCommandRepository;
 import com.kalgookso.august.repository.AccountQueryRepository;
 import com.kalgookso.august.specification.AccountSpecification;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -68,7 +67,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Page<Account> findAll(Pageable pageable) {
-        return new PageImpl<>(Collections.emptyList(), pageable, 0L);
+        return this.accountQueryRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
