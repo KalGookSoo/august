@@ -28,6 +28,7 @@ public class Authority {
     /**
      * 계정 식별자
      */
+    @JoinColumn(name = "account_id")
     private String accountId;
 
     /**
