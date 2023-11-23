@@ -7,41 +7,42 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * 계정 서비스
+ * 계정 서비스 인터페이스입니다.
+ * 이 인터페이스는 계정 관련 작업을 정의합니다.
  */
 public interface AccountService {
 
     /**
-     * 계정을 저장합니다.
-     * @param account 계정
+     * 계정을 저장하는 메서드입니다.
+     * @param account 저장할 계정
      * @return 저장된 계정
      */
     Account save(Account account);
 
     /**
-     * 계정명에 해당하는 계정을 반환합니다.
-     * @param username 계정명
-     * @return 계정
+     * 사용자 이름으로 계정을 찾는 메서드입니다.
+     * @param username 사용자 이름
+     * @return 찾은 계정 (Optional)
      */
     Optional<Account> findByUsername(String username);
 
     /**
-     * 식별자에 해당하는 계정을 반환합니다.
-     * @param id 식별자
-     * @return 계정
+     * ID로 계정을 찾는 메서드입니다.
+     * @param id 계정 ID
+     * @return 찾은 계정 (Optional)
      */
     Optional<Account> findById(String id);
 
     /**
-     * 계정 전체를 조회합니다.
-     * @param pageable 페이징 정보
-     * @return 계정 목록
+     * 모든 계정을 페이지로 반환하는 메서드입니다.
+     * @param pageable 페이지 정보
+     * @return 계정 페이지
      */
     Page<Account> findAll(Pageable pageable);
 
     /**
-     * 계정을 삭제합니다.
-     * @param id 식별자
+     * ID로 계정을 삭제하는 메서드입니다.
+     * @param id 삭제할 계정의 ID
      */
     void deleteById(String id);
 

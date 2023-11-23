@@ -16,6 +16,7 @@ public class BoardTypeRepositoryImpl implements BoardTypeRepository {
      * EntityManager는 JPA의 핵심 인터페이스로, 엔티티를 관리합니다.
      * @PersistenceContext 어노테이션을 사용하여 스프링 컨테이너에서 EntityManager를 주입받습니다.
      */
+    @SuppressWarnings("JavadocDeclaration")
     @PersistenceContext
     private EntityManager em;
 

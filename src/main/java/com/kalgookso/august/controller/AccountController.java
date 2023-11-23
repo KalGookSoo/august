@@ -1,6 +1,5 @@
 package com.kalgookso.august.controller;
 
-
 import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountPasswordCommand;
@@ -18,7 +17,8 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 /**
- * 계정 컨트롤러
+ * 계정 컨트롤러 클래스입니다.
+ * 이 클래스는 AccountService를 사용하여 계정 관련 작업을 수행합니다.
  */
 @Controller
 @RequestMapping("/accounts")
@@ -30,14 +30,19 @@ public class AccountController {
     private final AccountService accountService;
 
     /**
-     * 계정 컨트롤러 생성자
-     *
+     * AccountController 생성자입니다.
      * @param accountService 계정 서비스
      */
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    /**
+     * 모든 계정을 페이지로 반환하는 메서드입니다.
+     * @param pageable 페이지 정보
+     * @param model 모델
+     * @return 계정 목록 페이지
+     */
     @GetMapping
     public String getAll(Pageable pageable, Model model) {
         Page<Account> accounts = accountService.findAll(pageable);
@@ -45,11 +50,22 @@ public class AccountController {
         return "accounts/list";
     }
 
+    /**
+     * 새 계정 생성 페이지를 반환하는 메서드입니다.
+     * @param command 계정 생성 명령
+     * @return 새 계정 생성 페이지
+     */
     @GetMapping("/new")
     public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
         return "accounts/new";
     }
 
+    /**
+     * 특정 계정의 상세 정보 페이지를 반환하는 메서드입니다.
+     * @param id 계정 ID
+     * @param model 모델
+     * @return 계정 상세 정보 페이지
+     */
     @GetMapping("/{id}")
     public String getOne(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
@@ -57,6 +73,13 @@ public class AccountController {
         return "accounts/detail";
     }
 
+    /**
+     * 새 계정을 생성하는 메서드입니다.
+     * @param command 계정 생성 명령
+     * @param bindingResult 바인딩 결과
+     * @param model 모델
+     * @return 생성된 계정의 상세 정보 페이지
+     */
     @PostMapping
     public String create(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -67,6 +90,12 @@ public class AccountController {
         return "redirect:/accounts/" + savedAccount.getId();
     }
 
+    /**
+     * 특정 계정의 수정 페이지를 반환하는 메서드입니다.
+     * @param id 계정 ID
+     * @param model 모델
+     * @return 계정 수정 페이지
+     */
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
@@ -74,6 +103,14 @@ public class AccountController {
         return "accounts/edit";
     }
 
+    /**
+     * 특정 계정을 수정하는 메서드입니다.
+     * @param model 모델
+     * @param id 계정 ID
+     * @param command 계정 수정 명령
+     * @param bindingResult 바인딩 결과
+     * @return 수정된 계정의 상세 정보 페이지
+     */
     @PutMapping("/{id}")
     public String update(Model model, @PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountCommand command, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -88,12 +125,23 @@ public class AccountController {
         return "redirect:/accounts/" + savedAccount.getId();
     }
 
+    /**
+     * 특정 계정을 삭제하는 메서드입니다.
+     * @param id 계정 ID
+     * @return 계정 목록 페이지
+     */
     @DeleteMapping("/{id}")
     public String delete(@PathVariable String id) {
         accountService.deleteById(id);
         return "redirect:/accounts";
     }
 
+    /**
+     * 특정 계정의 비밀번호 수정 페이지를 반환하는 메서드입니다.
+     * @param id 계정 ID
+     * @param model 모델
+     * @return 계정 비밀번호 수정 페이지
+     */
     @GetMapping("/{id}/password")
     public String getEditPassword(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
@@ -101,6 +149,14 @@ public class AccountController {
         return "accounts/password";
     }
 
+    /**
+     * 특정 계정의 비밀번호를 수정하는 메서드입니다.
+     * @param id 계정 ID
+     * @param command 계정 비밀번호 수정 명령
+     * @param bindingResult 바인딩 결과
+     * @param model 모델
+     * @return 계정 상세 정보 페이지
+     */
     @PutMapping("/{id}/password")
     public String updatePassword(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountPasswordCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

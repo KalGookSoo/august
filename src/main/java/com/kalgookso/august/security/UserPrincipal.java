@@ -31,12 +31,18 @@ public class UserPrincipal implements UserDetails, Serializable {
         this.account = account;
     }
 
+    /**
+     * 기본 생성자입니다.
+     * 현재는 아무런 동작을 하지 않습니다.
+     */
     protected UserPrincipal() {
     }
 
     /**
-     * 계정이 가지고 있는 권한 목록을 반환합니다.
-     * @return
+     * 계정의 권한 목록을 반환하는 메서드입니다.
+     * 계정에 부여된 각 권한을 SimpleGrantedAuthority 객체로 변환하여 Set 형태로 반환합니다.
+     *
+     * @return 계정의 권한 목록
      */
     @Override
     public Set<? extends GrantedAuthority> getAuthorities() {
