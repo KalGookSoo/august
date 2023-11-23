@@ -1,31 +1,27 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.repository.AccountRepository;
+import com.kalgookso.august.repository.AccountQueryRepository;
 import com.kalgookso.august.security.UserPrincipal;
+import com.kalgookso.august.specification.AccountSpecification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 사용자 상세 정보 서비스 클래스입니다.
  * 이 클래스는 UserDetailsService 인터페이스를 구현하며, AccountRepository를 사용하여 사용자 상세 정보를 제공합니다.
  */
 @Service
+@Transactional
 public class PrincipalUserDetailsService implements UserDetailsService {
 
-    /**
-     * 계정 저장소
-     */
-    private final AccountRepository accountRepository;
+    private final AccountQueryRepository accountQueryRepository;
 
-    /**
-     * PrincipalUserDetailsService 생성자입니다.
-     * @param accountRepository 계정 저장소
-     */
-    public PrincipalUserDetailsService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public PrincipalUserDetailsService(AccountQueryRepository accountQueryRepository) {
+        this.accountQueryRepository = accountQueryRepository;
     }
 
     /**
@@ -39,7 +35,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Account foundAccount = accountRepository.findByUsername(username)
+        Account foundAccount = accountQueryRepository.findOne(AccountSpecification.usernameEquals(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new UserPrincipal(foundAccount);

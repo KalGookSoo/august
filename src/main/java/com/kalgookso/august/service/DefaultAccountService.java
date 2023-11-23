@@ -1,11 +1,14 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
- import com.kalgookso.august.repository.AccountRepository;
+ import com.kalgookso.august.repository.AccountCommandRepository;
+import com.kalgookso.august.repository.AccountQueryRepository;
+import com.kalgookso.august.specification.AccountSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -15,16 +18,16 @@ import java.util.Optional;
  * 이 클래스는 AccountService 인터페이스를 구현하며, AccountRepository를 사용하여 계정 관련 작업을 수행합니다.
  */
 @Service
+@Transactional
 public class DefaultAccountService implements AccountService {
 
-    private final AccountRepository accountRepository;  // 계정 저장소
+    private final AccountCommandRepository accountCommandRepository;
 
-    /**
-     * DefaultAccountService 생성자입니다.
-     * @param accountRepository 계정 저장소
-     */
-    public DefaultAccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    private final AccountQueryRepository accountQueryRepository;
+
+    public DefaultAccountService(AccountCommandRepository accountCommandRepository, AccountQueryRepository accountQueryRepository) {
+        this.accountCommandRepository = accountCommandRepository;
+        this.accountQueryRepository = accountQueryRepository;
     }
 
     /**
@@ -34,7 +37,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Account save(Account account) {
-        return this.accountRepository.save(account);
+        return this.accountCommandRepository.save(account);
     }
 
     /**
@@ -44,7 +47,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findByUsername(String username) {
-        return this.accountRepository.findByUsername(username);
+        return this.accountQueryRepository.findOne(AccountSpecification.usernameEquals(username));
     }
 
     /**
@@ -54,7 +57,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findById(String id) {
-        return this.accountRepository.findById(id);
+        return this.accountQueryRepository.findOne(AccountSpecification.idEquals(id));
     }
 
     /**
@@ -74,7 +77,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public void deleteById(String id) {
-        this.accountRepository.deleteById(id);
+        this.accountCommandRepository.deleteById(id);
     }
 
 }
