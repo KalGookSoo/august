@@ -25,19 +25,19 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/{id}")
-    public String getOne(@PathVariable String id, Model model) {
-        final Optional<Category> category = categoryService.findById(id);
-        model.addAttribute("category", category.orElseThrow());
-        return "categories/view";
-    }
-
     @GetMapping
     public String getAll(@PageableDefault Pageable pageable, Model model) {
         final Page<Category> page = categoryService.findAll(pageable);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageable.getPageSize());
         return "categories/list";
+    }
+
+    @GetMapping("/{id}")
+    public String getOne(@PathVariable String id, Model model) {
+        final Optional<Category> category = categoryService.findById(id);
+        model.addAttribute("category", category.orElseThrow());
+        return "categories/view";
     }
 
     @GetMapping("/new")
