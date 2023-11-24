@@ -14,9 +14,9 @@ public class Attachment {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
 
-    private String fileName;
+    private String name;
 
-    private String filePath;
+    private String pathName;
 
     @JoinColumn(name = "article_id")
     private String articleId;
@@ -29,20 +29,20 @@ public class Attachment {
         this.id = id;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getName() {
+        return name;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getPathName() {
+        return pathName;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
     }
 
     public String getArticleId() {
