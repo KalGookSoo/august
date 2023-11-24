@@ -65,17 +65,17 @@ public class SignController {
             return "sign-up";
         }
 
-        Optional<Account> foundAccount = this.accountService.findByUsername(command.getUsername());
+        final Optional<Account> foundAccount = this.accountService.findByUsername(command.getUsername());
 
         if (foundAccount.isPresent()) {
             result.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
             return "sign-up";
         }
 
-        Account account = AccountMapper.INSTANCE.toEntity(command);
+        final Account account = AccountMapper.INSTANCE.toEntity(command);
 
         @SuppressWarnings("unused")
-        Account savedAccount = accountService.save(account);
+        final Account savedAccount = accountService.create(account);
 
         return "sign-in";
 

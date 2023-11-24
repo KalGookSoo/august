@@ -13,6 +13,13 @@ import java.util.Optional;
 public interface AccountService {
 
     /**
+     * 계정을 생성하는 메서드입니다.
+     * @param account 생성할 계정
+     * @return 생성된 계정
+     */
+    Account create(Account account);
+
+    /**
      * 계정을 저장하는 메서드입니다.
      * @param account 저장할 계정
      * @return 저장된 계정
@@ -45,5 +52,13 @@ public interface AccountService {
      * @param id 삭제할 계정의 ID
      */
     void deleteById(String id);
+
+    /**
+     * 계정의 비밀번호를 변경하는 메서드입니다.
+     * @param account 계정
+     * @return 변경된 계정
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    Account updatePassword(Account account);
 
 }

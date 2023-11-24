@@ -8,7 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -23,16 +22,12 @@ public class AugustApplication implements CommandLineRunner {
 
     private final AccountService accountService;  // 계정 서비스
 
-    private final PasswordEncoder passwordEncoder;  // 비밀번호 인코더
-
     /**
      * AugustApplication 생성자입니다.
      * @param accountService 계정 서비스
-     * @param passwordEncoder 비밀번호 인코더
      */
-    public AugustApplication(AccountService accountService, PasswordEncoder passwordEncoder) {
+    public AugustApplication(AccountService accountService) {
         this.accountService = accountService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -50,14 +45,14 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        Optional<Account> foundAccount = this.accountService.findByUsername("tester");
+        final Optional<Account> foundAccount = this.accountService.findByUsername("tester");
         if (foundAccount.isEmpty()) {
-            Account account = new Account();
+            final Account account = new Account();
             account.setUsername("tester");
-            account.setPassword(this.passwordEncoder.encode("1234"));
+            account.setPassword("1234");
             account.setName("관리자");
             account.getAuthorities().add(new Authority("ROLE_ADMIN"));
-            this.accountService.save(account);
+            this.accountService.create(account);
         }
     }
 

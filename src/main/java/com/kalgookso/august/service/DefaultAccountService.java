@@ -1,11 +1,13 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.Authority;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +27,39 @@ public class DefaultAccountService implements AccountService {
     private final AccountRepository accountRepository;
 
     /**
-     * DefaultAccountService 생성자입니다.
-     * @param accountRepository 계정 저장소
+     * 비밀번호 인코더입니다.
      */
-    public DefaultAccountService(AccountRepository accountRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    /**
+     * DefaultAccountService 생성자입니다.
+     *
+     * @param accountRepository 계정 저장소
+     * @param passwordEncoder   비밀번호 인코더
+     */
+    public DefaultAccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
      * 계정을 저장하고 저장된 계정을 반환하는 메서드입니다.
      * @param account 저장할 계정
      * @return 저장된 계정
+     */
+    @Override
+    public Account create(Account account) {
+        account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+        if (account.getAuthorities().isEmpty()) {
+            account.getAuthorities().add(new Authority("ROLE_USER"));
+        }
+        return this.accountRepository.save(account);
+    }
+
+    /**
+     * 계정을 수정하고 수정된 계정을 반환하는 메서드입니다.
+     * @param account 수정할 계정
+     * @return 수정된 계정
      */
     @Override
     public Account save(Account account) {
@@ -79,6 +103,17 @@ public class DefaultAccountService implements AccountService {
     @Override
     public void deleteById(String id) {
         this.accountRepository.deleteById(id);
+    }
+
+    /**
+     * 계정의 비밀번호를 변경하는 메서드입니다.
+     * @param account 계정
+     * @return 변경된 계정
+     */
+    @Override
+    public Account updatePassword(Account account) {
+        account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+        return this.accountRepository.save(account);
     }
 
 }
