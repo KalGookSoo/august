@@ -12,18 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * 기본 카테고리 서비스 클래스입니다.
- * 이 클래스는 CategoryService 인터페이스를 구현하며, CategoryCommandRepository와 CategoryQueryRepository를 사용하여 카테고리 관련 작업을 수행합니다.
+ * DefaultCategoryService 클래스는 CategoryService 인터페이스를 구현합니다.
+ * 이 클래스는 카테고리 관련 작업을 수행하는 서비스 클래스입니다.
  */
 @Service
 @Transactional
 public class DefaultCategoryService implements CategoryService {
 
+    /**
+     * CategoryRepository 인스턴스입니다.
+     */
     private final CategoryRepository categoryRepository;
 
     /**
      * DefaultCategoryService 생성자입니다.
-     *
      * @param categoryRepository 카테고리 저장소
      */
     public DefaultCategoryService(CategoryRepository categoryRepository) {
@@ -31,7 +33,7 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     /**
-     * 카테고리를 저장하는 메서드입니다.
+     * 카테고리를 저장하고 저장된 카테고리를 반환하는 메서드입니다.
      * @param category 저장할 카테고리
      * @return 저장된 카테고리
      */
@@ -41,7 +43,7 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     /**
-     * ID로 카테고리를 찾는 메서드입니다.
+     * ID로 카테고리를 찾고 찾은 카테고리를 반환하는 메서드입니다.
      * @param id 카테고리 ID
      * @return 찾은 카테고리 (Optional)
      */

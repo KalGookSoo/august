@@ -12,18 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * 기본 첨부 파일 서비스 클래스입니다.
- * 이 클래스는 AttachmentService 인터페이스를 구현하며, AttachmentCommandRepository와 AttachmentQueryRepository를 사용하여 첨부 파일 관련 작업을 수행합니다.
+ * DefaultAttachmentService 클래스는 AttachmentService 인터페이스를 구현합니다.
+ * 이 클래스는 첨부 파일 관련 작업을 수행하는 서비스 클래스입니다.
  */
 @Service
 @Transactional
 public class DefaultAttachmentService implements AttachmentService {
 
+    /**
+     * AttachmentRepository 인스턴스입니다.
+     */
     private final AttachmentRepository attachmentRepository;
 
     /**
      * DefaultAttachmentService 생성자입니다.
-     *
      * @param attachmentRepository 첨부 파일 저장소
      */
     public DefaultAttachmentService(AttachmentRepository attachmentRepository) {
@@ -31,7 +33,7 @@ public class DefaultAttachmentService implements AttachmentService {
     }
 
     /**
-     * 첨부 파일을 저장하는 메서드입니다.
+     * 첨부 파일을 저장하고 저장된 첨부 파일을 반환하는 메서드입니다.
      * @param attachment 저장할 첨부 파일
      * @return 저장된 첨부 파일
      */
@@ -41,7 +43,7 @@ public class DefaultAttachmentService implements AttachmentService {
     }
 
     /**
-     * ID로 첨부 파일을 찾는 메서드입니다.
+     * ID로 첨부 파일을 찾고 찾은 첨부 파일을 반환하는 메서드입니다.
      * @param id 첨부 파일 ID
      * @return 찾은 첨부 파일 (Optional)
      */

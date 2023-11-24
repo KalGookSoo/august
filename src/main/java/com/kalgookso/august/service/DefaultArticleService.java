@@ -12,18 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * 기본 게시글 서비스 클래스입니다.
- * 이 클래스는 ArticleService 인터페이스를 구현하며, ArticleCommandRepository와 ArticleQueryRepository를 사용하여 게시글 관련 작업을 수행합니다.
+ * DefaultArticleService 클래스는 ArticleService 인터페이스를 구현합니다.
+ * 이 클래스는 게시글 관련 작업을 수행하는 서비스 클래스입니다.
  */
 @Service
 @Transactional
 public class DefaultArticleService implements ArticleService {
 
+    /**
+     * ArticleRepository 인스턴스입니다.
+     */
     private final ArticleRepository articleRepository;
 
     /**
      * DefaultArticleService 생성자입니다.
-     *
      * @param articleRepository 게시글 저장소
      */
     public DefaultArticleService(ArticleRepository articleRepository) {
@@ -31,7 +33,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     /**
-     * 게시글를 저장하는 메서드입니다.
+     * 게시글을 저장하고 저장된 게시글을 반환하는 메서드입니다.
      * @param article 저장할 게시글
      * @return 저장된 게시글
      */
@@ -41,7 +43,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     /**
-     * ID로 게시글를 찾는 메서드입니다.
+     * ID로 게시글을 찾고 찾은 게시글을 반환하는 메서드입니다.
      * @param id 게시글 ID
      * @return 찾은 게시글 (Optional)
      */
@@ -51,7 +53,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     /**
-     * 모든 게시글를 페이지로 반환하는 메서드입니다.
+     * 모든 게시글을 페이지로 반환하는 메서드입니다.
      * @param pageable 페이지 정보
      * @return 게시글 페이지
      */
@@ -61,7 +63,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     /**
-     * ID로 게시글를 삭제하는 메서드입니다.
+     * ID로 게시글을 삭제하는 메서드입니다.
      * @param id 삭제할 게시글의 ID
      */
     @Override

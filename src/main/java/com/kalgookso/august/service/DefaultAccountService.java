@@ -12,18 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * 기본 계정 서비스 클래스입니다.
- * 이 클래스는 AccountService 인터페이스를 구현하며, AccountCommandRepository와 AccountQueryRepository를 사용하여 계정 관련 작업을 수행합니다.
+ * DefaultAccountService 클래스는 AccountService 인터페이스를 구현합니다.
+ * 이 클래스는 계정 관련 작업을 수행하는 서비스 클래스입니다.
  */
 @Service
 @Transactional
 public class DefaultAccountService implements AccountService {
 
+    /**
+     * AccountRepository 인스턴스입니다.
+     */
     private final AccountRepository accountRepository;
 
     /**
      * DefaultAccountService 생성자입니다.
-     *
      * @param accountRepository 계정 저장소
      */
     public DefaultAccountService(AccountRepository accountRepository) {
@@ -31,7 +33,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     /**
-     * 계정을 저장하는 메서드입니다.
+     * 계정을 저장하고 저장된 계정을 반환하는 메서드입니다.
      * @param account 저장할 계정
      * @return 저장된 계정
      */
@@ -41,7 +43,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     /**
-     * 사용자 이름으로 계정을 찾는 메서드입니다.
+     * 사용자 이름으로 계정을 찾고 찾은 계정을 반환하는 메서드입니다.
      * @param username 사용자 이름
      * @return 찾은 계정 (Optional)
      */
@@ -51,7 +53,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     /**
-     * ID로 계정을 찾는 메서드입니다.
+     * ID로 계정을 찾고 찾은 계정을 반환하는 메서드입니다.
      * @param id 계정 ID
      * @return 찾은 계정 (Optional)
      */
