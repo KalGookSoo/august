@@ -1,8 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Article;
-import com.kalgookso.august.repository.ArticleCommandRepository;
-import com.kalgookso.august.repository.ArticleQueryRepository;
+import com.kalgookso.august.repository.ArticleRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +19,15 @@ import java.util.Optional;
 @Transactional
 public class DefaultArticleService implements ArticleService {
 
-    private final ArticleCommandRepository articleCommandRepository;  // 게시글 명령 저장소
-    private final ArticleQueryRepository articleQueryRepository;  // 게시글 쿼리 저장소
+    private final ArticleRepository articleRepository;
 
     /**
      * DefaultArticleService 생성자입니다.
-     * @param articleCommandRepository 게시글 명령 저장소
-     * @param articleQueryRepository 게시글 쿼리 저장소
+     *
+     * @param articleRepository 게시글 저장소
      */
-    public DefaultArticleService(ArticleCommandRepository articleCommandRepository, ArticleQueryRepository articleQueryRepository) {
-        this.articleCommandRepository = articleCommandRepository;
-        this.articleQueryRepository = articleQueryRepository;
+    public DefaultArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     /**
@@ -40,7 +37,7 @@ public class DefaultArticleService implements ArticleService {
      */
     @Override
     public Article save(Article article) {
-        return this.articleCommandRepository.save(article);
+        return this.articleRepository.save(article);
     }
 
     /**
@@ -50,7 +47,7 @@ public class DefaultArticleService implements ArticleService {
      */
     @Override
     public Optional<Article> findById(String id) {
-        return this.articleQueryRepository.findOne(AugustSpecification.idEquals(id));
+        return this.articleRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
@@ -60,7 +57,7 @@ public class DefaultArticleService implements ArticleService {
      */
     @Override
     public Page<Article> findAll(Pageable pageable) {
-        return this.articleQueryRepository.findAll(Specification.where(null), pageable);
+        return this.articleRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
@@ -69,7 +66,7 @@ public class DefaultArticleService implements ArticleService {
      */
     @Override
     public void deleteById(String id) {
-        this.articleCommandRepository.deleteById(id);
+        this.articleRepository.deleteById(id);
     }
 
 }

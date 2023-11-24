@@ -1,8 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Category;
-import com.kalgookso.august.repository.CategoryCommandRepository;
-import com.kalgookso.august.repository.CategoryQueryRepository;
+import com.kalgookso.august.repository.CategoryRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +19,15 @@ import java.util.Optional;
 @Transactional
 public class DefaultCategoryService implements CategoryService {
 
-    private final CategoryCommandRepository categoryCommandRepository;  // 카테고리 명령 저장소
-    private final CategoryQueryRepository categoryQueryRepository;  // 카테고리 쿼리 저장소
+    private final CategoryRepository categoryRepository;
 
     /**
      * DefaultCategoryService 생성자입니다.
-     * @param categoryCommandRepository 카테고리 명령 저장소
-     * @param categoryQueryRepository 카테고리 쿼리 저장소
+     *
+     * @param categoryRepository 카테고리 저장소
      */
-    public DefaultCategoryService(CategoryCommandRepository categoryCommandRepository, CategoryQueryRepository categoryQueryRepository) {
-        this.categoryCommandRepository = categoryCommandRepository;
-        this.categoryQueryRepository = categoryQueryRepository;
+    public DefaultCategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -40,7 +37,7 @@ public class DefaultCategoryService implements CategoryService {
      */
     @Override
     public Category save(Category category) {
-        return this.categoryCommandRepository.save(category);
+        return this.categoryRepository.save(category);
     }
 
     /**
@@ -50,7 +47,7 @@ public class DefaultCategoryService implements CategoryService {
      */
     @Override
     public Optional<Category> findById(String id) {
-        return this.categoryQueryRepository.findOne(AugustSpecification.idEquals(id));
+        return this.categoryRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
@@ -60,7 +57,7 @@ public class DefaultCategoryService implements CategoryService {
      */
     @Override
     public Page<Category> findAll(Pageable pageable) {
-        return this.categoryQueryRepository.findAll(Specification.where(null), pageable);
+        return this.categoryRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
@@ -69,7 +66,7 @@ public class DefaultCategoryService implements CategoryService {
      */
     @Override
     public void deleteById(String id) {
-        this.categoryCommandRepository.deleteById(id);
+        this.categoryRepository.deleteById(id);
     }
 
 }

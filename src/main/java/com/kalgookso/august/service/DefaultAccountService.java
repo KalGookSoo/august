@@ -1,8 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.repository.AccountCommandRepository;
-import com.kalgookso.august.repository.AccountQueryRepository;
+import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +19,15 @@ import java.util.Optional;
 @Transactional
 public class DefaultAccountService implements AccountService {
 
-    private final AccountCommandRepository accountCommandRepository;  // 계정 명령 저장소
-    private final AccountQueryRepository accountQueryRepository;  // 계정 쿼리 저장소
+    private final AccountRepository accountRepository;
 
     /**
      * DefaultAccountService 생성자입니다.
-     * @param accountCommandRepository 계정 명령 저장소
-     * @param accountQueryRepository 계정 쿼리 저장소
+     *
+     * @param accountRepository 계정 저장소
      */
-    public DefaultAccountService(AccountCommandRepository accountCommandRepository, AccountQueryRepository accountQueryRepository) {
-        this.accountCommandRepository = accountCommandRepository;
-        this.accountQueryRepository = accountQueryRepository;
+    public DefaultAccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     /**
@@ -40,7 +37,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Account save(Account account) {
-        return this.accountCommandRepository.save(account);
+        return this.accountRepository.save(account);
     }
 
     /**
@@ -50,7 +47,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findByUsername(String username) {
-        return this.accountQueryRepository.findOne(AugustSpecification.usernameEquals(username));
+        return this.accountRepository.findOne(AugustSpecification.usernameEquals(username));
     }
 
     /**
@@ -60,7 +57,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findById(String id) {
-        return this.accountQueryRepository.findOne(AugustSpecification.idEquals(id));
+        return this.accountRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
@@ -70,7 +67,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Page<Account> findAll(Pageable pageable) {
-        return this.accountQueryRepository.findAll(Specification.where(null), pageable);
+        return this.accountRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
@@ -79,7 +76,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public void deleteById(String id) {
-        this.accountCommandRepository.deleteById(id);
+        this.accountRepository.deleteById(id);
     }
 
 }

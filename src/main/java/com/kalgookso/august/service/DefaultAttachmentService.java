@@ -1,8 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Attachment;
-import com.kalgookso.august.repository.AttachmentCommandRepository;
-import com.kalgookso.august.repository.AttachmentQueryRepository;
+import com.kalgookso.august.repository.AttachmentRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +19,15 @@ import java.util.Optional;
 @Transactional
 public class DefaultAttachmentService implements AttachmentService {
 
-    private final AttachmentCommandRepository attachmentCommandRepository;  // 첨부 파일 명령 저장소
-    private final AttachmentQueryRepository attachmentQueryRepository;  // 첨부 파일 쿼리 저장소
+    private final AttachmentRepository attachmentRepository;
 
     /**
      * DefaultAttachmentService 생성자입니다.
-     * @param attachmentCommandRepository 첨부 파일 명령 저장소
-     * @param attachmentQueryRepository 첨부 파일 쿼리 저장소
+     *
+     * @param attachmentRepository 첨부 파일 저장소
      */
-    public DefaultAttachmentService(AttachmentCommandRepository attachmentCommandRepository, AttachmentQueryRepository attachmentQueryRepository) {
-        this.attachmentCommandRepository = attachmentCommandRepository;
-        this.attachmentQueryRepository = attachmentQueryRepository;
+    public DefaultAttachmentService(AttachmentRepository attachmentRepository) {
+        this.attachmentRepository = attachmentRepository;
     }
 
     /**
@@ -40,7 +37,7 @@ public class DefaultAttachmentService implements AttachmentService {
      */
     @Override
     public Attachment save(Attachment attachment) {
-        return this.attachmentCommandRepository.save(attachment);
+        return this.attachmentRepository.save(attachment);
     }
 
     /**
@@ -50,7 +47,7 @@ public class DefaultAttachmentService implements AttachmentService {
      */
     @Override
     public Optional<Attachment> findById(String id) {
-        return this.attachmentQueryRepository.findOne(AugustSpecification.idEquals(id));
+        return this.attachmentRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
@@ -60,7 +57,7 @@ public class DefaultAttachmentService implements AttachmentService {
      */
     @Override
     public Page<Attachment> findAll(Pageable pageable) {
-        return this.attachmentQueryRepository.findAll(Specification.where(null), pageable);
+        return this.attachmentRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
@@ -69,7 +66,7 @@ public class DefaultAttachmentService implements AttachmentService {
      */
     @Override
     public void deleteById(String id) {
-        this.attachmentCommandRepository.deleteById(id);
+        this.attachmentRepository.deleteById(id);
     }
 
 }
