@@ -53,16 +53,6 @@ public class AccountController {
     }
 
     /**
-     * 새 계정 생성 페이지를 반환하는 메서드입니다.
-     * @param command 계정 생성 명령
-     * @return 새 계정 생성 페이지
-     */
-    @GetMapping("/new")
-    public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
-        return "accounts/new";
-    }
-
-    /**
      * 특정 계정의 상세 정보 페이지를 반환하는 메서드입니다.
      * @param id 계정 ID
      * @param model 모델
@@ -73,6 +63,16 @@ public class AccountController {
         final Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         return "accounts/view";
+    }
+
+    /**
+     * 새 계정 생성 페이지를 반환하는 메서드입니다.
+     * @param command 계정 생성 명령
+     * @return 새 계정 생성 페이지
+     */
+    @GetMapping("/new")
+    public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
+        return "accounts/new";
     }
 
     /**
