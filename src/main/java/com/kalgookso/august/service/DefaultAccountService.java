@@ -3,7 +3,6 @@ package com.kalgookso.august.service;
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.repository.AccountCommandRepository;
 import com.kalgookso.august.repository.AccountQueryRepository;
-import com.kalgookso.august.specification.AccountSpecification;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,7 +60,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findById(String id) {
-        return this.accountQueryRepository.findOne(AccountSpecification.idEquals(id));
+        return this.accountQueryRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
