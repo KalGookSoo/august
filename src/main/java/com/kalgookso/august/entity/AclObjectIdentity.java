@@ -18,7 +18,7 @@ public class AclObjectIdentity {
     private AclClass objectIdClass;
 
     @Column(name = "object_id_identity")
-    private Long objectIdIdentity;
+    private String objectIdIdentity;
 
     @ManyToOne
     @JoinColumn(name = "parent_object")
@@ -48,11 +48,11 @@ public class AclObjectIdentity {
         this.objectIdClass = objectIdClass;
     }
 
-    public Long getObjectIdIdentity() {
+    public String getObjectIdIdentity() {
         return objectIdIdentity;
     }
 
-    public void setObjectIdIdentity(Long objectIdIdentity) {
+    public void setObjectIdIdentity(String objectIdIdentity) {
         this.objectIdIdentity = objectIdIdentity;
     }
 
