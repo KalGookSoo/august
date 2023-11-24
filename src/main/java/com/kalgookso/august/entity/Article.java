@@ -29,7 +29,8 @@ public class Article {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private String boardTypeId;
+    @JoinColumn(name = "category_id")
+    private String categoryId;
 
     @CreatedBy
     private String createdBy;
@@ -74,12 +75,12 @@ public class Article {
         this.updatedAt = updatedAt;
     }
 
-    public String getBoardTypeId() {
-        return boardTypeId;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setBoardTypeId(String boardTypeId) {
-        this.boardTypeId = boardTypeId;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getCreatedBy() {

@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
-@Table(name = "tb_board_type")
-public class BoardType {
+@Table(name = "tb_category")
+public class Category {
 
     @Id
     @GeneratedValue(generator = "uuid2")
