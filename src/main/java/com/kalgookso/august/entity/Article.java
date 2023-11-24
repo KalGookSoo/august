@@ -20,6 +20,8 @@ public class Article extends BaseEntity {
     @JoinColumn(name = "category_id")
     private String categoryId;
 
+    private int viewCount;
+
     @CreatedBy
     private String createdBy;
 
@@ -47,12 +49,26 @@ public class Article extends BaseEntity {
         this.categoryId = categoryId;
     }
 
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
     public String getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public Article increaseViewCount() {
+        this.viewCount++;
+        return this;
     }
 
 }
