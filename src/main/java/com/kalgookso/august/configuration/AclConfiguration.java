@@ -19,16 +19,13 @@ public class AclConfiguration {
 
     private final DataSource dataSource;
 
-    private final LookupStrategy lookupStrategy;
-
-    public AclConfiguration(DataSource dataSource, LookupStrategy lookupStrategy) {
+    public AclConfiguration(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.lookupStrategy = lookupStrategy;
     }
 
     @Bean
     public MutableAclService mutableAclService() {
-        return new JdbcMutableAclService(dataSource, lookupStrategy, this.aclCache());
+        return new JdbcMutableAclService(dataSource, this.lookupStrategy(), this.aclCache());
     }
 
     @Bean
@@ -40,8 +37,8 @@ public class AclConfiguration {
     public AclCache aclCache() {
         return new SpringCacheBasedAclCache(
             new ConcurrentMapCache("aclCache"), // Specify the cache name
-            permissionGrantingStrategy(),
-            aclAuthorizationStrategy()
+            this.permissionGrantingStrategy(),
+            this.aclAuthorizationStrategy()
         );
     }
 
