@@ -1,32 +1,19 @@
 package com.kalgookso.august.entity;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_category")
-public class Category {
-
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private String id;
+public class Category extends BaseEntity {
 
     private String name;
 
     @CreatedBy
     private String createdBy;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

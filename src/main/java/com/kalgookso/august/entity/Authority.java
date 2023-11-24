@@ -1,7 +1,5 @@
 package com.kalgookso.august.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 /**
@@ -10,15 +8,7 @@ import javax.persistence.*;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_authority")
-public class Authority {
-
-    /**
-     * 권한 식별자
-     */
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    private String id;
+public class Authority extends BaseEntity {
 
     /**
      * 이름
@@ -42,14 +32,6 @@ public class Authority {
 
     protected Authority() {
 
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

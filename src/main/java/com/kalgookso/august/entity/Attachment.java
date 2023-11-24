@@ -1,18 +1,13 @@
 package com.kalgookso.august.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_attachment")
-public class Attachment {
-
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private String id;
+public class Attachment extends BaseEntity {
 
     private String name;
 
@@ -20,14 +15,6 @@ public class Attachment {
 
     @JoinColumn(name = "article_id")
     private String articleId;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

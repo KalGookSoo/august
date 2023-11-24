@@ -1,13 +1,9 @@
 package com.kalgookso.august.entity;
 
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,15 +15,7 @@ import java.util.Set;
 @DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
-public class Account {
-
-    /**
-     * 계정 식별자
-     */
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    private String id;
+public class Account extends BaseEntity {
 
     /**
      * 계정명
@@ -47,26 +35,6 @@ public class Account {
 
     @OneToMany(mappedBy = "accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Authority> authorities = new LinkedHashSet<>();
-
-    /**
-     * 생성 일시
-     */
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    /**
-     * 수정 일시
-     */
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -94,22 +62,6 @@ public class Account {
 
     public Set<Authority> getAuthorities() {
         return authorities;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
     }
 
 }
