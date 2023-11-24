@@ -1,16 +1,26 @@
 <!DOCTYPE html>
+<!--suppress HtmlUnknownAttribute, XmlUnusedNamespaceDeclaration -->
 <html lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/_layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>메인 페이지</title>
+    <!--suppress JSUnresolvedLibraryURL -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-    <main layout:fragment="content">
-        <h1>Index</h1>
-        <a th:href="@{/accounts}">accounts</a>
-    </main>
+<main layout:fragment="content">
+    <div class="jumbotron">
+        <h1 class="display-4">환영합니다!</h1>
+        <p class="lead">이곳은 메인 페이지입니다.</p>
+        <hr class="my-4">
+        <p>다음 메뉴를 이용해보세요.</p>
+        <a class="btn btn-primary btn-lg" th:href="@{/accounts}" role="button">계정 관리</a>
+        <!-- 추가적인 엔티티에 대한 링크를 이곳에 추가하세요. 예: -->
+        <!-- <a class="btn btn-primary btn-lg" th:href="@{/articles}" role="button">게시글 관리</a> -->
+    </div>
+</main>
 </body>
 </html>
