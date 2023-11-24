@@ -62,7 +62,7 @@ public class SecurityConfiguration {
                 )
                 .userDetailsService(userDetailsService)
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
-                        .logoutUrl("sign-out")
+                        .logoutUrl("/sign-out")
                         .permitAll()
                 );
 
