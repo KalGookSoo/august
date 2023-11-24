@@ -29,6 +29,7 @@ public class Article {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @JoinColumn(name = "board_type_id")
     private String boardTypeId;
 
     @CreatedBy

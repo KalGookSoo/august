@@ -18,6 +18,7 @@ public class Attachment {
 
     private String filePath;
 
+    @JoinColumn(name = "article_id")
     private String articleId;
 
     public String getId() {

@@ -23,6 +23,7 @@ public class Comment {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JoinColumn(name = "article_id")
     private String articleId;
 
     @CreatedBy
