@@ -21,4 +21,5 @@ public interface AccountCommandRepository extends Repository<Account, String> {
      * @param id 삭제할 계정의 ID
      */
     void deleteById(String id);
+
 }
