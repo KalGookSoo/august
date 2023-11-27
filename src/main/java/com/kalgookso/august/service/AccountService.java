@@ -1,5 +1,6 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.command.UpdateAccountCommand;
 import com.kalgookso.august.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,18 +21,12 @@ public interface AccountService {
     Account create(Account account);
 
     /**
-     * 계정을 저장하는 메서드입니다.
-     * @param account 저장할 계정
-     * @return 저장된 계정
+     * 계정을 수정하는 메서드입니다.
+     * @param id 수정할 계정의 ID
+     * @param command 수정할 계정 정보
+     * @return 수정된 계정
      */
-    Account save(Account account);
-
-    /**
-     * 사용자 이름으로 계정을 찾는 메서드입니다.
-     * @param username 사용자 이름
-     * @return 찾은 계정 (Optional)
-     */
-    Optional<Account> findByUsername(String username);
+    Account update(String id, UpdateAccountCommand command);
 
     /**
      * ID로 계정을 찾는 메서드입니다.
