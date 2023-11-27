@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -48,8 +49,22 @@ public class DefaultArticleService implements ArticleService {
      * @return 찾은 게시글 (Optional)
      */
     @Override
+    @Deprecated
     public Optional<Article> findById(String id) {
         return this.articleRepository.findOne(AugustSpecification.idEquals(id));
+    }
+
+    /**
+     * ID로 게시글을 찾고 조회수를 증가시키는 메서드입니다.
+     * @param id 게시글 ID
+     * @return 조회수가 증가된 게시글
+     * @throws NoSuchElementException 게시글을 찾지 못했을 경우 발생
+     */
+    @Override
+    public Article view(String id) {
+        return this.articleRepository.findOne(AugustSpecification.idEquals(id))
+                .map(Article::increaseViewCount)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
     }
 
     /**
