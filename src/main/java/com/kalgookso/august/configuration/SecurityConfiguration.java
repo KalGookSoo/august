@@ -47,9 +47,7 @@ public class SecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/accounts/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/managers/**")).hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/admins/**")).hasRole("ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/sign-in")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/sign-up")).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(formLoginConfigurer -> formLoginConfigurer
                         .loginPage("/sign-in")
@@ -64,7 +62,7 @@ public class SecurityConfiguration {
                 )
                 .userDetailsService(userDetailsService)
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
-                        .logoutUrl("sign-out")
+                        .logoutUrl("/sign-out")
                         .permitAll()
                 );
 

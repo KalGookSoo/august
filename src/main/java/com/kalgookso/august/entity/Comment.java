@@ -1,21 +1,18 @@
 package com.kalgookso.august.entity;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_comment")
-public class Comment {
-
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private String id;
+public class Comment extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -28,14 +25,6 @@ public class Comment {
 
     @CreatedBy
     private String createdBy;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getContent() {
         return content;

@@ -1,13 +1,13 @@
 package com.kalgookso.august.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 홈 컨트롤러 클래스입니다.
  * 이 클래스는 루트 URL에 대한 요청을 처리합니다.
  */
-@RestController
+@Controller
 public class HomeController {
 
     /**
@@ -17,7 +17,7 @@ public class HomeController {
      */
     @GetMapping("/")
     public String index() {
-        return "Hello";
+        return "index";
     }
 
 }

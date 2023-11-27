@@ -2,16 +2,12 @@ package com.kalgookso.august;
 
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
-import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.service.AccountService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -26,18 +22,12 @@ public class AugustApplication implements CommandLineRunner {
 
     private final AccountService accountService;  // 계정 서비스
 
-    private final PasswordEncoder passwordEncoder;  // 패스워드 인코더
-
-    Logger logger = LoggerFactory.getLogger(AugustApplication.class);
-
     /**
      * AugustApplication 생성자입니다.
      * @param accountService 계정 서비스
-     * @param passwordEncoder 패스워드 인코더
      */
-    public AugustApplication(AccountService accountService, PasswordEncoder passwordEncoder) {
+    public AugustApplication(AccountService accountService) {
         this.accountService = accountService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -55,15 +45,14 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        Account account = new Account();
-        account.setUsername("tester");
-        account.setPassword(this.passwordEncoder.encode("1234"));
-        account.setName("관리자");
-        account.getAuthorities().add(new Authority("ROLE_ADMIN"));
-        try {
+        final Optional<Account> foundAccount = this.accountService.findByUsername("tester");
+        if (foundAccount.isEmpty()) {
+            final Account account = new Account();
+            account.setUsername("tester");
+            account.setPassword("1234");
+            account.setName("관리자");
+            account.getAuthorities().add(new Authority("ROLE_ADMIN"));
             this.accountService.create(account);
-        } catch (UsernameAlreadyExistsException e) {
-            logger.info("Username already exists");
         }
     }
 

@@ -8,10 +8,10 @@ import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,20 +45,11 @@ public class AccountController {
      * @return 계정 목록 페이지
      */
     @GetMapping
-    public String getAll(Pageable pageable, Model model) {
-        Page<Account> accounts = accountService.findAll(pageable);
-        model.addAttribute("accounts", accounts);
+    public String getAll(@PageableDefault Pageable pageable, Model model) {
+        final Page<Account> page = accountService.findAll(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageable.getPageSize());
         return "accounts/list";
-    }
-
-    /**
-     * 새 계정 생성 페이지를 반환하는 메서드입니다.
-     * @param command 계정 생성 명령
-     * @return 새 계정 생성 페이지
-     */
-    @GetMapping("/new")
-    public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
-        return "accounts/new";
     }
 
     /**
@@ -69,9 +60,19 @@ public class AccountController {
      */
     @GetMapping("/{id}")
     public String getOne(@PathVariable String id, Model model) {
-        Optional<Account> account = accountService.findById(id);
+        final Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         return "accounts/view";
+    }
+
+    /**
+     * 새 계정 생성 페이지를 반환하는 메서드입니다.
+     * @param command 계정 생성 명령
+     * @return 새 계정 생성 페이지
+     */
+    @GetMapping("/new")
+    public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
+        return "accounts/new";
     }
 
     /**
@@ -86,14 +87,10 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/new";
         }
-        Account account = AccountMapper.INSTANCE.toEntity(command);
-        try {
-            Account savedAccount = accountService.create(account);
-            return "redirect:/accounts/" + savedAccount.getId();
-        } catch (Exception e) {
-            bindingResult.addError(new FieldError("command", "username", "계정 생성에 실패했습니다."));
-            return "accounts/new";
-        }
+        final Account account = AccountMapper.INSTANCE.toEntity(command);
+        final Account savedAccount = accountService.save(account);
+        model.addAttribute("account", savedAccount);
+        return "redirect:/accounts/" + savedAccount.getId();
     }
 
     /**
@@ -104,30 +101,31 @@ public class AccountController {
      */
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable String id, Model model) {
-        Optional<Account> account = accountService.findById(id);
+        final Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         return "accounts/edit";
     }
 
     /**
      * 특정 계정을 수정하는 메서드입니다.
-     * @param model 모델
      * @param id 계정 ID
      * @param command 계정 수정 명령
      * @param bindingResult 바인딩 결과
+     * @param model 모델
      * @return 수정된 계정의 상세 정보 페이지
      */
     @PutMapping("/{id}")
-    public String update(Model model, @PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountCommand command, BindingResult bindingResult) {
+    public String update(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "accounts/edit";
         }
-        Optional<Account> foundAccount = accountService.findById(id);
+        final Optional<Account> foundAccount = accountService.findById(id);
         if (foundAccount.isEmpty()) {
             throw new IllegalArgumentException("계정을 찾을 수 없습니다.");
         }
-        Account account = AccountMapper.INSTANCE.toEntity(foundAccount.get(), command);
-        Account savedAccount = accountService.save(account);
+        final Account account = AccountMapper.INSTANCE.toEntity(foundAccount.get(), command);
+        final Account savedAccount = accountService.save(account);
+        model.addAttribute("account", savedAccount);
         return "redirect:/accounts/" + savedAccount.getId();
     }
 
@@ -143,22 +141,22 @@ public class AccountController {
     }
 
     /**
-     * 특정 계정의 패스워드 수정 페이지를 반환하는 메서드입니다.
+     * 특정 계정의 비밀번호 수정 페이지를 반환하는 메서드입니다.
      * @param id 계정 ID
      * @param model 모델
-     * @return 계정 패스워드 수정 페이지
+     * @return 계정 비밀번호 수정 페이지
      */
     @GetMapping("/{id}/password")
     public String getEditPassword(@PathVariable String id, Model model) {
-        Optional<Account> account = accountService.findById(id);
+        final Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
-        return "accounts/password-edit";
+        return "accounts/edit-password";
     }
 
     /**
-     * 특정 계정의 패스워드를 수정하는 메서드입니다.
+     * 특정 계정의 비밀번호를 수정하는 메서드입니다.
      * @param id 계정 ID
-     * @param command 계정 패스워드 수정 명령
+     * @param command 계정 비밀번호 수정 명령
      * @param bindingResult 바인딩 결과
      * @param model 모델
      * @return 계정 상세 정보 페이지
@@ -166,15 +164,17 @@ public class AccountController {
     @PutMapping("/{id}/password")
     public String updatePassword(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountPasswordCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "accounts/password-edit";
+            return "accounts/edit-password";
         }
-        accountService.changePassword(id, command.getNewPassword());
-        Optional<Account> foundAccount = accountService.findById(id);
+        final Optional<Account> foundAccount = accountService.findById(id);
         if (foundAccount.isEmpty()) {
             throw new IllegalArgumentException("계정을 찾을 수 없습니다.");
         }
-
-        return "redirect:/accounts/" + id;
+        final Account account = foundAccount.get();
+        account.setPassword(command.getNewPassword());
+        final Account savedAccount = accountService.updatePassword(account);
+        model.addAttribute("account", savedAccount);
+        return "redirect:/accounts/" + savedAccount.getId();
     }
 
 }

@@ -13,56 +13,49 @@
 
 </head>
 <body>
-    <main layout:fragment="content">
-        <a th:href="@{/accounts/new}">생성</a>
-        <div class="container mt-3">
-            <!--/* Table */-->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>식별자</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>조회수</th>
-                        <th>생성일시</th>
-                    </tr>
-                </thead>
-                <tbody>
+<main layout:fragment="content">
+    <a th:href="@{/accounts/new}">생성</a>
+    <div class="container mt-3">
+        <!--/* Table */-->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>계정명</th>
+                <th>생성일시</th>
+                <th>수정일시</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="account : ${page.getContent()}">
+                    <td th:text="${account.username}"></td>
+                    <td th:text="${account.createdAt}"></td>
+                    <td th:text="${account.modifiedAt}"></td>
+                </tr>
+            </tbody>
+        </table>
 
-                </tbody>
-            </table>
-
-            <!--/* Pagination */-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <!--/*
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/accounts(currentPageNo=${page.firstPageNo}, recordCountPerPage=${page.recordCountPerPage}, pageSize=${page.pageSize})}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/accounts(currentPageNo=${page.previousPageList}, recordCountPerPage=${page.recordCountPerPage}, pageSize=${page.pageSize})}" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item" th:each="pageNo : ${#numbers.sequence(page.firstPageNoOnPageList, page.lastPageNoOnPageList)}" th:classappend="${pageNo == page.currentPageNo} ? active">
-                        <a class="page-link" th:href="@{/accounts(currentPageNo=${pageNo}, recordCountPerPage=${page.recordCountPerPage}, pageSize=${page.pageSize})}" th:text="${pageNo}"></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/accounts(currentPageNo=${page.nextPageList}, recordCountPerPage=${page.recordCountPerPage}, pageSize=${page.pageSize})}" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/accounts(currentPageNo=${page.lastPageNo}, recordCountPerPage=${page.recordCountPerPage}, pageSize=${page.pageSize})}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    */-->
-                </ul>
-            </nav>
-        </div>
-    </main>
+        <!--/* Pagination */-->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <!-- 이전 페이지 링크 -->
+                <li class="page-item" th:unless="${page.first}">
+                    <a class="page-link" th:href="@{/accounts(page=${page.number - 1}, size=${page.size})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- 페이지 번호 링크 -->
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${pageNum == page.number} ? active">
+                    <a class="page-link" th:href="@{/accounts(page=${pageNum}, size=${page.size})}" th:text="${pageNum + 1}"></a>
+                </li>
+                <!-- 다음 페이지 링크 -->
+                <li class="page-item" th:unless="${page.last}">
+                    <a class="page-link" th:href="@{/accounts(page=${page.number + 1}, size=${page.size})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
 </body>
 </html>
