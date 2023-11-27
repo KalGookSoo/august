@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -117,7 +118,7 @@ public class DefaultAccountService implements AccountService {
             account.changePassword(passwordEncoder.encode(password));
             return this.accountRepository.saveAndFlush(account);
         } else {
-            throw new IllegalArgumentException("Account not found");
+            throw new NoSuchElementException("Account not found");
         }
     }
 

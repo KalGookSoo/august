@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -70,7 +71,7 @@ public class CategoryController {
         }
         final Optional<Category> foundCategory = categoryService.findById(id);
         if (foundCategory.isEmpty()) {
-            throw new IllegalArgumentException("카테고리를 찾을 수 없습니다.");
+            throw new NoSuchElementException("카테고리를 찾을 수 없습니다.");
         }
         final Category category = foundCategory.get();
         CategoryMapper.INSTANCE.updateEntityFromCommand(command, category);
