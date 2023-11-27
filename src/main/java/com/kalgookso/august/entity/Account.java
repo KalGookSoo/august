@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Table(name = "tb_account")
 @DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
+@Access(AccessType.FIELD)
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account {
 
@@ -110,6 +112,11 @@ public class Account {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public void changePassword(String password) {
+        Assert.notNull(password, "Password must not be null");
+        this.password = password;
     }
 
 }

@@ -12,12 +12,4 @@ public class AugustSpecification<T> {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("username"), username);
     }
 
-    public static <T> Specification<T> classNameEquals(String className) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("className"), className);
-    }
-
-    public static <T> Specification<T> sidEquals(String sid) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("sid"), sid);
-    }
-
 }

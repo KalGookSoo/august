@@ -2,7 +2,10 @@ package com.kalgookso.august;
 
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,12 +26,14 @@ public class AugustApplication implements CommandLineRunner {
 
     private final AccountService accountService;  // 계정 서비스
 
-    private final PasswordEncoder passwordEncoder;  // 비밀번호 인코더
+    private final PasswordEncoder passwordEncoder;  // 패스워드 인코더
+
+    Logger logger = LoggerFactory.getLogger(AugustApplication.class);
 
     /**
      * AugustApplication 생성자입니다.
      * @param accountService 계정 서비스
-     * @param passwordEncoder 비밀번호 인코더
+     * @param passwordEncoder 패스워드 인코더
      */
     public AugustApplication(AccountService accountService, PasswordEncoder passwordEncoder) {
         this.accountService = accountService;
@@ -50,14 +55,15 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        Optional<Account> foundAccount = this.accountService.findByUsername("tester");
-        if (foundAccount.isEmpty()) {
-            Account account = new Account();
-            account.setUsername("tester");
-            account.setPassword(this.passwordEncoder.encode("1234"));
-            account.setName("관리자");
-            account.getAuthorities().add(new Authority("ROLE_ADMIN"));
-            this.accountService.save(account);
+        Account account = new Account();
+        account.setUsername("tester");
+        account.setPassword(this.passwordEncoder.encode("1234"));
+        account.setName("관리자");
+        account.getAuthorities().add(new Authority("ROLE_ADMIN"));
+        try {
+            this.accountService.create(account);
+        } catch (UsernameAlreadyExistsException e) {
+            logger.info("Username already exists");
         }
     }
 

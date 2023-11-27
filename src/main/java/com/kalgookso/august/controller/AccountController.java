@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -70,7 +71,7 @@ public class AccountController {
     public String getOne(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
-        return "accounts/detail";
+        return "accounts/view";
     }
 
     /**
@@ -86,8 +87,13 @@ public class AccountController {
             return "accounts/new";
         }
         Account account = AccountMapper.INSTANCE.toEntity(command);
-        Account savedAccount = accountService.save(account);
-        return "redirect:/accounts/" + savedAccount.getId();
+        try {
+            Account savedAccount = accountService.create(account);
+            return "redirect:/accounts/" + savedAccount.getId();
+        } catch (Exception e) {
+            bindingResult.addError(new FieldError("command", "username", "계정 생성에 실패했습니다."));
+            return "accounts/new";
+        }
     }
 
     /**
@@ -137,22 +143,22 @@ public class AccountController {
     }
 
     /**
-     * 특정 계정의 비밀번호 수정 페이지를 반환하는 메서드입니다.
+     * 특정 계정의 패스워드 수정 페이지를 반환하는 메서드입니다.
      * @param id 계정 ID
      * @param model 모델
-     * @return 계정 비밀번호 수정 페이지
+     * @return 계정 패스워드 수정 페이지
      */
     @GetMapping("/{id}/password")
     public String getEditPassword(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
-        return "accounts/password";
+        return "accounts/password-edit";
     }
 
     /**
-     * 특정 계정의 비밀번호를 수정하는 메서드입니다.
+     * 특정 계정의 패스워드를 수정하는 메서드입니다.
      * @param id 계정 ID
-     * @param command 계정 비밀번호 수정 명령
+     * @param command 계정 패스워드 수정 명령
      * @param bindingResult 바인딩 결과
      * @param model 모델
      * @return 계정 상세 정보 페이지
@@ -160,16 +166,15 @@ public class AccountController {
     @PutMapping("/{id}/password")
     public String updatePassword(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountPasswordCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "accounts/password";
+            return "accounts/password-edit";
         }
+        accountService.changePassword(id, command.getNewPassword());
         Optional<Account> foundAccount = accountService.findById(id);
         if (foundAccount.isEmpty()) {
             throw new IllegalArgumentException("계정을 찾을 수 없습니다.");
         }
-        Account account = foundAccount.get();
-        account.setPassword(command.getNewPassword());
-        Account savedAccount = accountService.save(account);
-        return "redirect:/accounts/" + account.getId();
+
+        return "redirect:/accounts/" + id;
     }
 
 }

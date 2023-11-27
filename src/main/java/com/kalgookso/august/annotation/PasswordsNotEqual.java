@@ -7,7 +7,7 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * 비밀번호가 같지 않아야 하는 제약 조건을 나타내는 애노테이션입니다.
+ * 패스워드가 같지 않아야 하는 제약 조건을 나타내는 애노테이션입니다.
  * 이 애노테이션은 PasswordsNotEqualValidator에 의해 검증됩니다.
  * 이 애노테이션은 클래스 레벨에서 사용할 수 있습니다.
  * 이 애노테이션은 런타임에 유지됩니다.

@@ -1,11 +1,13 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +22,27 @@ import java.util.Optional;
 public class DefaultAccountService implements AccountService {
 
     private final AccountRepository accountRepository;
+    
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * DefaultAccountService 생성자입니다.
      *
      * @param accountRepository 계정 저장소
+     * @param passwordEncoder   패스워드 인코더
      */
-    public DefaultAccountService(AccountRepository accountRepository) {
+    public DefaultAccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public Account create(Account account) {
+        if (accountRepository.exists(AugustSpecification.usernameEquals(account.getUsername()))) {
+            throw new UsernameAlreadyExistsException("Username already exists");
+        }
+        account.changePassword(passwordEncoder.encode(account.getPassword()));
+        return accountRepository.save(account);
     }
 
     /**
@@ -77,6 +92,23 @@ public class DefaultAccountService implements AccountService {
     @Override
     public void deleteById(String id) {
         this.accountRepository.deleteById(id);
+    }
+
+    /**
+     * 계정의 비밀번호를 변경하는 메서드입니다.
+     * @param id 계정 ID
+     * @param password 변경할 비밀번호
+     */
+    @Override
+    public void changePassword(String id, String password) {
+        Optional<Account> foundAccount = this.accountRepository.findOne(AugustSpecification.idEquals(id));
+        if (foundAccount.isPresent()) {
+            Account account = foundAccount.get();
+            account.changePassword(passwordEncoder.encode(password));
+            this.accountRepository.save(account);
+        } else {
+            throw new IllegalArgumentException("Account not found");
+        }
     }
 
 }

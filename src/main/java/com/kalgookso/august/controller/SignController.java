@@ -2,6 +2,7 @@ package com.kalgookso.august.controller;
 
 import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -55,29 +57,32 @@ public class SignController {
      * 유효하지 않은 명령이나 이미 존재하는 계정명이 있는 경우, 에러를 반환하고 회원가입 페이지로 리다이렉트합니다.
      * 그렇지 않은 경우, 계정을 생성하고 로그인 페이지로 리다이렉트합니다.
      * @param command 계정 생성 명령
-     * @param result 바인딩 결과
+     * @param bindingResult 바인딩 결과
      * @return 리다이렉트 페이지
      */
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult result) {
+    public String signUp(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        if (result.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "sign-up";
         }
 
-        Optional<Account> foundAccount = this.accountService.findByUsername(command.getUsername());
+        Optional<Account> foundAccount = accountService.findByUsername(command.getUsername());
 
         if (foundAccount.isPresent()) {
-            result.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
+            bindingResult.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
             return "sign-up";
         }
 
         Account account = AccountMapper.INSTANCE.toEntity(command);
-
-        @SuppressWarnings("unused")
-        Account savedAccount = accountService.save(account);
-
-        return "sign-in";
+        try {
+            Account savedAccount = accountService.create(account);
+            redirectAttributes.addFlashAttribute("account", savedAccount);
+            return "redirect:/sign-in";
+        } catch (UsernameAlreadyExistsException e) {
+            bindingResult.addError(new FieldError("command", "username", "계정 생성에 실패했습니다."));
+            return "sign-up";
+        }
 
     }
 
