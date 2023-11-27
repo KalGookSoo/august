@@ -4,6 +4,7 @@ import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountPasswordCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -88,9 +90,14 @@ public class AccountController {
             return "accounts/new";
         }
         final Account account = AccountMapper.INSTANCE.toEntity(command);
-        final Account savedAccount = accountService.save(account);
-        model.addAttribute("account", savedAccount);
-        return "redirect:/accounts/" + savedAccount.getId();
+        try {
+            final Account savedAccount = accountService.create(account);
+            model.addAttribute("account", savedAccount);
+            return "redirect:/accounts/" + savedAccount.getId();
+        } catch (UsernameAlreadyExistsException e) {
+            bindingResult.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
+            return "accounts/new";
+        }
     }
 
     /**
@@ -166,15 +173,9 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/edit-password";
         }
-        final Optional<Account> foundAccount = accountService.findById(id);
-        if (foundAccount.isEmpty()) {
-            throw new IllegalArgumentException("계정을 찾을 수 없습니다.");
-        }
-        final Account account = foundAccount.get();
-        account.setPassword(command.getNewPassword());
-        final Account savedAccount = accountService.updatePassword(account);
-        model.addAttribute("account", savedAccount);
-        return "redirect:/accounts/" + savedAccount.getId();
+        final Account account = accountService.updatePassword(id, command.getNewPassword());
+        model.addAttribute("account", account);
+        return "redirect:/accounts/" + account.getId();
     }
 
 }

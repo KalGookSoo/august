@@ -2,6 +2,7 @@ package com.kalgookso.august.controller;
 
 import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;
 import org.springframework.stereotype.Controller;
@@ -10,9 +11,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * 로그인 및 회원가입 컨트롤러 클래스입니다.
@@ -59,26 +60,19 @@ public class SignController {
      * @return 리다이렉트 페이지
      */
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult result) {
-
+    public String signUp(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "sign-up";
         }
-
-        final Optional<Account> foundAccount = this.accountService.findByUsername(command.getUsername());
-
-        if (foundAccount.isPresent()) {
+        final Account account = AccountMapper.INSTANCE.toEntity(command);
+        try {
+            final Account savedAccount = accountService.create(account);
+            redirectAttributes.addFlashAttribute("account", savedAccount);
+            return "redirect:/sign-in";
+        } catch (UsernameAlreadyExistsException e) {
             result.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
             return "sign-up";
         }
-
-        final Account account = AccountMapper.INSTANCE.toEntity(command);
-
-        @SuppressWarnings("unused")
-        final Account savedAccount = accountService.create(account);
-
-        return "sign-in";
-
     }
 
 }

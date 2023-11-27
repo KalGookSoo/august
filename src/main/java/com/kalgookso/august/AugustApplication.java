@@ -2,14 +2,15 @@ package com.kalgookso.august;
 
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
-
-import java.util.Optional;
 
 /**
  * AugustApplication 클래스입니다.
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class AugustApplication implements CommandLineRunner {
 
     private final AccountService accountService;  // 계정 서비스
+
+    private final Logger logger = LoggerFactory.getLogger(AugustApplication.class);
 
     /**
      * AugustApplication 생성자입니다.
@@ -45,14 +48,15 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        final Optional<Account> foundAccount = this.accountService.findByUsername("tester");
-        if (foundAccount.isEmpty()) {
-            final Account account = new Account();
-            account.setUsername("tester");
-            account.setPassword("1234");
-            account.setName("관리자");
-            account.getAuthorities().add(new Authority("ROLE_ADMIN"));
+        final Account account = new Account();
+        account.setUsername("tester");
+        account.setPassword("1234");
+        account.setName("관리자");
+        account.getAuthorities().add(new Authority("ROLE_ADMIN"));
+        try {
             this.accountService.create(account);
+        } catch (UsernameAlreadyExistsException e) {
+            logger.info("Username already exists");
         }
     }
 

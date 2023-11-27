@@ -55,10 +55,10 @@ public interface AccountService {
 
     /**
      * 계정의 비밀번호를 변경하는 메서드입니다.
-     * @param account 계정
+     * @param id 계정 ID
+     * @param password 변경할 비밀번호
      * @return 변경된 계정
      */
-    @SuppressWarnings("UnusedReturnValue")
-    Account updatePassword(Account account);
+    Account updatePassword(String id, String password);
 
 }

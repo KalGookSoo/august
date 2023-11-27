@@ -2,6 +2,7 @@ package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
+import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
@@ -49,11 +50,14 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Account create(Account account) {
-        account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+        if (accountRepository.exists(AugustSpecification.usernameEquals(account.getUsername()))) {
+            throw new UsernameAlreadyExistsException("Username already exists");
+        }
+        account.changePassword(passwordEncoder.encode(account.getPassword()));
         if (account.getAuthorities().isEmpty()) {
             account.getAuthorities().add(new Authority("ROLE_USER"));
         }
-        return this.accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     /**
@@ -105,15 +109,16 @@ public class DefaultAccountService implements AccountService {
         this.accountRepository.deleteById(id);
     }
 
-    /**
-     * 계정의 비밀번호를 변경하는 메서드입니다.
-     * @param account 계정
-     * @return 변경된 계정
-     */
     @Override
-    public Account updatePassword(Account account) {
-        account.setPassword(this.passwordEncoder.encode(account.getPassword()));
-        return this.accountRepository.save(account);
+    public Account updatePassword(String id, String password) {
+        final Optional<Account> foundAccount = this.accountRepository.findOne(AugustSpecification.idEquals(id));
+        if (foundAccount.isPresent()) {
+            final Account account = foundAccount.get();
+            account.changePassword(passwordEncoder.encode(password));
+            return this.accountRepository.saveAndFlush(account);
+        } else {
+            throw new IllegalArgumentException("Account not found");
+        }
     }
 
 }
