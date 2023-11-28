@@ -17,7 +17,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -127,14 +126,9 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/edit";
         }
-        final Optional<Account> foundAccount = accountService.findById(id);
-        if (foundAccount.isEmpty()) {
-            throw new NoSuchElementException("계정을 찾을 수 없습니다.");
-        }
-        final Account account = AccountMapper.INSTANCE.toEntity(foundAccount.get(), command);
-        final Account savedAccount = accountService.save(account);
-        model.addAttribute("account", savedAccount);
-        return "redirect:/accounts/" + savedAccount.getId();
+        Account updatedAccount = accountService.update(id, command);
+        model.addAttribute("account", updatedAccount);
+        return "redirect:/accounts/" + id;
     }
 
     /**

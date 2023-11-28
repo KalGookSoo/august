@@ -1,8 +1,10 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.command.UpdateAccountCommand;
 import com.kalgookso.august.entity.Account;
 import com.kalgookso.august.entity.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
+import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
@@ -63,22 +65,18 @@ public class DefaultAccountService implements AccountService {
 
     /**
      * 계정을 수정하고 수정된 계정을 반환하는 메서드입니다.
-     * @param account 수정할 계정
+     * @param id 수정할 계정의 ID
+     * @param command 수정할 계정 정보
      * @return 수정된 계정
      */
     @Override
-    public Account save(Account account) {
-        return this.accountRepository.save(account);
-    }
-
-    /**
-     * 사용자 이름으로 계정을 찾고 찾은 계정을 반환하는 메서드입니다.
-     * @param username 사용자 이름
-     * @return 찾은 계정 (Optional)
-     */
-    @Override
-    public Optional<Account> findByUsername(String username) {
-        return this.accountRepository.findOne(AugustSpecification.usernameEquals(username));
+    public Account update(String id, UpdateAccountCommand command) {
+        final Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
+        if (foundAccount.isEmpty()) {
+            throw new NoSuchElementException("계정을 찾을 수 없습니다.");
+        }
+        final Account account = AccountMapper.INSTANCE.toEntity(foundAccount.get(), command);
+        return accountRepository.save(account);
     }
 
     /**
@@ -88,7 +86,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Optional<Account> findById(String id) {
-        return this.accountRepository.findOne(AugustSpecification.idEquals(id));
+        return accountRepository.findOne(AugustSpecification.idEquals(id));
     }
 
     /**
@@ -98,7 +96,7 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public Page<Account> findAll(Pageable pageable) {
-        return this.accountRepository.findAll(Specification.where(null), pageable);
+        return accountRepository.findAll(Specification.where(null), pageable);
     }
 
     /**
@@ -107,16 +105,16 @@ public class DefaultAccountService implements AccountService {
      */
     @Override
     public void deleteById(String id) {
-        this.accountRepository.deleteById(id);
+        accountRepository.deleteById(id);
     }
 
     @Override
     public Account updatePassword(String id, String password) {
-        final Optional<Account> foundAccount = this.accountRepository.findOne(AugustSpecification.idEquals(id));
+        final Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
         if (foundAccount.isPresent()) {
             final Account account = foundAccount.get();
             account.changePassword(passwordEncoder.encode(password));
-            return this.accountRepository.saveAndFlush(account);
+            return accountRepository.saveAndFlush(account);
         } else {
             throw new NoSuchElementException("Account not found");
         }
