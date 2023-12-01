@@ -1,74 +1,66 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.command.CategoryCommand;
 import com.kalgookso.august.entity.Category;
+import com.kalgookso.august.event.AclObjectCreatedEvent;
+import com.kalgookso.august.event.AclObjectDeletedEvent;
+import com.kalgookso.august.mapper.CategoryMapper;
 import com.kalgookso.august.repository.CategoryRepository;
 import com.kalgookso.august.specification.AugustSpecification;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-/**
- * DefaultCategoryService 클래스는 CategoryService 인터페이스를 구현합니다.
- * 이 클래스는 카테고리 관련 작업을 수행하는 서비스 클래스입니다.
- */
 @Service
 @Transactional
 public class DefaultCategoryService implements CategoryService {
 
-    /**
-     * CategoryRepository 인스턴스입니다.
-     */
     private final CategoryRepository categoryRepository;
 
-    /**
-     * DefaultCategoryService 생성자입니다.
-     * @param categoryRepository 카테고리 저장소
-     */
-    public DefaultCategoryService(CategoryRepository categoryRepository) {
+    private final ApplicationEventPublisher eventPublisher;
+
+    public DefaultCategoryService(CategoryRepository categoryRepository, ApplicationEventPublisher eventPublisher) {
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
-    /**
-     * 카테고리를 저장하고 저장된 카테고리를 반환하는 메서드입니다.
-     * @param category 저장할 카테고리
-     * @return 저장된 카테고리
-     */
     @Override
-    public Category save(Category category) {
-        return this.categoryRepository.save(category);
+    public Category create(Category category) {
+        Category createdCategory = categoryRepository.save(category);
+        eventPublisher.publishEvent(new AclObjectCreatedEvent(Category.class, createdCategory.getId(), createdCategory.getCreatedBy()));
+        return createdCategory;
     }
 
-    /**
-     * ID로 카테고리를 찾고 찾은 카테고리를 반환하는 메서드입니다.
-     * @param id 카테고리 ID
-     * @return 찾은 카테고리 (Optional)
-     */
+    @Override
+    public Category update(String id, CategoryCommand command) {
+        final Optional<Category> foundCategory = findById(id);
+        if (foundCategory.isEmpty()) {
+            throw new NoSuchElementException("카테고리를 찾을 수 없습니다.");
+        }
+        final Category category = foundCategory.get();
+        return CategoryMapper.INSTANCE.updateEntityFromCommand(command, category);
+    }
+
     @Override
     public Optional<Category> findById(String id) {
-        return this.categoryRepository.findOne(AugustSpecification.idEquals(id));
+        return categoryRepository.findOne(AugustSpecification.idEquals(id));
     }
 
-    /**
-     * 모든 카테고리를 페이지로 반환하는 메서드입니다.
-     * @param pageable 페이지 정보
-     * @return 카테고리 페이지
-     */
     @Override
     public Page<Category> findAll(Pageable pageable) {
-        return this.categoryRepository.findAll(Specification.where(null), pageable);
+        return categoryRepository.findAll(Specification.where(null), pageable);
     }
 
-    /**
-     * ID로 카테고리를 삭제하는 메서드입니다.
-     * @param id 삭제할 카테고리의 ID
-     */
     @Override
     public void deleteById(String id) {
-        this.categoryRepository.deleteById(id);
+        categoryRepository.deleteById(id);
+        eventPublisher.publishEvent(new AclObjectDeletedEvent(Category.class, id));
     }
 
 }

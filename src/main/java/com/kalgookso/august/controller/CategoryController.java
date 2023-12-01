@@ -52,7 +52,7 @@ public class CategoryController {
             return "categories/new";
         }
         final Category category = CategoryMapper.INSTANCE.toEntity(command);
-        final Category savedCategory = categoryService.save(category);
+        final Category savedCategory = categoryService.create(category);
         model.addAttribute("category", savedCategory);
         return "redirect:/categories/" + savedCategory.getId();
     }
@@ -69,13 +69,7 @@ public class CategoryController {
         if (bindingResult.hasErrors()) {
             return "categories/edit";
         }
-        final Optional<Category> foundCategory = categoryService.findById(id);
-        if (foundCategory.isEmpty()) {
-            throw new NoSuchElementException("카테고리를 찾을 수 없습니다.");
-        }
-        final Category category = foundCategory.get();
-        CategoryMapper.INSTANCE.updateEntityFromCommand(command, category);
-        final Category savedCategory = categoryService.save(category);
+        final Category savedCategory = categoryService.update(id, command);
         model.addAttribute("category", savedCategory);
         return "redirect:/categories/" + savedCategory.getId();
     }
