@@ -43,13 +43,13 @@ public class Article extends BaseEntity {
     /**
      * 첨부파일 목록
      */
-    @OneToMany(mappedBy = "articleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Attachment> attachments = new ArrayList<>();
 
     /**
      * 댓글 목록
      */
-    @OneToMany(mappedBy = "articleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Comment> comments = new ArrayList<>();
 
     /**
