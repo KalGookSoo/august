@@ -1,13 +1,17 @@
 package com.kalgookso.august.entity;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_category")
+@EntityListeners(AuditingEntityListener.class)
+@Access(AccessType.FIELD)
+@DynamicInsert
 public class Category extends BaseEntity {
 
     private String name;

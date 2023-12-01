@@ -1,17 +1,22 @@
 package com.kalgookso.august.entity;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * 댓글
+ */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_comment")
+@EntityListeners(AuditingEntityListener.class)
+@Access(AccessType.FIELD)
+@DynamicInsert
 public class Comment extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")

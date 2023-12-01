@@ -15,9 +15,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tb_account")
-@DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
 @Access(AccessType.FIELD)
+@DynamicInsert
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account extends BaseEntity {
 
