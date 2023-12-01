@@ -63,9 +63,10 @@ public class Account extends BaseEntity {
     @OneToMany(mappedBy = "accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Authority> authorities = new LinkedHashSet<>();
 
-    public void changePassword(String password) {
+    public Account changePassword(String password) {
         Assert.notNull(password, "Password must not be null");
         this.password = password;
+        return this;
     }
 
     public String getUsername() {
