@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tb_attachment")
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 @DynamicInsert
 public class Attachment extends BaseEntity {
 

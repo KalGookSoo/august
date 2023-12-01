@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tb_authority")
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 @DynamicInsert
 public class Authority extends BaseEntity {
 

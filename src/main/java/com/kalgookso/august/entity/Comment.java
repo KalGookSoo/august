@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tb_comment")
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 @DynamicInsert
 public class Comment extends BaseEntity {
 

@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tb_category")
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 @DynamicInsert
 public class Category extends BaseEntity {
 

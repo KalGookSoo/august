@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "tb_article")
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 @DynamicInsert
 public class Article extends BaseEntity {
 
