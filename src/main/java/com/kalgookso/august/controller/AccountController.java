@@ -93,7 +93,7 @@ public class AccountController {
         try {
             final Account savedAccount = accountService.create(account);
             model.addAttribute("account", savedAccount);
-            return "redirect:/accounts/" + savedAccount.getId();
+            return "redirect:/accounts/" + savedAccount.getId() + "/edit";
         } catch (UsernameAlreadyExistsException e) {
             bindingResult.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
             return "accounts/new";
@@ -110,6 +110,13 @@ public class AccountController {
     public String getEdit(@PathVariable String id, Model model) {
         final Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
+        UpdateAccountCommand command = new UpdateAccountCommand();
+
+        command.setName(account.get().getName());
+        command.setEmail(account.get().getEmail());
+        command.setContactNumber(account.get().getContactNumber());
+        model.addAttribute("command", command);
+
         return "accounts/edit";
     }
 
