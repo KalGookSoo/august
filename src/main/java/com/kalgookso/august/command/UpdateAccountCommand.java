@@ -21,6 +21,10 @@ public class UpdateAccountCommand {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Email getEmail() {
         return email;
     }
@@ -36,5 +40,4 @@ public class UpdateAccountCommand {
     public void setContactNumber(ContactNumber contactNumber) {
         this.contactNumber = contactNumber;
     }
-
 }
