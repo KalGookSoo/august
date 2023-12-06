@@ -1,6 +1,6 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.entity.Article;
+import com.kalgookso.august.entity.article.Article;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

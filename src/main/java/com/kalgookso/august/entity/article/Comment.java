@@ -1,5 +1,6 @@
-package com.kalgookso.august.entity;
+package com.kalgookso.august.entity.article;
 
+import com.kalgookso.august.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,9 +25,6 @@ public class Comment extends BaseEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "article_id")
-    private String articleId;
-
     @CreatedBy
     private String createdBy;
 
@@ -44,14 +42,6 @@ public class Comment extends BaseEntity {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
     }
 
     public String getCreatedBy() {

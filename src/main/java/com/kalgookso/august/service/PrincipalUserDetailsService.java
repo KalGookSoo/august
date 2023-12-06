@@ -1,6 +1,6 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.security.UserPrincipal;
 import com.kalgookso.august.specification.AugustSpecification;

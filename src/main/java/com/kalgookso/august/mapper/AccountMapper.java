@@ -2,7 +2,7 @@ package com.kalgookso.august.mapper;
 
 import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountCommand;
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

@@ -1,6 +1,6 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.entity.Article;
+import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.repository.ArticleRepository;
 import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;

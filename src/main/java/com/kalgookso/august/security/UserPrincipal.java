@@ -1,6 +1,6 @@
 package com.kalgookso.august.security;
 
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

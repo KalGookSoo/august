@@ -1,7 +1,7 @@
 package com.kalgookso.august.controller;
 
 import com.kalgookso.august.command.CreateAccountCommand;
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.service.AccountService;

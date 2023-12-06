@@ -1,7 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.CategoryCommand;
-import com.kalgookso.august.entity.Category;
+import com.kalgookso.august.entity.article.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,8 +1,7 @@
 package com.kalgookso.august.mapper;
 
 import com.kalgookso.august.command.CategoryCommand;
-import com.kalgookso.august.entity.Category;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kalgookso.august.entity.article.Category;
 import org.springframework.stereotype.Component;
 
 @Component

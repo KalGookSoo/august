@@ -1,5 +1,6 @@
-package com.kalgookso.august.entity;
+package com.kalgookso.august.entity.account;
 
+import com.kalgookso.august.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -21,12 +22,6 @@ public class Authority extends BaseEntity {
     private String name;
 
     /**
-     * 계정 식별자
-     */
-    @JoinColumn(name = "account_id")
-    private String accountId;
-
-    /**
      * 생성자
      *
      * @param name 이름
@@ -45,14 +40,6 @@ public class Authority extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
     }
 
 }

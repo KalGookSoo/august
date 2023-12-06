@@ -1,8 +1,8 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.UpdateAccountCommand;
-import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.entity.Authority;
+import com.kalgookso.august.entity.account.Account;
+import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.repository.AccountRepository;

@@ -1,7 +1,7 @@
 package com.kalgookso.august;
 
-import com.kalgookso.august.entity.Account;
-import com.kalgookso.august.entity.Authority;
+import com.kalgookso.august.entity.account.Account;
+import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.service.AccountService;
 import org.slf4j.Logger;

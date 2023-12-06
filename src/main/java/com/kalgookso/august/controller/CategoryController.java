@@ -1,7 +1,7 @@
 package com.kalgookso.august.controller;
 
 import com.kalgookso.august.command.CategoryCommand;
-import com.kalgookso.august.entity.Category;
+import com.kalgookso.august.entity.article.Category;
 import com.kalgookso.august.mapper.CategoryMapper;
 import com.kalgookso.august.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
