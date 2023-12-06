@@ -3,11 +3,12 @@ package com.kalgookso.august.entity.article;
 import com.kalgookso.august.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 
 /**
  * 댓글
@@ -24,6 +25,14 @@ public class Comment extends BaseEntity {
 
     @CreatedBy
     private String createdBy;
+
+    protected Comment() {
+
+    }
+
+    public Comment(String content) {
+        this.content = content;
+    }
 
     public String getContent() {
         return content;
