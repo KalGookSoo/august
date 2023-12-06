@@ -114,4 +114,24 @@ public class Article extends BaseEntity {
         return this;
     }
 
+    public Article addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+        return this;
+    }
+
+    public Article addComment(Comment comment) {
+        this.comments.add(comment);
+        return this;
+    }
+
+    public Article removeAttachmentById(String attachmentId) {
+        this.attachments.removeIf(attachment -> attachment.getId().equals(attachmentId));
+        return this;
+    }
+
+    public Article removeCommentById(String commentId) {
+        this.comments.removeIf(comment -> comment.getId().equals(commentId));
+        return this;
+    }
+
 }

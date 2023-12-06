@@ -22,9 +22,6 @@ public class Comment extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
     @CreatedBy
     private String createdBy;
 
@@ -34,14 +31,6 @@ public class Comment extends BaseEntity {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getCreatedBy() {
