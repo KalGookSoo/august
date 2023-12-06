@@ -1,5 +1,7 @@
 package com.kalgookso.august.entity;
 
+import com.kalgookso.august.value.ContactNumber;
+import com.kalgookso.august.value.Email;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
@@ -13,16 +15,15 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tb_account")
-@DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
+@DynamicInsert
 @SuppressWarnings({"unused", "JpaDataSourceORMInspection"})
 public class Account extends BaseEntity {
 
     /**
      * 계정명
      */
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
     /**
@@ -35,8 +36,38 @@ public class Account extends BaseEntity {
      */
     private String name;
 
+    /**
+     * 이메일
+     */
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "id", column = @Column(name = "email_id")),
+            @AttributeOverride(name = "domain", column = @Column(name = "email_domain"))
+    })
+    private Email email;
+
+    /**
+     * 연락처
+     */
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "first", column = @Column(name = "contact_number_first")),
+            @AttributeOverride(name = "middle", column = @Column(name = "contact_number_middle")),
+            @AttributeOverride(name = "last", column = @Column(name = "contact_number_last"))
+    })
+    private ContactNumber contactNumber;
+
+    /**
+     * 권한 목록
+     */
     @OneToMany(mappedBy = "accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Authority> authorities = new LinkedHashSet<>();
+
+    public Account changePassword(String password) {
+        Assert.notNull(password, "Password must not be null");
+        this.password = password;
+        return this;
+    }
 
     public String getUsername() {
         return username;
@@ -62,13 +93,24 @@ public class Account extends BaseEntity {
         this.name = name;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
+    public Email getEmail() {
+        return email;
     }
 
-    public void changePassword(String password) {
-        Assert.notNull(password, "Password must not be null");
-        this.password = password;
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public ContactNumber getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(ContactNumber contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
 }

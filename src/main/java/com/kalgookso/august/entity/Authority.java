@@ -1,5 +1,8 @@
 package com.kalgookso.august.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +11,8 @@ import javax.persistence.*;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_authority")
+@EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
 public class Authority extends BaseEntity {
 
     /**

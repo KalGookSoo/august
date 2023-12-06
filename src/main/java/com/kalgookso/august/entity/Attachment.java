@@ -1,12 +1,18 @@
 package com.kalgookso.august.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
+
+/**
+ * 첨부파일
+ */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_attachment")
+@EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
 public class Attachment extends BaseEntity {
 
     private String name;

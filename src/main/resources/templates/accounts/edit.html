@@ -5,32 +5,65 @@
       layout:decorate="~{/_layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Account - index</title>
+    <title>Account - edit</title>
 
-    <script>
-    </script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .error {
+            color: red;
+            font-size: small;
+            margin-left: 5px;
+        }
+    </style>
 
 </head>
 <body>
     <main layout:fragment="content">
-        <a th:href="@{/accounts/new}">생성</a>
+
         <div class="container mt-3">
-            <!--/* 회원 생성 폼을 만듭니다. */-->
-            <form th:action="@{/accounts}" th:post="post" th:object="${}">
-                <div>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username"><br>
+            <!-- 회원 생성 폼을 만듭니다. -->
+            <form th:action="@{/accounts/{id}(id=${account.id})}" th:method="put" th:object="${command}" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label>계정명</label>
+                    <span th:text="${account.username}" class="form-control"></span>
                 </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"><br>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
                 </div>
-                <div>
-                    <label for="name">Password:</label>
-                    <input type="text" id="name" name="password"><br>
+                <div class="form-group row">
+                    <label for="contactNumberFirst" class="col-sm-2 col-form-label">연락처</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="contactNumberFirst" th:field="*{contactNumber.first}" class="form-control" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="contactNumberMiddle" th:field="*{contactNumber.middle}" class="form-control" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="contactNumberLast" th:field="*{contactNumber.last}" class="form-control" required>
+                    </div>
                 </div>
+                <div class="form-group row">
+                    <label for="emailId" class="col-sm-2 col-form-label">이메일</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="emailId" th:field="*{email.id}" class="form-control" required>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" id="emailDomain" th:field="*{email.domain}" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">저장</button>
+                <button type="submit" th:with="delete=@{/accounts/{id}(id=${account.id}, _method='delete')}" th:formaction="${delete}" class="btn btn-danger">삭제</button>
+                <a th:href="@{/accounts}" class="btn btn-secondary">목록</a>
             </form>
         </div>
     </main>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

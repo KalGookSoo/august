@@ -1,5 +1,8 @@
 package com.kalgookso.august.command;
 
+import com.kalgookso.august.value.ContactNumber;
+import com.kalgookso.august.value.Email;
+
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -8,48 +11,58 @@ import javax.validation.constraints.NotBlank;
  * 각 필드는 NotBlank 제약 조건이 적용되어 있습니다.
  */
 public class CreateAccountCommand {
-    @NotBlank
-    private final String username;  // 계정명 필드
 
     @NotBlank
-    private final String password;  // 패스워드 필드
+    private String username;  // 계정명 필드
 
     @NotBlank
-    private final String name;  // 이름 필드
+    private String password;  // 패스워드 필드
 
-    /**
-     * CreateAccountCommand 생성자입니다.
-     * @param username 계정명
-     * @param password 패스워드
-     * @param name 이름
-     */
-    public CreateAccountCommand(@NotBlank String username, @NotBlank String password, @NotBlank String name) {
+    @NotBlank
+    private String name;  // 이름 필드
+
+    private Email email;
+
+    private ContactNumber contactNumber;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * 계정명을 반환하는 메서드입니다.
-     * @return 계정명
-     */
-    public @NotBlank String getUsername() {
-        return this.username;
+    public Email getEmail() {
+        return email;
     }
 
-    /**
-     * 패스워드를 반환하는 메서드입니다.
-     * @return 패스워드
-     */
-    public @NotBlank String getPassword() {
-        return this.password;
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
-    /**
-     * 이름을 반환하는 메서드입니다.
-     * @return 이름
-     */
-    public @NotBlank String getName() {
-        return this.name;
+    public ContactNumber getContactNumber() {
+        return contactNumber;
     }
+
+    public void setContactNumber(ContactNumber contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
 }
