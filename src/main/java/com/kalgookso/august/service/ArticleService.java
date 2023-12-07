@@ -1,21 +1,25 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.entity.Article;
+import com.kalgookso.august.entity.article.Article;
+import com.kalgookso.august.entity.article.Attachment;
+import com.kalgookso.august.entity.article.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 public interface ArticleService {
 
     Article save(Article article);
 
-    Optional<Article> findById(String id);
+    void deleteById(String id);
+
+    Page<Article> findByCategoryId(String categoryId, Pageable pageable);
 
     Article view(String id);
 
-    Page<Article> findAll(Pageable pageable);
+    Article addAttachment(String articleId, Attachment attachment);
 
-    void deleteById(String id);
+    Article removeAttachment(String articleId, String attachmentId);
+
+    Article addComment(String articleId, Comment comment);
 
 }

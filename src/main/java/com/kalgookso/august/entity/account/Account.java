@@ -1,5 +1,6 @@
-package com.kalgookso.august.entity;
+package com.kalgookso.august.entity.account;
 
+import com.kalgookso.august.entity.BaseEntity;
 import com.kalgookso.august.value.ContactNumber;
 import com.kalgookso.august.value.Email;
 import org.hibernate.annotations.DynamicInsert;
@@ -60,7 +61,8 @@ public class Account extends BaseEntity {
     /**
      * 권한 목록
      */
-    @OneToMany(mappedBy = "accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id")
     private final Set<Authority> authorities = new LinkedHashSet<>();
 
     public Account changePassword(String password) {

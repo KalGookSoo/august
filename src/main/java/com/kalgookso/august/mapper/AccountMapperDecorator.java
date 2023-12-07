@@ -2,7 +2,7 @@ package com.kalgookso.august.mapper;
 
 import com.kalgookso.august.command.CreateAccountCommand;
 import com.kalgookso.august.command.UpdateAccountCommand;
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 
 /**
  * 계정 매퍼 데코레이터 클래스입니다.

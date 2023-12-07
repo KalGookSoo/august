@@ -1,16 +1,18 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.entity.Article;
+import com.kalgookso.august.entity.article.Article;
+import com.kalgookso.august.entity.article.Attachment;
+import com.kalgookso.august.entity.article.Comment;
 import com.kalgookso.august.repository.ArticleRepository;
-import com.kalgookso.august.specification.AugustSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
+import static com.kalgookso.august.specification.ArticleSpecification.categoryIdEquals;
+import static com.kalgookso.august.specification.ArticleSpecification.idEquals;
 
 @Service
 @Transactional
@@ -24,30 +26,49 @@ public class DefaultArticleService implements ArticleService {
 
     @Override
     public Article save(Article article) {
-        return this.articleRepository.save(article);
+        return articleRepository.save(article);
     }
 
     @Override
-    @Deprecated
-    public Optional<Article> findById(String id) {
-        return this.articleRepository.findOne(AugustSpecification.idEquals(id));
+    public void deleteById(String id) {
+        articleRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Article> findByCategoryId(String categoryId, Pageable pageable) {
+        return articleRepository.findAll(categoryIdEquals(categoryId), pageable);
     }
 
     @Override
     public Article view(String id) {
-        return this.articleRepository.findOne(AugustSpecification.idEquals(id))
+        return articleRepository.findOne(idEquals(id))
                 .map(Article::increaseViewCount)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
     }
 
     @Override
-    public Page<Article> findAll(Pageable pageable) {
-        return this.articleRepository.findAll(Specification.where(null), pageable);
+    public Article addAttachment(String articleId, Attachment attachment) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        article.addAttachment(attachment);
+        return article;
     }
 
     @Override
-    public void deleteById(String id) {
-        this.articleRepository.deleteById(id);
+    public Article removeAttachment(String articleId, String attachmentId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        article.removeAttachmentById(attachmentId);
+        return article;
     }
+
+    @Override
+    public Article addComment(String articleId, Comment comment) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        article.addComment(comment);
+        return article;
+    }
+
 
 }

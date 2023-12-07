@@ -1,7 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.UpdateAccountCommand;
-import com.kalgookso.august.entity.Account;
+import com.kalgookso.august.entity.account.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

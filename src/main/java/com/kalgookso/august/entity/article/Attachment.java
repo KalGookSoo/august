@@ -1,5 +1,6 @@
-package com.kalgookso.august.entity;
+package com.kalgookso.august.entity.article;
 
+import com.kalgookso.august.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,9 +20,6 @@ public class Attachment extends BaseEntity {
 
     private String pathName;
 
-    @JoinColumn(name = "article_id")
-    private String articleId;
-
     public String getName() {
         return name;
     }
@@ -36,14 +34,6 @@ public class Attachment extends BaseEntity {
 
     public void setPathName(String pathName) {
         this.pathName = pathName;
-    }
-
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
     }
 
 }

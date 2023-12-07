@@ -1,5 +1,6 @@
-package com.kalgookso.august.entity;
+package com.kalgookso.august.entity.article;
 
+import com.kalgookso.august.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -43,13 +44,15 @@ public class Article extends BaseEntity {
     /**
      * 첨부파일 목록
      */
-    @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "article_id")
     private final List<Attachment> attachments = new ArrayList<>();
 
     /**
      * 댓글 목록
      */
-    @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "article_id")
     private final List<Comment> comments = new ArrayList<>();
 
     /**
@@ -106,9 +109,28 @@ public class Article extends BaseEntity {
         this.createdBy = createdBy;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public Article increaseViewCount() {
         this.viewCount++;
+        return this;
+    }
+
+    public Article addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+        return this;
+    }
+
+    public Article addComment(Comment comment) {
+        this.comments.add(comment);
+        return this;
+    }
+
+    public Article removeAttachmentById(String attachmentId) {
+        this.attachments.removeIf(attachment -> attachment.getId().equals(attachmentId));
+        return this;
+    }
+
+    public Article removeCommentById(String commentId) {
+        this.comments.removeIf(comment -> comment.getId().equals(commentId));
         return this;
     }
 
