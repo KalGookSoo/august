@@ -8,8 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 계정
@@ -63,7 +63,7 @@ public class Account extends BaseEntity {
      */
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id")
-    private final Set<Authority> authorities = new LinkedHashSet<>();
+    private final List<Authority> authorities = new ArrayList<>();
 
     public Account changePassword(String password) {
         Assert.notNull(password, "Password must not be null");
@@ -111,7 +111,7 @@ public class Account extends BaseEntity {
         this.contactNumber = contactNumber;
     }
 
-    public Set<Authority> getAuthorities() {
+    public List<Authority> getAuthorities() {
         return authorities;
     }
 
