@@ -48,28 +48,31 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public Article addAttachment(String articleId, Attachment attachment) {
+    public void addAttachment(String articleId, Attachment attachment) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.addAttachment(attachment);
-        return article;
     }
 
     @Override
-    public Article removeAttachment(String articleId, String attachmentId) {
+    public void removeAttachment(String articleId, String attachmentId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.removeAttachmentById(attachmentId);
-        return article;
     }
 
     @Override
-    public Article addComment(String articleId, Comment comment) {
+    public void addComment(String articleId, Comment comment) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.addComment(comment);
-        return article;
     }
 
+    @Override
+    public void removeComment(String articleId, String commentId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        article.removeCommentById(commentId);
+    }
 
 }

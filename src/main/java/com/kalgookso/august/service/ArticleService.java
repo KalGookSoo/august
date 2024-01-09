@@ -17,10 +17,12 @@ public interface ArticleService {
 
     Article view(String id);
 
-    Article addAttachment(String articleId, Attachment attachment);
+    void addAttachment(String articleId, Attachment attachment);
 
-    Article removeAttachment(String articleId, String attachmentId);
+    void removeAttachment(String articleId, String attachmentId);
 
-    Article addComment(String articleId, Comment comment);
+    void addComment(String articleId, Comment comment);
+
+    void removeComment(String articleId, String commentId);
 
 }
