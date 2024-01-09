@@ -39,11 +39,11 @@ public class DefaultCategoryService implements CategoryService {
 
     @Override
     public Category update(String id, CategoryCommand command) {
-        final Optional<Category> foundCategory = findById(id);
+        Optional<Category> foundCategory = findById(id);
         if (foundCategory.isEmpty()) {
             throw new NoSuchElementException("카테고리를 찾을 수 없습니다.");
         }
-        final Category category = foundCategory.get();
+        Category category = foundCategory.get();
         return CategoryMapper.INSTANCE.updateEntityFromCommand(command, category);
     }
 

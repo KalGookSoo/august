@@ -48,7 +48,7 @@ public class AccountController {
      */
     @GetMapping
     public String getAll(@PageableDefault Pageable pageable, Model model) {
-        final Page<Account> page = accountService.findAll(pageable);
+        Page<Account> page = accountService.findAll(pageable);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageable.getPageSize());
         return "accounts/list";
@@ -62,7 +62,7 @@ public class AccountController {
      */
     @GetMapping("/{id}")
     public String getOne(@PathVariable String id, Model model) {
-        final Optional<Account> account = accountService.findById(id);
+        Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         return "accounts/view";
     }
@@ -89,9 +89,9 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/new";
         }
-        final Account account = AccountMapper.INSTANCE.toEntity(command);
+        Account account = AccountMapper.INSTANCE.toEntity(command);
         try {
-            final Account savedAccount = accountService.create(account);
+            Account savedAccount = accountService.create(account);
             return "redirect:/accounts/" + savedAccount.getId() + "/edit";
         } catch (UsernameAlreadyExistsException e) {
             bindingResult.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));
@@ -107,7 +107,7 @@ public class AccountController {
      */
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable String id, Model model) {
-        final Optional<Account> account = accountService.findById(id);
+        Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         UpdateAccountCommand command = new UpdateAccountCommand();
 
@@ -156,7 +156,7 @@ public class AccountController {
      */
     @GetMapping("/{id}/password")
     public String getEditPassword(@PathVariable String id, Model model) {
-        final Optional<Account> account = accountService.findById(id);
+        Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
         return "accounts/edit-password";
     }
@@ -174,7 +174,7 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/edit-password";
         }
-        final Account account = accountService.updatePassword(id, command.getNewPassword());
+        Account account = accountService.updatePassword(id, command.getNewPassword());
         model.addAttribute("account", account);
         return "redirect:/accounts/" + account.getId();
     }

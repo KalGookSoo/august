@@ -27,7 +27,7 @@ public class CategoryController {
 
     @GetMapping
     public String getAll(@PageableDefault Pageable pageable, Model model) {
-        final Page<Category> page = categoryService.findAll(pageable);
+        Page<Category> page = categoryService.findAll(pageable);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageable.getPageSize());
         return "categories/list";
@@ -35,7 +35,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public String getOne(@PathVariable String id, Model model) {
-        final Optional<Category> category = categoryService.findById(id);
+        Optional<Category> category = categoryService.findById(id);
         model.addAttribute("category", category.orElseThrow());
         return "categories/view";
     }
@@ -50,14 +50,14 @@ public class CategoryController {
         if (bindingResult.hasErrors()) {
             return "categories/new";
         }
-        final Category category = CategoryMapper.INSTANCE.toEntity(command);
-        final Category savedCategory = categoryService.create(category);
+        Category category = CategoryMapper.INSTANCE.toEntity(command);
+        Category savedCategory = categoryService.create(category);
         return "redirect:/categories/" + savedCategory.getId();
     }
 
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable String id, @ModelAttribute("command") CategoryCommand command, Model model) {
-        final Optional<Category> category = categoryService.findById(id);
+        Optional<Category> category = categoryService.findById(id);
         model.addAttribute("category", category.orElseThrow());
         return "categories/edit";
     }
@@ -67,7 +67,7 @@ public class CategoryController {
         if (bindingResult.hasErrors()) {
             return "categories/edit";
         }
-        final Category savedCategory = categoryService.update(id, command);
+        Category savedCategory = categoryService.update(id, command);
         model.addAttribute("category", savedCategory);
         return "redirect:/categories/" + savedCategory.getId();
     }

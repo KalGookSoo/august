@@ -18,8 +18,8 @@ public class AclObjectDeletedEventListener {
 
     @EventListener
     public void handleAclObjectDeletedEvent(AclObjectDeletedEvent event) {
-        final ObjectIdentityImpl objectId = new ObjectIdentityImpl(event.getJavaType(), event.getIdentifier());
-        final MutableAcl acl = (MutableAcl) mutableAclService.readAclById(objectId);
+        ObjectIdentityImpl objectId = new ObjectIdentityImpl(event.getJavaType(), event.getIdentifier());
+        MutableAcl acl = (MutableAcl) mutableAclService.readAclById(objectId);
         for (int i = acl.getEntries().size() - 1; i >= 0; i--) {
             acl.deleteAce(i);
         }
