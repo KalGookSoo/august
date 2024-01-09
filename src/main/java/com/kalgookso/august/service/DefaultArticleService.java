@@ -1,5 +1,6 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.criteria.ArticleCriteria;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
 import com.kalgookso.august.entity.article.Comment;
@@ -35,7 +36,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public Page<Article> findByCategoryId(String categoryId, Pageable pageable) {
+    public Page<Article> findByCategoryId(String categoryId, ArticleCriteria criteria, Pageable pageable) {
         return articleRepository.findAll(categoryIdEquals(categoryId), pageable);
     }
 
