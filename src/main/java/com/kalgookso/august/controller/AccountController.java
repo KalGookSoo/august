@@ -92,7 +92,6 @@ public class AccountController {
         final Account account = AccountMapper.INSTANCE.toEntity(command);
         try {
             final Account savedAccount = accountService.create(account);
-            model.addAttribute("account", savedAccount);
             return "redirect:/accounts/" + savedAccount.getId() + "/edit";
         } catch (UsernameAlreadyExistsException e) {
             bindingResult.addError(new FieldError("command", "username", "계정이 이미 존재합니다."));

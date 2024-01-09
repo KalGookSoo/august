@@ -46,13 +46,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute("command") @Valid CategoryCommand command, BindingResult bindingResult, Model model) {
+    public String create(@ModelAttribute("command") @Valid CategoryCommand command, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "categories/new";
         }
         final Category category = CategoryMapper.INSTANCE.toEntity(command);
         final Category savedCategory = categoryService.create(category);
-        model.addAttribute("category", savedCategory);
         return "redirect:/categories/" + savedCategory.getId();
     }
 
