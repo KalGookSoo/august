@@ -27,7 +27,7 @@ public class ArticleController {
 
     @GetMapping
     public String getArticlesByCategoryId(@PathVariable String categoryId, ArticleCriteria criteria, @PageableDefault Pageable pageable, Model model) {
-        model.addAttribute("articles", articleService.findByCategoryId(categoryId, pageable));
+        model.addAttribute("articles", articleService.findByCategoryId(categoryId, criteria, pageable));
         return "categories/articles/list";
     }
 

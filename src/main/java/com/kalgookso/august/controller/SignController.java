@@ -64,9 +64,9 @@ public class SignController {
         if (result.hasErrors()) {
             return "sign-up";
         }
-        final Account account = AccountMapper.INSTANCE.toEntity(command);
+        Account account = AccountMapper.INSTANCE.toEntity(command);
         try {
-            final Account savedAccount = accountService.create(account);
+            Account savedAccount = accountService.create(account);
             redirectAttributes.addFlashAttribute("account", savedAccount);
             return "redirect:/sign-in";
         } catch (UsernameAlreadyExistsException e) {

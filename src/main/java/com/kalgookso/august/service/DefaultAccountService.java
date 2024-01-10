@@ -44,7 +44,7 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public Account update(String id, UpdateAccountCommand command) {
-        final Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
+        Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
         if (foundAccount.isEmpty()) {
             throw new NoSuchElementException("계정을 찾을 수 없습니다.");
         }
@@ -68,9 +68,9 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public Account updatePassword(String id, String password) {
-        final Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
+        Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
         if (foundAccount.isPresent()) {
-            final Account account = foundAccount.get();
+            Account account = foundAccount.get();
             return account.changePassword(passwordEncoder.encode(password));
         } else {
             throw new NoSuchElementException("Account not found");

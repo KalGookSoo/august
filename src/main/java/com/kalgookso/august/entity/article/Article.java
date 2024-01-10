@@ -114,24 +114,20 @@ public class Article extends BaseEntity {
         return this;
     }
 
-    public Article addAttachment(Attachment attachment) {
+    public void addAttachment(Attachment attachment) {
         this.attachments.add(attachment);
-        return this;
     }
 
-    public Article addComment(Comment comment) {
+    public void addComment(Comment comment) {
         this.comments.add(comment);
-        return this;
     }
 
-    public Article removeAttachmentById(String attachmentId) {
+    public void removeAttachmentById(String attachmentId) {
         this.attachments.removeIf(attachment -> attachment.getId().equals(attachmentId));
-        return this;
     }
 
-    public Article removeCommentById(String commentId) {
+    public void removeCommentById(String commentId) {
         this.comments.removeIf(comment -> comment.getId().equals(commentId));
-        return this;
     }
 
 }

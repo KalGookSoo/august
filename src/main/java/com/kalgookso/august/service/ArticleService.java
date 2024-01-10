@@ -1,5 +1,6 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.criteria.ArticleCriteria;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
 import com.kalgookso.august.entity.article.Comment;
@@ -12,14 +13,16 @@ public interface ArticleService {
 
     void deleteById(String id);
 
-    Page<Article> findByCategoryId(String categoryId, Pageable pageable);
+    Page<Article> findByCategoryId(String categoryId, ArticleCriteria criteria, Pageable pageable);
 
     Article view(String id);
 
-    Article addAttachment(String articleId, Attachment attachment);
+    void addAttachment(String articleId, Attachment attachment);
 
-    Article removeAttachment(String articleId, String attachmentId);
+    void removeAttachment(String articleId, String attachmentId);
 
-    Article addComment(String articleId, Comment comment);
+    void addComment(String articleId, Comment comment);
+
+    void removeComment(String articleId, String commentId);
 
 }

@@ -1,5 +1,6 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.criteria.ArticleCriteria;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
 import com.kalgookso.august.entity.article.Comment;
@@ -35,7 +36,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public Page<Article> findByCategoryId(String categoryId, Pageable pageable) {
+    public Page<Article> findByCategoryId(String categoryId, ArticleCriteria criteria, Pageable pageable) {
         return articleRepository.findAll(categoryIdEquals(categoryId), pageable);
     }
 
@@ -47,28 +48,31 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public Article addAttachment(String articleId, Attachment attachment) {
+    public void addAttachment(String articleId, Attachment attachment) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.addAttachment(attachment);
-        return article;
     }
 
     @Override
-    public Article removeAttachment(String articleId, String attachmentId) {
+    public void removeAttachment(String articleId, String attachmentId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.removeAttachmentById(attachmentId);
-        return article;
     }
 
     @Override
-    public Article addComment(String articleId, Comment comment) {
+    public void addComment(String articleId, Comment comment) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
         article.addComment(comment);
-        return article;
     }
 
+    @Override
+    public void removeComment(String articleId, String commentId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        article.removeCommentById(commentId);
+    }
 
 }

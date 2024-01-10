@@ -26,11 +26,11 @@ public class AclObjectCreatedEventListener {
     public void handleAclObjectCreatedEvent(AclObjectCreatedEvent event) {
 
         // 객체에 대한 ACL 객체 식별자를 생성합니다.
-        final ObjectIdentity objectId = new ObjectIdentityImpl(event.getJavaType(), event.getIdentifier());
-        final MutableAcl acl = mutableAclService.createAcl(objectId);
+        ObjectIdentity objectId = new ObjectIdentityImpl(event.getJavaType(), event.getIdentifier());
+        MutableAcl acl = mutableAclService.createAcl(objectId);
 
         // createdBy 사용자에 대한 SID를 생성합니다.
-        final Sid ownerSid = new PrincipalSid(event.getPrincipal());
+        Sid ownerSid = new PrincipalSid(event.getPrincipal());
 
         // createdBy 사용자에게 객체에 대한 관리 권한을 부여합니다.
         acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, ownerSid, true);
