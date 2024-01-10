@@ -67,11 +67,11 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public Account updatePassword(String id, String password) {
+    public void updatePassword(String id, String password) {
         Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
         if (foundAccount.isPresent()) {
             Account account = foundAccount.get();
-            return account.changePassword(passwordEncoder.encode(password));
+            account.changePassword(passwordEncoder.encode(password));
         } else {
             throw new NoSuchElementException("Account not found");
         }

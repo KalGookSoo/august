@@ -174,9 +174,8 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/edit-password";
         }
-        Account account = accountService.updatePassword(id, command.getNewPassword());
-        model.addAttribute("account", account);
-        return "redirect:/accounts/" + account.getId();
+        accountService.updatePassword(id, command.getNewPassword());
+        return "redirect:/accounts/" + id;
     }
 
 }

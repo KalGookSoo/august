@@ -65,10 +65,9 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "account_id")
     private final List<Authority> authorities = new ArrayList<>();
 
-    public Account changePassword(String password) {
+    public void changePassword(String password) {
         Assert.notNull(password, "Password must not be null");
         this.password = password;
-        return this;
     }
 
     public String getUsername() {

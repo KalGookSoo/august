@@ -19,6 +19,6 @@ public interface AccountService {
 
     void deleteById(String id);
 
-    Account updatePassword(String id, String password);
+    void updatePassword(String id, String password);
 
 }
