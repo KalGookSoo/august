@@ -35,6 +35,7 @@ public class DefaultAccountService implements AccountService {
         if (accountRepository.exists(AugustSpecification.usernameEquals(account.getUsername()))) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
+        account.initializeAccountPolicy();
         account.changePassword(passwordEncoder.encode(account.getPassword()));
         if (account.getAuthorities().isEmpty()) {
             account.getAuthorities().add(new Authority("ROLE_USER"));
