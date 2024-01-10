@@ -48,8 +48,8 @@ public class AugustApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        final Account account = new Account();
-        account.setUsername("tester");
+        Account account = new Account();
+        account.setUsername("admin");
         account.setPassword("1234");
         account.setName("관리자");
         account.getAuthorities().add(new Authority("ROLE_ADMIN"));
