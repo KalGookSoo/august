@@ -1,8 +1,5 @@
 package com.kalgookso.august.command;
 
-import com.kalgookso.august.value.ContactNumber;
-import com.kalgookso.august.value.Email;
-
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -13,9 +10,15 @@ public class AccountUpdateCommand {
     @NotBlank
     private String name;
 
-    private Email email;
+    private String emailId;
 
-    private ContactNumber contactNumber;
+    private String emailDomain;
+
+    private String firstContactNumber;
+
+    private String middleContactNumber;
+
+    private String lastContactNumber;
 
     public String getName() {
         return name;
@@ -25,19 +28,44 @@ public class AccountUpdateCommand {
         this.name = name;
     }
 
-    public Email getEmail() {
-        return email;
+    public String getEmailId() {
+        return emailId;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
-    public ContactNumber getContactNumber() {
-        return contactNumber;
+    public String getEmailDomain() {
+        return emailDomain;
     }
 
-    public void setContactNumber(ContactNumber contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setEmailDomain(String emailDomain) {
+        this.emailDomain = emailDomain;
     }
+
+    public String getFirstContactNumber() {
+        return firstContactNumber;
+    }
+
+    public void setFirstContactNumber(String firstContactNumber) {
+        this.firstContactNumber = firstContactNumber;
+    }
+
+    public String getMiddleContactNumber() {
+        return middleContactNumber;
+    }
+
+    public void setMiddleContactNumber(String middleContactNumber) {
+        this.middleContactNumber = middleContactNumber;
+    }
+
+    public String getLastContactNumber() {
+        return lastContactNumber;
+    }
+
+    public void setLastContactNumber(String lastContactNumber) {
+        this.lastContactNumber = lastContactNumber;
+    }
+
 }

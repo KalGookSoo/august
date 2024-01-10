@@ -17,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -107,15 +108,20 @@ public class AccountController {
      */
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable String id, Model model) {
-        Optional<Account> account = accountService.findById(id);
-        model.addAttribute("account", account.orElseThrow());
+        Optional<Account> foundAccount = accountService.findById(id);
+        if (foundAccount.isEmpty()) {
+            throw new NoSuchElementException("계정을 찾을 수 없습니다.");
+        }
+        Account account = foundAccount.get();
+        model.addAttribute("account", account);
         AccountUpdateCommand command = new AccountUpdateCommand();
-
-        command.setName(account.get().getName());
-        command.setEmail(account.get().getEmail());
-        command.setContactNumber(account.get().getContactNumber());
+        command.setName(account.getName());
+        command.setEmailId(account.getEmail().getId());
+        command.setEmailDomain(account.getEmail().getDomain());
+        command.setFirstContactNumber(account.getContactNumber().getFirst());
+        command.setMiddleContactNumber(account.getContactNumber().getMiddle());
+        command.setLastContactNumber(account.getContactNumber().getLast());
         model.addAttribute("command", command);
-
         return "accounts/edit";
     }
 

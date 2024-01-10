@@ -36,6 +36,7 @@ public interface AccountMapper {
      * @param command 계정 업데이트 명령
      * @return 변환된 계정 엔티티
      */
+    @Deprecated
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)

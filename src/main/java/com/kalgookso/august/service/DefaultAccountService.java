@@ -4,9 +4,10 @@ import com.kalgookso.august.command.AccountUpdateCommand;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
-import com.kalgookso.august.mapper.AccountMapper;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.specification.AugustSpecification;
+import com.kalgookso.august.value.ContactNumber;
+import com.kalgookso.august.value.Email;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -49,7 +50,14 @@ public class DefaultAccountService implements AccountService {
         if (foundAccount.isEmpty()) {
             throw new NoSuchElementException("계정을 찾을 수 없습니다.");
         }
-        return AccountMapper.INSTANCE.toEntity(foundAccount.get(), command);
+        Account account = foundAccount.get();
+        String name = account.getName();
+        Email email = new Email(command.getEmailId(), command.getEmailDomain());
+        ContactNumber contactNumber = new ContactNumber(command.getFirstContactNumber(), command.getMiddleContactNumber(), command.getLastContactNumber());
+        account.setName(name);
+        account.setEmail(email);
+        account.setContactNumber(contactNumber);
+        return account;
     }
 
     @Override

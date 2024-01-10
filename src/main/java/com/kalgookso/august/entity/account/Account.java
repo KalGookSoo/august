@@ -55,9 +55,9 @@ public class Account extends BaseEntity {
      */
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "first", column = @Column(name = "contact_number_first")),
-            @AttributeOverride(name = "middle", column = @Column(name = "contact_number_middle")),
-            @AttributeOverride(name = "last", column = @Column(name = "contact_number_last"))
+            @AttributeOverride(name = "first", column = @Column(name = "first_contact_number")),
+            @AttributeOverride(name = "middle", column = @Column(name = "middle_contact_number")),
+            @AttributeOverride(name = "last", column = @Column(name = "last_contact_number"))
     })
     private ContactNumber contactNumber;
 
