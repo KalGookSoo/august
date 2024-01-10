@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public String getPassword() {
-        return this.account.getPassword();
+        return account.getPassword();
     }
 
     /**
@@ -68,7 +69,7 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public String getUsername() {
-        return this.account.getUsername();
+        return account.getUsername();
     }
 
     /**
@@ -77,7 +78,7 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return account.getExpiredAt() == null || account.getExpiredAt().isAfter(LocalDateTime.now());
     }
 
     /**
@@ -86,7 +87,7 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return account.getLockedAt() == null || account.getLockedAt().isBefore(LocalDateTime.now());
     }
 
     /**
@@ -95,7 +96,7 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return account.getCredentialsExpiredAt() == null || account.getCredentialsExpiredAt().isAfter(LocalDateTime.now());
     }
 
     /**
@@ -104,6 +105,10 @@ public class UserPrincipal implements UserDetails, Serializable {
      */
     @Override
     public boolean isEnabled() {
-        return true;
+        boolean accountNonLocked = isAccountNonLocked();
+        boolean accountNonExpired = isAccountNonExpired();
+        boolean credentialsNonExpired = isCredentialsNonExpired();
+        return accountNonLocked && accountNonExpired && credentialsNonExpired;
     }
+
 }

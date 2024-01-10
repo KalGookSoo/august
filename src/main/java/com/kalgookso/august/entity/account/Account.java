@@ -8,6 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +68,21 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "account_id")
     private final List<Authority> authorities = new ArrayList<>();
 
+    /**
+     * 만료 일시
+     */
+    private LocalDateTime expiredAt;
+
+    /**
+     * 잠금 일시
+     */
+    private LocalDateTime lockedAt;
+
+    /**
+     * 패스워드 만료 일시
+     */
+    private LocalDateTime credentialsExpiredAt;
+
     public void changePassword(String password) {
         Assert.notNull(password, "Password must not be null");
         this.password = password;
@@ -112,6 +130,27 @@ public class Account extends BaseEntity {
 
     public List<Authority> getAuthorities() {
         return authorities;
+    }
+
+    public LocalDateTime getExpiredAt() {
+        return expiredAt;
+    }
+
+    public LocalDateTime getLockedAt() {
+        return lockedAt;
+    }
+
+    public LocalDateTime getCredentialsExpiredAt() {
+        return credentialsExpiredAt;
+    }
+
+    /**
+     * 만료 일시는 금일(00:00)로부터 2년 후 까지로 설정합니다.
+     * 패스워드 만료 일시는 생성일(00:00)로부터 180일 후 까지로 설정합니다.
+     */
+    public void initializeAccountPolicy() {
+        expiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusYears(2L);
+        credentialsExpiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusDays(180L);
     }
 
 }
