@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * 이 클래스는 계정명, 패스워드, 이름을 필드로 가지고 있습니다.
  * 각 필드는 NotBlank 제약 조건이 적용되어 있습니다.
  */
-public class CreateAccountCommand {
+public class AccountCreateCommand {
 
     @NotBlank
     private String username;  // 계정명 필드

@@ -1,8 +1,8 @@
 package com.kalgookso.august.controller;
 
-import com.kalgookso.august.command.CreateAccountCommand;
-import com.kalgookso.august.command.UpdateAccountCommand;
-import com.kalgookso.august.command.UpdateAccountPasswordCommand;
+import com.kalgookso.august.command.AccountCreateCommand;
+import com.kalgookso.august.command.AccountUpdateCommand;
+import com.kalgookso.august.command.AccountPasswordCommand;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
@@ -73,7 +73,7 @@ public class AccountController {
      * @return 새 계정 생성 페이지
      */
     @GetMapping("/new")
-    public String getNew(@ModelAttribute("command") CreateAccountCommand command) {
+    public String getNew(@ModelAttribute("command") AccountCreateCommand command) {
         return "accounts/new";
     }
 
@@ -85,7 +85,7 @@ public class AccountController {
      * @return 생성된 계정의 상세 정보 페이지
      */
     @PostMapping
-    public String create(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult bindingResult, Model model) {
+    public String create(@ModelAttribute("command") @Valid AccountCreateCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "accounts/new";
         }
@@ -109,7 +109,7 @@ public class AccountController {
     public String getEdit(@PathVariable String id, Model model) {
         Optional<Account> account = accountService.findById(id);
         model.addAttribute("account", account.orElseThrow());
-        UpdateAccountCommand command = new UpdateAccountCommand();
+        AccountUpdateCommand command = new AccountUpdateCommand();
 
         command.setName(account.get().getName());
         command.setEmail(account.get().getEmail());
@@ -128,7 +128,7 @@ public class AccountController {
      * @return 수정된 계정의 상세 정보 페이지
      */
     @PutMapping("/{id}")
-    public String update(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountCommand command, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable String id, @ModelAttribute("command") @Valid AccountUpdateCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "accounts/edit";
         }
@@ -170,7 +170,7 @@ public class AccountController {
      * @return 계정 상세 정보 페이지
      */
     @PutMapping("/{id}/password")
-    public String updatePassword(@PathVariable String id, @ModelAttribute("command") @Valid UpdateAccountPasswordCommand command, BindingResult bindingResult, Model model) {
+    public String updatePassword(@PathVariable String id, @ModelAttribute("command") @Valid AccountPasswordCommand command, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "accounts/edit-password";
         }

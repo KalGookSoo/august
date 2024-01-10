@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * 계정 업데이트 명령에 대한 클래스입니다.
  */
-public class UpdateAccountCommand {
+public class AccountUpdateCommand {
 
     @NotBlank
     private String name;

@@ -1,7 +1,7 @@
 package com.kalgookso.august.mapper;
 
-import com.kalgookso.august.command.CreateAccountCommand;
-import com.kalgookso.august.command.UpdateAccountCommand;
+import com.kalgookso.august.command.AccountCreateCommand;
+import com.kalgookso.august.command.AccountUpdateCommand;
 import com.kalgookso.august.entity.account.Account;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -27,7 +27,7 @@ public interface AccountMapper {
      * @param command 계정 생성 명령
      * @return 변환된 계정 엔티티
      */
-    Account toEntity(CreateAccountCommand command);
+    Account toEntity(AccountCreateCommand command);
 
     /**
      * 계정 업데이트 명령을 기존 계정 엔티티에 적용하여 새 계정 엔티티를 생성하는 메서드입니다.
@@ -39,6 +39,6 @@ public interface AccountMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)
-    Account toEntity(@MappingTarget Account originEntity, UpdateAccountCommand command);
+    Account toEntity(@MappingTarget Account originEntity, AccountUpdateCommand command);
 
 }

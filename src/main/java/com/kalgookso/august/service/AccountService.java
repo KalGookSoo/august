@@ -1,6 +1,6 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.command.UpdateAccountCommand;
+import com.kalgookso.august.command.AccountUpdateCommand;
 import com.kalgookso.august.entity.account.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ public interface AccountService {
 
     Account create(Account account);
 
-    Account update(String id, UpdateAccountCommand command);
+    Account update(String id, AccountUpdateCommand command);
 
     Optional<Account> findById(String id);
 

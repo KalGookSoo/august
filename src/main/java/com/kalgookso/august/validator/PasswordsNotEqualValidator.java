@@ -1,16 +1,16 @@
 package com.kalgookso.august.validator;
 
 import com.kalgookso.august.annotation.PasswordsNotEqual;
-import com.kalgookso.august.command.UpdateAccountPasswordCommand;
+import com.kalgookso.august.command.AccountPasswordCommand;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
  * 패스워드가 같지 않아야 하는 제약 조건을 검증하는 클래스입니다.
- * 이 클래스는 ConstraintValidator 인터페이스를 구현하며, PasswordsNotEqual 애노테이션과 UpdateAccountPasswordCommand 클래스를 사용합니다.
+ * 이 클래스는 ConstraintValidator 인터페이스를 구현하며, PasswordsNotEqual 애노테이션과 AccountPasswordCommand 클래스를 사용합니다.
  */
-public class PasswordsNotEqualValidator implements ConstraintValidator<PasswordsNotEqual, UpdateAccountPasswordCommand> {
+public class PasswordsNotEqualValidator implements ConstraintValidator<PasswordsNotEqual, AccountPasswordCommand> {
 
     /**
      * 제약 조건 초기화 메서드입니다.
@@ -29,7 +29,7 @@ public class PasswordsNotEqualValidator implements ConstraintValidator<Passwords
      * @return 제약 조건이 유효한 경우 true, 그렇지 않은 경우 false
      */
     @Override
-    public boolean isValid(UpdateAccountPasswordCommand value, ConstraintValidatorContext context) {
+    public boolean isValid(AccountPasswordCommand value, ConstraintValidatorContext context) {
         return !value.getOriginPassword().equals(value.getNewPassword());
     }
 

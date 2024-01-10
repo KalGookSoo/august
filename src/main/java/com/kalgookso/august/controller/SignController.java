@@ -1,6 +1,6 @@
 package com.kalgookso.august.controller;
 
-import com.kalgookso.august.command.CreateAccountCommand;
+import com.kalgookso.august.command.AccountCreateCommand;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.mapper.AccountMapper;
@@ -47,7 +47,7 @@ public class SignController {
      * @return 회원가입 페이지
      */
     @GetMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") CreateAccountCommand command) {
+    public String signUp(@ModelAttribute("command") AccountCreateCommand command) {
         return "sign-up";
     }
 
@@ -60,7 +60,7 @@ public class SignController {
      * @return 리다이렉트 페이지
      */
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute("command") @Valid CreateAccountCommand command, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String signUp(@ModelAttribute("command") @Valid AccountCreateCommand command, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "sign-up";
         }

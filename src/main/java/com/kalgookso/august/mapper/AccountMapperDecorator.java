@@ -1,7 +1,7 @@
 package com.kalgookso.august.mapper;
 
-import com.kalgookso.august.command.CreateAccountCommand;
-import com.kalgookso.august.command.UpdateAccountCommand;
+import com.kalgookso.august.command.AccountUpdateCommand;
+import com.kalgookso.august.command.AccountCreateCommand;
 import com.kalgookso.august.entity.account.Account;
 
 /**
@@ -27,7 +27,7 @@ public class AccountMapperDecorator implements AccountMapper {
      * @return 변환된 계정 엔티티
      */
     @Override
-    public Account toEntity(CreateAccountCommand command) {
+    public Account toEntity(AccountCreateCommand command) {
         return this.accountMapper.toEntity(command);
     }
 
@@ -39,7 +39,7 @@ public class AccountMapperDecorator implements AccountMapper {
      * @return 변환된 계정 엔티티
      */
     @Override
-    public Account toEntity(Account originEntity, UpdateAccountCommand command) {
+    public Account toEntity(Account originEntity, AccountUpdateCommand command) {
         return this.accountMapper.toEntity(originEntity, command);
     }
 

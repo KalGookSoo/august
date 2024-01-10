@@ -1,6 +1,6 @@
 package com.kalgookso.august.service;
 
-import com.kalgookso.august.command.UpdateAccountCommand;
+import com.kalgookso.august.command.AccountUpdateCommand;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
@@ -44,7 +44,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public Account update(String id, UpdateAccountCommand command) {
+    public Account update(String id, AccountUpdateCommand command) {
         Optional<Account> foundAccount = accountRepository.findOne(AugustSpecification.idEquals(id));
         if (foundAccount.isEmpty()) {
             throw new NoSuchElementException("계정을 찾을 수 없습니다.");
