@@ -51,7 +51,7 @@ public class DefaultAccountService implements AccountService {
             throw new NoSuchElementException("계정을 찾을 수 없습니다.");
         }
         Account account = foundAccount.get();
-        String name = account.getName();
+        String name = command.getName();
         Email email = new Email(command.getEmailId(), command.getEmailDomain());
         ContactNumber contactNumber = new ContactNumber(command.getFirstContactNumber(), command.getMiddleContactNumber(), command.getLastContactNumber());
         account.setName(name);
