@@ -1,6 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.AccountUpdateCommand;
+import com.kalgookso.august.criteria.AccountCriteria;
 import com.kalgookso.august.entity.account.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ public interface AccountService {
     Optional<Account> findById(String id);
 
     Page<Account> findAll(Pageable pageable);
+
+    Page<Account> findAll(AccountCriteria criteria, Pageable pageable);
 
     void deleteById(String id);
 

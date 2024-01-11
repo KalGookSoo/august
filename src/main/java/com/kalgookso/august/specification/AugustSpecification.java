@@ -8,8 +8,4 @@ public class AugustSpecification<T> {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), id);
     }
 
-    public static <T> Specification<T> usernameEquals(String username) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("username"), username);
-    }
-
 }

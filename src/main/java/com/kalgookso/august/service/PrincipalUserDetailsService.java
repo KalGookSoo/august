@@ -3,7 +3,7 @@ package com.kalgookso.august.service;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.repository.AccountRepository;
 import com.kalgookso.august.security.UserPrincipal;
-import com.kalgookso.august.specification.AugustSpecification;
+import com.kalgookso.august.specification.AccountSpecification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +35,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Account foundAccount = accountRepository.findOne(AugustSpecification.usernameEquals(username))
+        Account foundAccount = accountRepository.findOne(AccountSpecification.usernameEquals(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new UserPrincipal(foundAccount);

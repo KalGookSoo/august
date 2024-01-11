@@ -1,10 +1,12 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.AccountUpdateCommand;
+import com.kalgookso.august.criteria.AccountCriteria;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.repository.AccountRepository;
+import com.kalgookso.august.specification.AccountSpecification;
 import com.kalgookso.august.specification.AugustSpecification;
 import com.kalgookso.august.value.ContactNumber;
 import com.kalgookso.august.value.Email;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static com.kalgookso.august.specification.AccountSpecification.*;
 
 @Service
 @Transactional
@@ -33,7 +37,7 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public Account create(Account account) {
-        if (accountRepository.exists(AugustSpecification.usernameEquals(account.getUsername()))) {
+        if (accountRepository.exists(usernameEquals(account.getUsername()))) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
         account.initializeAccountPolicy();
@@ -67,7 +71,25 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public Page<Account> findAll(Pageable pageable) {
-        return accountRepository.findAll(Specification.where(null), pageable);
+        return accountRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Account> findAll(AccountCriteria criteria, Pageable pageable) {
+        Specification<Account> specification = Specification.where(null);
+        if (criteria.getUsername() != null) {
+            specification = specification.and(usernameContains(criteria.getUsername()));
+        }
+        if (criteria.getName() != null) {
+            specification = specification.and(nameContains(criteria.getName()));
+        }
+        if (criteria.getEmailId() != null) {
+            specification = specification.and(emailIdContains(criteria.getEmailId()));
+        }
+        if (criteria.getContactNumber() != null) {
+            specification = specification.and(AccountSpecification.contactNumberContains(criteria.getContactNumber()));
+        }
+        return accountRepository.findAll(specification, pageable);
     }
 
     @Override
