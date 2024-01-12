@@ -20,6 +20,10 @@ public class Attachment extends BaseEntity {
 
     private String pathName;
 
+    private String mimeType;
+
+    private long size;
+
     public String getName() {
         return name;
     }
@@ -34,6 +38,22 @@ public class Attachment extends BaseEntity {
 
     public void setPathName(String pathName) {
         this.pathName = pathName;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public long getSize() {
+        return size;
     }
 
 }

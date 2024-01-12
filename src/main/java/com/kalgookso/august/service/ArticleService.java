@@ -1,5 +1,6 @@
 package com.kalgookso.august.service;
 
+import com.kalgookso.august.command.ArticleCommand;
 import com.kalgookso.august.criteria.ArticleCriteria;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
@@ -9,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface ArticleService {
 
-    Article save(Article article);
+    Article create(ArticleCommand command);
+
+    Article update(String id, ArticleCommand command);
 
     void deleteById(String id);
 
