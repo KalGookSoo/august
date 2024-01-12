@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,9 @@ class ArticleServiceTest {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @Value("${com.kalgookso.august.filepath}")
     private String uploadPath;
 
@@ -32,7 +36,7 @@ class ArticleServiceTest {
 
     @BeforeEach
     public void setup() {
-        articleService = new DefaultArticleService(articleRepository, uploadPath);
+        articleService = new DefaultArticleService(articleRepository, eventPublisher, uploadPath);
 //        ArticleCommand command = new ArticleCommand("테스트 게시글", "테스트 게시글 내용");
 //        testArticle = articleService.create(command);
     }
