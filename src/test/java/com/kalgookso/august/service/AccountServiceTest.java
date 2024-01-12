@@ -1,6 +1,7 @@
 package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.AccountUpdateCommand;
+import com.kalgookso.august.criteria.AccountCriteria;
 import com.kalgookso.august.entity.account.Account;
 import com.kalgookso.august.entity.account.Authority;
 import com.kalgookso.august.exception.UsernameAlreadyExistsException;
@@ -41,27 +42,24 @@ public class AccountServiceTest {
     @BeforeEach
     public void setup() {
         accountService = new DefaultAccountService(accountRepository, passwordEncoder);
+        Account account = createDummyEntity("tester", "1234", "테스터", "ROLE_USER");
+        testAccount = accountService.create(account);
+    }
+
+    private Account createDummyEntity(String username, String password, String name, String authorityName) {
         Account account = new Account();
-        account.setUsername("tester");
-        account.setPassword("1234");
-        account.setName("테스터");
-        account.getAuthorities().add(new Authority("ROLE_USER"));
-        try {
-            testAccount = accountService.create(account);
-        } catch (UsernameAlreadyExistsException e) {
-            fail();
-        }
+        account.setUsername(username);
+        account.setPassword(password);
+        account.setName(name);
+        account.getAuthorities().add(new Authority(authorityName));
+        return account;
     }
 
     @Test
     @DisplayName("계정을 생성합니다.")
     public void createAccountTest() {
         // Given
-        Account account = new Account();
-        account.setUsername("tester2");
-        account.setPassword("1234");
-        account.setName("테스터2");
-        account.getAuthorities().add(new Authority("ROLE_USER"));
+        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
 
         try {
             // When
@@ -78,28 +76,10 @@ public class AccountServiceTest {
     @DisplayName("계정 생성 시 이미 존재하는 아이디를 입력하면 UsernameAlreadyExistsException 예외를 발생시킵니다.")
     public void createAccountWithExistingUsernameTest() {
         // Given
-        Account account = new Account();
-        account.setUsername("tester2");
-        account.setPassword("1234");
-        account.setName("테스터2");
-        account.getAuthorities().add(new Authority("ROLE_USER"));
+        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+        accountService.create(account);
 
-        try {
-            // When
-            Account createdAccount = accountService.create(account);
-
-            // Then
-            assertNotNull(createdAccount);
-        } catch (UsernameAlreadyExistsException e) {
-            fail();
-        }
-
-        // Given
-        Account invalidAccount = new Account();
-        invalidAccount.setUsername("tester");
-        invalidAccount.setPassword("1234");
-        invalidAccount.setName("테스터2");
-        invalidAccount.getAuthorities().add(new Authority("ROLE_USER"));
+        Account invalidAccount = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
 
         // Then
         assertThrows(UsernameAlreadyExistsException.class, () -> accountService.create(invalidAccount));
@@ -109,11 +89,8 @@ public class AccountServiceTest {
     @DisplayName("계정 생성 시 계정 정책 날짜를 확인합니다.")
     public void createAccountWithPolicyTest() {
         // Given
-        Account account = new Account();
-        account.setUsername("tester2");
-        account.setPassword("1234");
-        account.setName("테스터2");
-        account.getAuthorities().add(new Authority("ROLE_USER"));
+        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+
         try {
             // When
             Account createdAccount = accountService.create(account);
@@ -164,7 +141,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("모든 계정을 찾습니다.")
+    @DisplayName("페이지네이션 정보에 기반한 계정 목록을 조회합니다.")
     public void findAllTest() {
         // Given
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -176,6 +153,22 @@ public class AccountServiceTest {
         assertNotNull(accounts);
         assertTrue(accounts.getTotalElements() > 0);
     }
+
+    @Test
+    @DisplayName("페이지네이션 정보와 검색 조건에 기반한 계정 목록을 조회합니다.")
+    public void findAllWithCriteriaTest() {
+        // Given
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        AccountCriteria criteria = new AccountCriteria("tester", null, null, null);
+
+        // When
+        Page<Account> accounts = accountService.findAll(criteria, pageRequest);
+
+        // Then
+        assertNotNull(accounts);
+        assertTrue(accounts.getTotalElements() > 0);
+    }
+
 
     @Test
     @DisplayName("계정을 ID로 삭제합니다.")
