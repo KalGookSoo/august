@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * 이 클래스는 스프링 부트 애플리케이션의 진입점입니다.
  */
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableAsync
 public class AugustApplication implements CommandLineRunner {
 
