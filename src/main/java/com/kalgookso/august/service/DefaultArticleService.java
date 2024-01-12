@@ -2,12 +2,15 @@ package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.ArticleCommand;
 import com.kalgookso.august.criteria.ArticleCriteria;
+import com.kalgookso.august.entity.Menu;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
 import com.kalgookso.august.entity.article.Comment;
+import com.kalgookso.august.event.AclObjectCreatedEvent;
 import com.kalgookso.august.exception.FileWriteException;
 import com.kalgookso.august.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,10 +31,13 @@ public class DefaultArticleService implements ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final String uploadPath;
 
-    public DefaultArticleService(ArticleRepository articleRepository, @Value("${com.kalgookso.august.filepath}") String uploadPath) {
+    public DefaultArticleService(ArticleRepository articleRepository, ApplicationEventPublisher eventPublisher, @Value("${com.kalgookso.august.filepath}") String uploadPath) {
         this.articleRepository = articleRepository;
+        this.eventPublisher = eventPublisher;
         this.uploadPath = uploadPath;
     }
 
@@ -45,7 +51,9 @@ public class DefaultArticleService implements ArticleService {
         } catch (FileWriteException e) {
             throw new FileWriteException("Failed to write file: " + e.getMessage());
         }
-        return articleRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
+        eventPublisher.publishEvent(new AclObjectCreatedEvent(Menu.class, savedArticle.getId(), savedArticle.getCreatedBy()));
+        return savedArticle;
     }
 
     @Override
