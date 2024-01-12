@@ -2,7 +2,6 @@ package com.kalgookso.august.service;
 
 import com.kalgookso.august.command.ArticleCommand;
 import com.kalgookso.august.criteria.ArticleCriteria;
-import com.kalgookso.august.entity.Menu;
 import com.kalgookso.august.entity.article.Article;
 import com.kalgookso.august.entity.article.Attachment;
 import com.kalgookso.august.entity.article.Comment;
@@ -52,7 +51,7 @@ public class DefaultArticleService implements ArticleService {
             throw new FileWriteException("Failed to write file: " + e.getMessage());
         }
         Article savedArticle = articleRepository.save(article);
-        eventPublisher.publishEvent(new AclObjectCreatedEvent(Menu.class, savedArticle.getId(), savedArticle.getCreatedBy()));
+        eventPublisher.publishEvent(new AclObjectCreatedEvent(Article.class, savedArticle.getId(), savedArticle.getCreatedBy()));
         return savedArticle;
     }
 
