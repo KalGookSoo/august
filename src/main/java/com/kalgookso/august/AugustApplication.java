@@ -43,9 +43,7 @@ public class AugustApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (((HikariDataSource) dataSource).getDriverClassName().contains("h2")) {
-            executeSqlScript();
-        }
+        executeSqlScript();
         Account account = new Account();
         account.setUsername("admin");
         account.setPassword("1234");
@@ -59,8 +57,16 @@ public class AugustApplication implements CommandLineRunner {
     }
 
     private void executeSqlScript() {
-        Resource resource = new ClassPathResource("scripts/createAclSchema.sql");
+        String path = null;
+        if (((HikariDataSource) dataSource).getDriverClassName().contains("h2")) {
+            path = "scripts/createAclSchema.sql";
+        }
+        if (((HikariDataSource) dataSource).getDriverClassName().contains("postgresql")) {
+            path = "scripts/createAclSchemaPostgres.sql";
+        }
         try {
+            assert path != null;
+            Resource resource = new ClassPathResource(path);
             ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to execute SQL script: " + e.getMessage(), e);
