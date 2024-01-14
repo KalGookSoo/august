@@ -18,10 +18,16 @@ import java.util.List;
 @DynamicInsert
 public class Course extends BaseEntity {
     private String name;
-
-    @ManyToMany(mappedBy = "courses")
-    private List<Professor> professors = new ArrayList<>();
+    private String professorId;
 
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProfessorId(String professorId) {
+        this.professorId = professorId;
+    }
 }
