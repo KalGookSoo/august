@@ -16,7 +16,7 @@ import java.util.List;
 public class Professor extends BaseEntity {
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tb_professor_major",
             joinColumns = @JoinColumn(name = "professor_id"),

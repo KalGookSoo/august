@@ -27,7 +27,7 @@ public class Student extends BaseEntity {
     )
     private List<Course> courses = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tb_student_major",
             joinColumns = @JoinColumn(name = "student_id"),
