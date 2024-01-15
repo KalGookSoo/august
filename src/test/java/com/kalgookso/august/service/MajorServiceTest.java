@@ -2,6 +2,8 @@ package com.kalgookso.august.service;
 
 import com.kalgookso.august.entity.lms.Major;
 import com.kalgookso.august.repository.lms.MajorRepository;
+import com.kalgookso.august.service.lms.DefaultMajorService;
+import com.kalgookso.august.service.lms.MajorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
