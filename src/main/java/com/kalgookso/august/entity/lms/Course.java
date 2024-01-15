@@ -19,6 +19,7 @@ import java.util.List;
 public class Course extends BaseEntity {
     private String name;
     private String professorId;
+    private String majorName;
 
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
@@ -29,5 +30,9 @@ public class Course extends BaseEntity {
 
     public void setProfessorId(String professorId) {
         this.professorId = professorId;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
     }
 }
