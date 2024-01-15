@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
@@ -62,59 +63,20 @@ public class Student extends BaseEntity {
         this.majors.add(major);
     }
 
-    /**
-     * 학생이 강좌에 등록하는 메서드입니다.
-     *
-     * @param course 학생이 등록하려는 강좌입니다.
-     * @throws IllegalArgumentException 이미 등록된 강좌에 다시 등록하려고 할 때 발생합니다.
-     */
-    public void enrollCourse(Course course) {
-        if (this.courses.contains(course)) {
-            throw new IllegalArgumentException("You have already enrolled in this course.");
+
+    public void addEnrollment(Enrollment enrollment) {
+        this.enrollments.add(enrollment);
+    }
+
+    public void addCourse(Course course) {
+        Optional<Enrollment> foundEnrollment = enrollments.stream()
+                .filter(enrollment -> enrollment.getCourseId().equals(course.getId()))
+                .findFirst();
+        if (foundEnrollment.isPresent()) {
+            Enrollment enrollment = foundEnrollment.get();
+            enrollment.changeStatus(EnrollmentStatus.COMPLETED);
+            // TODO enrollment의 연관관계를 학생과 끊어야할 것 같다. 왜냐하면 학생이 강좌를 등록하면 더이상 enrollment는 필요가 없기 때문이다.
         }
         this.courses.add(course);
-    }
-
-    /**
-     * 학생이 강좌를 드롭하는 메서드입니다.
-     *
-     * @param course 학생이 드롭하려는 강좌입니다.
-     * @throws IllegalArgumentException 등록되지 않은 강좌를 드롭하려고 할 때 발생합니다.
-     */
-    public void dropCourse(Course course) {
-        if (!this.courses.contains(course)) {
-            throw new IllegalArgumentException("You are not enrolled in this course.");
-        }
-        this.courses.remove(course);
-    }
-
-    /**
-     * 학생이 강좌에 신청하는 메서드입니다.
-     *
-     * @param course 학생이 신청하려는 강좌입니다.
-     * @throws IllegalArgumentException 이미 신청한 강좌에 다시 신청하려고 할 때 발생합니다.
-     */
-    public void applyForCourse(Course course) {
-        for (Enrollment enrollment : this.enrollments) {
-            if (enrollment.getCourseId().equals(course.getId())) {
-                throw new IllegalArgumentException("You have already applied for this course.");
-            }
-        }
-        Enrollment pendingEnrollment = Enrollment.createPendingEnrollment(course.getId());
-        this.enrollments.add(pendingEnrollment);
-    }
-
-    /**
-     * 학생이 강좌 신청을 취소하는 메서드입니다.
-     *
-     * @param course 학생이 신청 취소하려는 강좌입니다.
-     * @throws IllegalArgumentException 신청하지 않은 강좌의 신청을 취소하려고 할 때 발생합니다.
-     */
-    public void cancelApplication(Course course) {
-        Enrollment enrollmentToCancel = this.enrollments.stream()
-                .filter(enrollment -> enrollment.getCourseId().equals(course.getId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("You have not applied for this course."));
-        this.enrollments.remove(enrollmentToCancel);
     }
 }
