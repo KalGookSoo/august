@@ -12,7 +12,10 @@ public interface ProfessorService {
     Professor create(Professor professor);
     Optional<Professor> findById(String id);
     List<Professor> findAllByName(String name);
+    void remove(String id);
     Course createCourse(String professorId, String courseName, String majorName);
+    void removeCourse(String courseId);
     void addMajor(String id, Major major);
     void addStudentToCourse(String courseId, Student student);
+    void removeStudentFromCourse(String courseId, Student student);
 }
