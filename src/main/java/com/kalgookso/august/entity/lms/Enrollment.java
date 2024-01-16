@@ -6,6 +6,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
+/**
+ * 수강신청
+ * 수강신청은 강좌와 수강생 사이에 1 개만 존재할 수 있습니다.
+ */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_enrollment")
@@ -15,15 +19,21 @@ public class Enrollment extends BaseEntity {
 
     private String courseId;
 
+    private String studentId;
+
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status;
 
-    public EnrollmentStatus getStatus() {
-        return status;
-    }
-
     public String getCourseId() {
         return courseId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
     }
 
     /**

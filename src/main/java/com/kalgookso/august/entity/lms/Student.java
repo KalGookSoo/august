@@ -7,8 +7,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * 수강생
+ * 수강생은 0 .. N 개의 수강신청을 할 수 있습니다.
+ * 수강생은 1 .. N 개의 강좌를 수강할 수 있습니다.
+ * 수강생은 1 .. N 개의 전공을 가질 수 있습니다.
+ */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_student")
@@ -16,17 +21,6 @@ import java.util.Optional;
 @DynamicInsert
 public class Student extends BaseEntity {
     private String name;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Enrollment> enrollments = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "tb_student_course",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<Course> courses = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -63,20 +57,7 @@ public class Student extends BaseEntity {
         this.majors.add(major);
     }
 
-
-    public void addEnrollment(Enrollment enrollment) {
-        this.enrollments.add(enrollment);
-    }
-
-    public void addCourse(Course course) {
-        Optional<Enrollment> foundEnrollment = enrollments.stream()
-                .filter(enrollment -> enrollment.getCourseId().equals(course.getId()))
-                .findFirst();
-        if (foundEnrollment.isPresent()) {
-            Enrollment enrollment = foundEnrollment.get();
-            enrollment.changeStatus(EnrollmentStatus.COMPLETED);
-            // TODO enrollment의 연관관계를 학생과 끊어야할 것 같다. 왜냐하면 학생이 강좌를 등록하면 더이상 enrollment는 필요가 없기 때문이다.
-        }
-        this.courses.add(course);
+    public String getName() {
+        return name;
     }
 }

@@ -3,6 +3,7 @@ package com.kalgookso.august.service.lms;
 import com.kalgookso.august.entity.lms.Course;
 import com.kalgookso.august.entity.lms.Major;
 import com.kalgookso.august.entity.lms.Professor;
+import com.kalgookso.august.entity.lms.Student;
 import com.kalgookso.august.repository.lms.CourseRepository;
 import com.kalgookso.august.repository.lms.ProfessorRepository;
 import org.assertj.core.api.Assertions;
@@ -98,4 +99,25 @@ class ProfessorServiceTest {
         Assertions.assertThat(names).contains("추가된 테스트 전공");
     }
 
+    @Test
+    @DisplayName("강좌에 학생을 등록합니다.")
+    public void addStudentTest() {
+        // Given
+        Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
+        assert professor != null;
+        Course course = professorService.createCourse(professor.getId(), "테스트 강좌", "테스트 학과");
+
+        Major major = new Major();
+        major.setName("테스트 전공");
+        Student student = Student.createWithMajor("테스트 학생", major);
+
+        // When
+        professorService.addStudentToCourse(course.getId(), student);
+
+        // Then
+        Course updated = courseRepository.findById(course.getId()).orElse(null);
+        assert updated != null;
+        List<String> names = updated.getStudents().stream().map(Student::getName).collect(Collectors.toList());
+        Assertions.assertThat(names).contains("테스트 학생");
+    }
 }
