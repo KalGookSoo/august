@@ -4,9 +4,14 @@ import com.kalgookso.august.entity.lms.Course;
 import com.kalgookso.august.entity.lms.Professor;
 import com.kalgookso.august.repository.lms.CourseRepository;
 import com.kalgookso.august.repository.lms.ProfessorRepository;
+import com.kalgookso.august.specification.lms.ProfessorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +28,20 @@ public class DefaultProfessorService implements ProfessorService {
     @Override
     public Professor create(Professor professor) {
         return professorRepository.save(professor);
+    }
+
+    @Override
+    public Optional<Professor> findById(String id) {
+        return professorRepository.findById(id);
+    }
+
+    @Override
+    public List<Professor> findAllByName(String name) {
+        Specification<Professor> specification = Specification.where(null);
+        if (name != null) {
+            specification = specification.and(ProfessorSpecification.nameContains(name));
+        }
+        return professorRepository.findAll(specification);
     }
 
     /**

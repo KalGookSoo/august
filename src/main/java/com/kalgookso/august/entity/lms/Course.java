@@ -35,4 +35,16 @@ public class Course extends BaseEntity {
     public void setMajorName(String majorName) {
         this.majorName = majorName;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getProfessorId() {
+        return professorId;
+    }
+
+    public String getMajorName() {
+        return majorName;
+    }
 }
