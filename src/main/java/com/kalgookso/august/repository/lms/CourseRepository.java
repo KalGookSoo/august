@@ -1,14 +1,8 @@
 package com.kalgookso.august.repository.lms;
 
 import com.kalgookso.august.entity.lms.Course;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.Optional;
-
-public interface CourseRepository extends Repository<Course, String> {
-    Course save(Course course);
-    Optional<Course> findById(String id);
-    Optional<Course> findOne(Specification<Course> specification);
-    void deleteById(String id);
+public interface CourseRepository extends JpaRepository<Course, String>, JpaSpecificationExecutor<Course> {
 }
