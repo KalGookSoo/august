@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 /**
  * 수강신청
- * 수강신청은 강좌와 수강생 사이에 1 개만 존재할 수 있습니다.
+ * 수강신청은 강좌와 학생 사이에 1 개만 존재할 수 있습니다.
  */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 강좌
- * 강좌는 1 .. N 개의 수강생을 가질 수 있습니다.
+ * 강좌는 1 .. N 개의 학생을 가질 수 있습니다.
  */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 수강생
- * 수강생은 0 .. N 개의 수강신청을 할 수 있습니다.
- * 수강생은 1 .. N 개의 강좌를 수강할 수 있습니다.
- * 수강생은 1 .. N 개의 전공을 가질 수 있습니다.
+ * 학생
+ * 학생은 0 .. N 개의 수강신청을 할 수 있습니다.
+ * 학생은 1 .. N 개의 강좌를 수강할 수 있습니다.
+ * 학생은 1 .. N 개의 전공을 가질 수 있습니다.
  */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
