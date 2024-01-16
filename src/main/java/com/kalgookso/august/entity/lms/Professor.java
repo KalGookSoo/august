@@ -8,6 +8,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 교수
+ * 교수는 0 .. N 개의 강좌를 개설할 수 있습니다.
+ * 교수는 1 .. N 개의 전공을 가질 수 있습니다.
+ */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "tb_professor")
@@ -67,5 +72,9 @@ public class Professor extends BaseEntity {
 
     public String getName() {
         return name;
+    }
+
+    public List<Major> getMajors() {
+        return majors;
     }
 }

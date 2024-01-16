@@ -83,4 +83,19 @@ class ProfessorServiceTest {
         Assertions.assertThat(course.getMajorName()).isEqualTo("테스트 학과");
     }
 
+    @Test
+    @DisplayName("교수가 전공을 추가합니다.")
+    public void addMajorTest() {
+        Major major = new Major();
+        major.setName("추가된 테스트 전공");
+        Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
+        assert professor != null;
+        professorService.addMajor(professor.getId(), major);
+
+        Professor updated = professorService.findById(professor.getId()).orElse(null);
+        assert updated != null;
+        List<String> names = updated.getMajors().stream().map(Major::getName).collect(Collectors.toList());
+        Assertions.assertThat(names).contains("추가된 테스트 전공");
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.kalgookso.august.service.lms;
 
 import com.kalgookso.august.entity.lms.Course;
+import com.kalgookso.august.entity.lms.Major;
 import com.kalgookso.august.entity.lms.Professor;
 import com.kalgookso.august.repository.lms.CourseRepository;
 import com.kalgookso.august.repository.lms.ProfessorRepository;
@@ -59,5 +60,12 @@ public class DefaultProfessorService implements ProfessorService {
                 .orElseThrow(() -> new IllegalArgumentException("Professor with id " + professorId + " not found"));
         Course course = professor.createCourse(courseName, majorName);
         return courseRepository.save(course);
+    }
+
+    @Override
+    public void addMajor(String id, Major major) {
+        Professor professor = professorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Professor with id " + id + " not found"));
+        professor.addMajor(major);
     }
 }
