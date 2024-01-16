@@ -9,4 +9,5 @@ public interface MajorService {
     Major create(Major major);
     Optional<Major> findById(String id);
     List<Major> findAllByName(String name);
+    void remove(String id);
 }

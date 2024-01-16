@@ -41,4 +41,9 @@ public class DefaultMajorService implements MajorService {
         return majorRepository.findAll(specification);
     }
 
+    @Override
+    public void remove(String id) {
+        majorRepository.deleteById(id);
+    }
+
 }

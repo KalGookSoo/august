@@ -1,9 +1,7 @@
-package com.kalgookso.august.service;
+package com.kalgookso.august.service.lms;
 
 import com.kalgookso.august.entity.lms.Major;
 import com.kalgookso.august.repository.lms.MajorRepository;
-import com.kalgookso.august.service.lms.DefaultMajorService;
-import com.kalgookso.august.service.lms.MajorService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -63,6 +61,14 @@ class MajorServiceTest {
         Assertions.assertThat(majors.isEmpty()).isFalse();
         List<String> names = majors.stream().map(Major::getName).collect(Collectors.toList());
         Assertions.assertThat(names).contains("테스트 학과");
+    }
+
+    @Test
+    @DisplayName("학과를 제거합니다.")
+    public void removeMajorTest() {
+        majorService.remove(testMajor.getId());
+        Optional<Major> foundMajor = majorService.findById(testMajor.getId());
+        Assertions.assertThat(foundMajor.isPresent()).isFalse();
     }
 
     @Disabled
