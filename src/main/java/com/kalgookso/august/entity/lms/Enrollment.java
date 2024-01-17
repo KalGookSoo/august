@@ -42,9 +42,10 @@ public class Enrollment extends BaseEntity {
      * @param courseId 수강신청을 원하는 강좌의 ID입니다.
      * @return 초기 상태가 PENDING인 Enrollment 객체를 반환합니다.
      */
-    public static Enrollment createPendingEnrollment(String courseId) {
+    public static Enrollment createPendingEnrollment(String courseId, String studentId) {
         Enrollment enrollment = new Enrollment();
         enrollment.courseId = courseId;
+        enrollment.studentId = studentId;
         enrollment.status = EnrollmentStatus.PENDING;
         return enrollment;
     }

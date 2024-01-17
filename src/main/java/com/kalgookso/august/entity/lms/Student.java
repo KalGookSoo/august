@@ -22,13 +22,17 @@ import java.util.List;
 public class Student extends BaseEntity {
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "tb_student_major",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "major_id")
     )
     private List<Major> majors = new ArrayList<>();
+
+    public List<Major> getMajors() {
+        return majors;
+    }
 
     /**
      * 학생을 등록하고 첫 번째 전공을 추가하는 팩토리 메서드입니다.
