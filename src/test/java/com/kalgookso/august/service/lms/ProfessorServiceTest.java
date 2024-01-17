@@ -1,9 +1,6 @@
 package com.kalgookso.august.service.lms;
 
-import com.kalgookso.august.entity.lms.Course;
-import com.kalgookso.august.entity.lms.Major;
-import com.kalgookso.august.entity.lms.Professor;
-import com.kalgookso.august.entity.lms.Student;
+import com.kalgookso.august.entity.lms.*;
 import com.kalgookso.august.repository.lms.CourseRepository;
 import com.kalgookso.august.repository.lms.ProfessorRepository;
 import org.assertj.core.api.Assertions;
@@ -100,15 +97,16 @@ class ProfessorServiceTest {
         // Given
         Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
         assert professor != null;
+        Course course = Course.create("테스트 강좌", professor.getId(), "테스트 학과", CourseType.MAJOR_REQUIRED, 3, 30);
 
         // When
-        Course course = professorService.createCourse(professor.getId(), "테스트 강좌", "테스트 학과");
+        Course createdCourse = professorService.createCourse(course);
 
         // Then
-        Assertions.assertThat(course.getId()).isNotNull();
-        Assertions.assertThat(course.getName()).isEqualTo("테스트 강좌");
-        Assertions.assertThat(course.getProfessorId()).isEqualTo(professor.getId());
-        Assertions.assertThat(course.getMajorName()).isEqualTo("테스트 학과");
+        Assertions.assertThat(createdCourse.getId()).isNotNull();
+        Assertions.assertThat(createdCourse.getName()).isEqualTo("테스트 강좌");
+        Assertions.assertThat(createdCourse.getProfessorId()).isEqualTo(professor.getId());
+        Assertions.assertThat(createdCourse.getMajorName()).isEqualTo("테스트 학과");
     }
 
     @Test
@@ -117,13 +115,14 @@ class ProfessorServiceTest {
         // Given
         Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
         assert professor != null;
-        Course course = professorService.createCourse(professor.getId(), "테스트 강좌", "테스트 학과");
+        Course course = Course.create("테스트 강좌", professor.getId(), "테스트 학과", CourseType.MAJOR_REQUIRED, 3, 30);
+        Course createdCourse = professorService.createCourse(course);
 
         // When
-        professorService.removeCourse(course.getId());
+        professorService.removeCourse(createdCourse.getId());
 
         // Then
-        Optional<Course> foundCourse = courseRepository.findById(course.getId());
+        Optional<Course> foundCourse = courseRepository.findById(createdCourse.getId());
         Assertions.assertThat(foundCourse.isPresent()).isFalse();
     }
 
@@ -152,17 +151,18 @@ class ProfessorServiceTest {
         // Given
         Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
         assert professor != null;
-        Course course = professorService.createCourse(professor.getId(), "테스트 강좌", "테스트 학과");
+        Course course = Course.create("테스트 강좌", professor.getId(), "테스트 학과", CourseType.MAJOR_REQUIRED, 3, 30);
+        Course createdCourse = professorService.createCourse(course);
 
         Major major = new Major();
         major.setName("테스트 전공");
         Student student = Student.createWithMajor("테스트 학생", major);
 
         // When
-        professorService.addStudentToCourse(course.getId(), student);
+        professorService.addStudentToCourse(createdCourse.getId(), student);
 
         // Then
-        Course updated = courseRepository.findById(course.getId()).orElse(null);
+        Course updated = courseRepository.findById(createdCourse.getId()).orElse(null);
         assert updated != null;
         List<String> names = updated.getStudents().stream().map(Student::getName).collect(Collectors.toList());
         Assertions.assertThat(names).contains("테스트 학생");
@@ -174,18 +174,19 @@ class ProfessorServiceTest {
         // Given
         Professor professor = professorService.findById(testProfessor.getId()).orElse(null);
         assert professor != null;
-        Course course = professorService.createCourse(professor.getId(), "테스트 강좌", "테스트 학과");
+        Course course = Course.create("테스트 강좌", professor.getId(), "테스트 학과", CourseType.MAJOR_REQUIRED, 3, 30);
+        Course createdCourse = professorService.createCourse(course);
 
         Major major = new Major();
         major.setName("테스트 전공");
         Student student = Student.createWithMajor("테스트 학생", major);
-        professorService.addStudentToCourse(course.getId(), student);
+        professorService.addStudentToCourse(createdCourse.getId(), student);
 
         // When
-        professorService.removeStudentFromCourse(course.getId(), student);
+        professorService.removeStudentFromCourse(createdCourse.getId(), student);
 
         // Then
-        Course updated = courseRepository.findById(course.getId()).orElse(null);
+        Course updated = courseRepository.findById(createdCourse.getId()).orElse(null);
         assert updated != null;
         List<String> names = updated.getStudents().stream().map(Student::getName).collect(Collectors.toList());
         Assertions.assertThat(names).doesNotContain("테스트 학생");

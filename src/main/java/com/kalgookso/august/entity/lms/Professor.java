@@ -44,20 +44,6 @@ public class Professor extends BaseEntity {
     }
 
     /**
-     * 교수가 새로운 강좌를 생성하는 메서드입니다.
-     *
-     * @param courseName 생성하려는 강좌의 이름입니다.
-     * @return 생성된 강좌 객체를 반환합니다. 이 강좌의 이름은 입력받은 이름으로 설정되고, 교수의 식별자는 현재 교수의 식별자로 설정됩니다.
-     */
-    public Course createCourse(String courseName, String majorName) {
-        Course course = new Course();
-        course.setName(courseName);
-        course.setProfessorId(this.getId());
-        course.setMajorName(majorName);
-        return course;
-    }
-
-    /**
      * 교수가 전공을 추가하는 메서드입니다.
      *
      * @param major 교수가 추가하려는 전공입니다.
