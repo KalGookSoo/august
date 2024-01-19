@@ -1,13 +1,11 @@
 package com.kalgookso.august.cms.service;
 
 import com.kalgookso.august.cms.command.AccountUpdateCommand;
-import com.kalgookso.august.cms.query.AccountCriteria;
 import com.kalgookso.august.cms.entity.Account;
 import com.kalgookso.august.cms.entity.Authority;
 import com.kalgookso.august.cms.exception.UsernameAlreadyExistsException;
+import com.kalgookso.august.cms.query.AccountCriteria;
 import com.kalgookso.august.cms.repository.AccountRepository;
-import com.kalgookso.august.cms.service.AccountService;
-import com.kalgookso.august.cms.service.DefaultAccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

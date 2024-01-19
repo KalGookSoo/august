@@ -21,7 +21,7 @@ public interface ProfessorService {
      * 교수 식별자로 교수를 조회합니다.
      * @param id 조회할 교수의 식별자입니다.
      */
-    Optional<Professor> findById(String id);
+    Optional<Professor> findById(Long id);
 
     /**
      * 교수명으로 교수를 조회합니다.
@@ -34,7 +34,7 @@ public interface ProfessorService {
      * 교수를 제거합니다.
      * @param id 제거할 교수의 식별자입니다.
      */
-    void remove(String id);
+    void remove(Long id);
 
     Course createCourse(Course course);
 
@@ -42,26 +42,26 @@ public interface ProfessorService {
      * 교수가 강좌를 제거합니다.
      * @param courseId 제거할 강좌의 식별자입니다.
      */
-    void removeCourse(String courseId);
+    void removeCourse(Long courseId);
 
     /**
      * 교수가 전공을 추가합니다.
      * @param id 전공을 추가할 교수의 식별자입니다.
      * @param major 추가할 전공입니다.
      */
-    void addMajor(String id, Major major);
+    void addMajor(Long id, Major major);
 
     /**
      * 교수가 강좌에 학생을 등록합니다.
      * @param courseId 학생을 등록할 강좌의 식별자입니다.
      * @param student 등록할 학생입니다.
      */
-    void addStudentToCourse(String courseId, Student student);
+    void addStudentToCourse(Long courseId, Student student);
 
     /**
      * 교수가 강좌에서 학생을 제거합니다.
      * @param courseId 학생을 제거할 강좌의 식별자입니다.
      * @param student 제거할 학생입니다.
      */
-    void removeStudentFromCourse(String courseId, Student student);
+    void removeStudentFromCourse(Long courseId, Student student);
 }

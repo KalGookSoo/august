@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class CourseSpecification {
 
-    public static Specification<Course> idEquals(String id) {
+    public static Specification<Course> idEquals(Long id) {
         return (root, query, builder) -> builder.equal(root.get("id"), id);
     }
 

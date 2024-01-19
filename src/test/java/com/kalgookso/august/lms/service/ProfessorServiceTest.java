@@ -1,7 +1,5 @@
 package com.kalgookso.august.lms.service;
 
-import com.kalgookso.august.lms.service.DefaultProfessorService;
-import com.kalgookso.august.lms.service.ProfessorService;
 import com.kalgookso.august.lms.entity.*;
 import com.kalgookso.august.lms.repository.CourseRepository;
 import com.kalgookso.august.lms.repository.ProfessorRepository;
@@ -18,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 @SpringBootTest

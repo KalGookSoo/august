@@ -28,7 +28,7 @@ public class DefaultMajorService implements MajorService {
     }
 
     @Override
-    public Optional<Major> findById(String id) {
+    public Optional<Major> findById(Long id) {
         return majorRepository.findById(id);
     }
 
@@ -42,7 +42,7 @@ public class DefaultMajorService implements MajorService {
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(Long id) {
         majorRepository.deleteById(id);
     }
 

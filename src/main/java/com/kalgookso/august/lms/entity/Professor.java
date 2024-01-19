@@ -1,6 +1,5 @@
 package com.kalgookso.august.lms.entity;
 
-import com.kalgookso.august.cms.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,7 +17,12 @@ import java.util.List;
 @Table(name = "tb_professor")
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
-public class Professor extends BaseEntity {
+public class Professor {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -56,11 +60,27 @@ public class Professor extends BaseEntity {
         this.majors.add(major);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Major> getMajors() {
         return majors;
+    }
+
+    public void setMajors(List<Major> majors) {
+        this.majors = majors;
     }
 }

@@ -1,6 +1,5 @@
 package com.kalgookso.august.lms.entity;
 
-import com.kalgookso.august.cms.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,26 +14,18 @@ import javax.persistence.*;
 @Table(name = "tb_enrollment")
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
-public class Enrollment extends BaseEntity {
+public class Enrollment {
 
-    private String courseId;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private String studentId;
+    private Long courseId;
+
+    private Long studentId;
 
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status;
-
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public EnrollmentStatus getStatus() {
-        return status;
-    }
 
     /**
      * 강좌 ID를 인자로 받아 새로운 Enrollment 객체를 생성하고 초기 상태를 PENDING으로 설정하는 팩토리 메서드입니다.
@@ -42,7 +33,7 @@ public class Enrollment extends BaseEntity {
      * @param courseId 수강신청을 원하는 강좌의 ID입니다.
      * @return 초기 상태가 PENDING인 Enrollment 객체를 반환합니다.
      */
-    public static Enrollment createPendingEnrollment(String courseId, String studentId) {
+    public static Enrollment createPendingEnrollment(Long courseId, Long studentId) {
         Enrollment enrollment = new Enrollment();
         enrollment.courseId = courseId;
         enrollment.studentId = studentId;
@@ -66,5 +57,37 @@ public class Enrollment extends BaseEntity {
      */
     public boolean isApproved() {
         return this.status == EnrollmentStatus.COMPLETED;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnrollmentStatus status) {
+        this.status = status;
     }
 }

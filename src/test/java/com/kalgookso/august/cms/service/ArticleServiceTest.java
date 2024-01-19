@@ -3,8 +3,6 @@ package com.kalgookso.august.cms.service;
 import com.kalgookso.august.cms.command.ArticleCommand;
 import com.kalgookso.august.cms.entity.Article;
 import com.kalgookso.august.cms.repository.ArticleRepository;
-import com.kalgookso.august.cms.service.ArticleService;
-import com.kalgookso.august.cms.service.DefaultArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 @SpringBootTest

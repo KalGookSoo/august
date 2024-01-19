@@ -1,6 +1,5 @@
 package com.kalgookso.august.lms.entity;
 
-import com.kalgookso.august.cms.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,7 +18,12 @@ import java.util.List;
 @Table(name = "tb_student")
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
-public class Student extends BaseEntity {
+public class Student {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String name;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -29,10 +33,6 @@ public class Student extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "major_id")
     )
     private List<Major> majors = new ArrayList<>();
-
-    public List<Major> getMajors() {
-        return majors;
-    }
 
     /**
      * 학생을 등록하고 첫 번째 전공을 추가하는 팩토리 메서드입니다.
@@ -61,7 +61,20 @@ public class Student extends BaseEntity {
         this.majors.add(major);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

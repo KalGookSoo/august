@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MajorService {
     Major create(Major major);
-    Optional<Major> findById(String id);
+    Optional<Major> findById(Long id);
     List<Major> findAllByName(String name);
-    void remove(String id);
+    void remove(Long id);
 }

@@ -17,12 +17,22 @@ import java.util.List;
 @Table(name = "tb_course")
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
-public class Course extends BaseEntity {
+public class Course {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String name;
-    private String professorId;
+
+    private Long professorId;
+
     private String majorName;
+
     private CourseType type;
+
     private int credit;
+
     private int capacity;
 
     @ManyToMany
@@ -37,7 +47,7 @@ public class Course extends BaseEntity {
      * 새로운 강좌를 생성하는 메서드입니다.
      * @return 생성된 강좌 객체를 반환합니다.
      */
-    public static Course create(String name, String professorId, String majorName, CourseType type, int credit, int capacity) {
+    public static Course create(String name, Long professorId, String majorName, CourseType type, int credit, int capacity) {
         Course course = new Course();
         course.name = name;
         course.professorId = professorId;
@@ -56,6 +66,14 @@ public class Course extends BaseEntity {
         this.students.remove(student);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -64,11 +82,11 @@ public class Course extends BaseEntity {
         this.name = name;
     }
 
-    public String getProfessorId() {
+    public Long getProfessorId() {
         return professorId;
     }
 
-    public void setProfessorId(String professorId) {
+    public void setProfessorId(Long professorId) {
         this.professorId = professorId;
     }
 

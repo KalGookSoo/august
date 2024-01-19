@@ -1,7 +1,5 @@
 package com.kalgookso.august.lms.service;
 
-import com.kalgookso.august.lms.service.DefaultMajorService;
-import com.kalgookso.august.lms.service.MajorService;
 import com.kalgookso.august.lms.entity.Major;
 import com.kalgookso.august.lms.repository.MajorRepository;
 import org.assertj.core.api.Assertions;

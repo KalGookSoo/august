@@ -1,7 +1,5 @@
 package com.kalgookso.august.lms.service;
 
-import com.kalgookso.august.lms.service.DefaultEnrollmentService;
-import com.kalgookso.august.lms.service.EnrollmentService;
 import com.kalgookso.august.lms.entity.Enrollment;
 import com.kalgookso.august.lms.repository.CourseRepository;
 import com.kalgookso.august.lms.repository.EnrollmentRepository;

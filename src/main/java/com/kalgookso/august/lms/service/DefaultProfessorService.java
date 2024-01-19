@@ -33,7 +33,7 @@ public class DefaultProfessorService implements ProfessorService {
     }
 
     @Override
-    public Optional<Professor> findById(String id) {
+    public Optional<Professor> findById(Long id) {
         return professorRepository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class DefaultProfessorService implements ProfessorService {
      * @param id 제거할 교수의 식별자입니다.
      */
     @Override
-    public void remove(String id) {
+    public void remove(Long id) {
         professorRepository.deleteById(id);
     }
 
@@ -67,7 +67,7 @@ public class DefaultProfessorService implements ProfessorService {
      * @param courseId 제거할 강좌의 식별자입니다.
      */
     @Override
-    public void removeCourse(String courseId) {
+    public void removeCourse(Long courseId) {
         courseRepository.deleteById(courseId);
     }
 
@@ -79,7 +79,7 @@ public class DefaultProfessorService implements ProfessorService {
      * @throws IllegalArgumentException 교수 식별자가 데이터베이스에 없을 경우 예외를 발생시킵니다.
      */
     @Override
-    public void addMajor(String id, Major major) {
+    public void addMajor(Long id, Major major) {
         Professor professor = professorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Professor with id " + id + " not found"));
         professor.addMajor(major);
@@ -93,7 +93,7 @@ public class DefaultProfessorService implements ProfessorService {
      * @throws IllegalArgumentException 강좌 식별자가 데이터베이스에 없을 경우 예외를 발생시킵니다.
      */
     @Override
-    public void addStudentToCourse(String courseId, Student student) {
+    public void addStudentToCourse(Long courseId, Student student) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course with id " + courseId + " not found"));
         course.addStudent(student);
@@ -107,7 +107,7 @@ public class DefaultProfessorService implements ProfessorService {
      * @throws IllegalArgumentException 강좌 식별자가 데이터베이스에 없을 경우 예외를 발생시킵니다.
      */
     @Override
-    public void removeStudentFromCourse(String courseId, Student student) {
+    public void removeStudentFromCourse(Long courseId, Student student) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course with id " + courseId + " not found"));
         course.removeStudent(student);
