@@ -1,12 +1,16 @@
 package com.kalgookso.august.lms.service;
 
+import com.kalgookso.august.lms.entity.Course;
 import com.kalgookso.august.lms.entity.Enrollment;
+import com.kalgookso.august.lms.entity.EnrollmentStatus;
+import com.kalgookso.august.lms.query.LmsSpecification;
 import com.kalgookso.august.lms.repository.CourseRepository;
 import com.kalgookso.august.lms.repository.EnrollmentRepository;
-import com.kalgookso.august.lms.query.CourseSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,9 +34,12 @@ public class DefaultEnrollmentService implements EnrollmentService {
      */
     @Override
     public Enrollment enrollStudentInCourse(Long courseId, Long studentId) {
-        if (courseRepository.exists(CourseSpecification.idEquals(courseId))) {
-            Enrollment pendingEnrollment = Enrollment.createPendingEnrollment(courseId, studentId);
-            return enrollmentRepository.save(pendingEnrollment);
+        Optional<Course> foundCourse = courseRepository.findOne(LmsSpecification.idEquals(courseId));
+        if (foundCourse.isPresent()) {
+            Course course = foundCourse.get();
+            long enrollmentCountByCourseId = enrollmentRepository.count(LmsSpecification.courseIdEquals(courseId));
+            EnrollmentStatus enrollmentStatus = course.verifyCapacity(enrollmentCountByCourseId) ? EnrollmentStatus.PENDING : EnrollmentStatus.COMPLETED;
+            return enrollmentRepository.save(Enrollment.create(courseId, studentId, enrollmentStatus));
         } else {
             throw new IllegalArgumentException("Course with id " + courseId + " not found");
         }

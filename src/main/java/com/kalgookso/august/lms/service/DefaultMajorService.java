@@ -1,8 +1,8 @@
 package com.kalgookso.august.lms.service;
 
 import com.kalgookso.august.lms.entity.Major;
+import com.kalgookso.august.lms.query.LmsSpecification;
 import com.kalgookso.august.lms.repository.MajorRepository;
-import com.kalgookso.august.lms.query.MajorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class DefaultMajorService implements MajorService {
     public List<Major> findAllByName(String name) {
         Specification<Major> specification = Specification.where(null);
         if (name != null) {
-            specification = specification.and(MajorSpecification.nameContains(name));
+            specification = specification.and(LmsSpecification.nameContains(name));
         }
         return majorRepository.findAll(specification);
     }

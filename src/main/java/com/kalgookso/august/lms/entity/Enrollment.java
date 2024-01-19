@@ -1,9 +1,11 @@
 package com.kalgookso.august.lms.entity;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * 수강신청
@@ -27,17 +29,22 @@ public class Enrollment {
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status;
 
+    @CreatedDate
+    private LocalDateTime registeredAt;
+
     /**
      * 강좌 ID를 인자로 받아 새로운 Enrollment 객체를 생성하고 초기 상태를 PENDING으로 설정하는 팩토리 메서드입니다.
      *
      * @param courseId 수강신청을 원하는 강좌의 ID입니다.
+     * @param studentId 수강신청을 원하는 학생의 ID입니다.
+     * @param enrollmentStatus 수강신청의 초기 상태입니다. 이 값은 EnrollmentStatus 열거형의 값 중 하나여야 합니다.
      * @return 초기 상태가 PENDING인 Enrollment 객체를 반환합니다.
      */
-    public static Enrollment createPendingEnrollment(Long courseId, Long studentId) {
+    public static Enrollment create(Long courseId, Long studentId, EnrollmentStatus enrollmentStatus) {
         Enrollment enrollment = new Enrollment();
         enrollment.courseId = courseId;
         enrollment.studentId = studentId;
-        enrollment.status = EnrollmentStatus.PENDING;
+        enrollment.status = enrollmentStatus;
         return enrollment;
     }
 
@@ -89,5 +96,13 @@ public class Enrollment {
 
     public void setStatus(EnrollmentStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(LocalDateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 }

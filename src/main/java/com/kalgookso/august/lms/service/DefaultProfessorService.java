@@ -4,9 +4,9 @@ import com.kalgookso.august.lms.entity.Course;
 import com.kalgookso.august.lms.entity.Major;
 import com.kalgookso.august.lms.entity.Professor;
 import com.kalgookso.august.lms.entity.Student;
+import com.kalgookso.august.lms.query.LmsSpecification;
 import com.kalgookso.august.lms.repository.CourseRepository;
 import com.kalgookso.august.lms.repository.ProfessorRepository;
-import com.kalgookso.august.lms.query.ProfessorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class DefaultProfessorService implements ProfessorService {
     public List<Professor> findAllByName(String name) {
         Specification<Professor> specification = Specification.where(null);
         if (name != null) {
-            specification = specification.and(ProfessorSpecification.nameContains(name));
+            specification = specification.and(LmsSpecification.nameContains(name));
         }
         return professorRepository.findAll(specification);
     }

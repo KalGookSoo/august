@@ -1,6 +1,5 @@
 package com.kalgookso.august.lms.entity;
 
-import com.kalgookso.august.cms.entity.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -56,6 +55,15 @@ public class Course {
         course.credit = credit;
         course.capacity = capacity;
         return course;
+    }
+
+    /**
+     * 강좌의 수용 인원이 주어진 수강신청 수보다 작거나 같은지를 확인하는 메서드입니다.
+     * @param enrollmentCount 강좌에 현재 등록된 수강신청 수
+     * @return 강좌의 수용 인원이 주어진 수강신청 수보다 작거나 같으면 true, 그렇지 않으면 false를 반환합니다.
+     */
+    public boolean verifyCapacity(long enrollmentCount) {
+        return this.capacity <= enrollmentCount;
     }
 
     public void addStudent(Student student) {
