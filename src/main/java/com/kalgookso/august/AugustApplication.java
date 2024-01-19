@@ -1,13 +1,12 @@
 package com.kalgookso.august;
 
-import com.kalgookso.august.entity.account.Account;
-import com.kalgookso.august.entity.account.Authority;
-import com.kalgookso.august.exception.UsernameAlreadyExistsException;
-import com.kalgookso.august.service.AccountService;
+import com.kalgookso.august.cms.entity.Account;
+import com.kalgookso.august.cms.entity.Authority;
+import com.kalgookso.august.cms.exception.UsernameAlreadyExistsException;
+import com.kalgookso.august.cms.service.AccountService;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

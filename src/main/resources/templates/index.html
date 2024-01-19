@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!--suppress HtmlUnknownAttribute, XmlUnusedNamespaceDeclaration -->
-<html lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/_layout/layout.html}">
@@ -18,8 +17,13 @@
         <hr class="my-4">
         <p>다음 메뉴를 이용해보세요.</p>
         <a class="btn btn-primary btn-lg" th:href="@{/accounts}" role="button">계정 관리</a>
-        <!-- 추가적인 엔티티에 대한 링크를 이곳에 추가하세요. 예: -->
-        <!-- <a class="btn btn-primary btn-lg" th:href="@{/articles}" role="button">게시글 관리</a> -->
+        <a class="btn btn-primary btn-lg" th:href="@{/categories}" role="button">카테고리 관리</a>
+        <!--/* 로그인하지 않은 사용자에게만 로그인 링크를 표시합니다. */-->
+        <a sec:authorize="!isAuthenticated()" class="btn btn-primary btn-lg" th:href="@{/sign-in}" role="button">로그인</a>
+        <!--/* 로그인한 사용자에게만 로그아웃 링크를 표시합니다. */-->
+        <form sec:authorize="isAuthenticated()" th:action="@{/sign-out}" th:method="post">
+            <button type="submit" class="btn btn-primary btn-lg">로그아웃</button>
+        </form>
     </div>
 </main>
 </body>

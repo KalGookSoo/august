@@ -1,0 +1,9 @@
+package com.kalgookso.august.cms.exception;
+
+public class UsernameAlreadyExistsException extends RuntimeException {
+
+    public UsernameAlreadyExistsException(String message) {
+        super(message);
+    }
+
+}

@@ -14,26 +14,30 @@
 
     <!-- Toast UI Grid JS -->
     <!--suppress JSUnresolvedLibraryURL -->
-    <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+    <script  src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 
     <script>
         const Grid = tui.Grid;
 
-        fetch('http://localhost:8080/api/accounts')
-            .then(response => response.json())
-            .then(data => {
-                const grid = new Grid({
-                    el: document.getElementById('grid'),
-                    data: data._embedded.accounts,
-                    columns: [
-                        {header: '계정명', name: 'username'},
-                        {header: '이름', name: 'name'},
-                        {header: '생성 일시', name: 'createdAt'},
-                        {header: '수정 일시', name: 'modifiedAt'}
-                    ]
-                });
-            })
-            .catch(error => console.error('Error:', error));
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('http://localhost:8080/api/accounts')
+                .then(response => response.json())
+                .then(data => {
+                    const grid = new Grid({
+                        el: document.getElementById('grid'),
+                        data: data._embedded.accounts,
+                        columns: [
+                            {header: '계정명', name: 'username'},
+                            {header: '이름', name: 'name'},
+                            {header: '생성 일시', name: 'createdAt'},
+                            {header: '수정 일시', name: 'modifiedAt'}
+                        ]
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+
+        });
+
 
 
     </script>
