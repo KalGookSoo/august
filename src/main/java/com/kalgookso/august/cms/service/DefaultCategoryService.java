@@ -4,7 +4,6 @@ import com.kalgookso.august.cms.command.CategoryCommand;
 import com.kalgookso.august.cms.entity.Category;
 import com.kalgookso.august.cms.event.AclObjectCreatedEvent;
 import com.kalgookso.august.cms.event.AclObjectDeletedEvent;
-import com.kalgookso.august.cms.mapper.CategoryMapper;
 import com.kalgookso.august.cms.repository.CategoryRepository;
 import com.kalgookso.august.cms.query.AugustSpecification;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,18 +22,13 @@ public class DefaultCategoryService implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
-
-    public DefaultCategoryService(CategoryRepository categoryRepository, ApplicationEventPublisher eventPublisher) {
+    public DefaultCategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.eventPublisher = eventPublisher;
     }
 
     @Override
     public Category create(Category category) {
-        Category createdCategory = categoryRepository.save(category);
-        eventPublisher.publishEvent(new AclObjectCreatedEvent(Category.class, createdCategory.getId(), createdCategory.getCreatedBy()));
-        return createdCategory;
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -44,7 +38,7 @@ public class DefaultCategoryService implements CategoryService {
             throw new NoSuchElementException("카테고리를 찾을 수 없습니다.");
         }
         Category category = foundCategory.get();
-        return CategoryMapper.INSTANCE.updateEntityFromCommand(command, category);
+        return category.update(command.getName(), command.getType());
     }
 
     @Override
@@ -60,7 +54,6 @@ public class DefaultCategoryService implements CategoryService {
     @Override
     public void deleteById(String id) {
         categoryRepository.deleteById(id);
-        eventPublisher.publishEvent(new AclObjectDeletedEvent(Category.class, id));
     }
 
 }

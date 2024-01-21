@@ -2,7 +2,6 @@ package com.kalgookso.august.cms.controller;
 
 import com.kalgookso.august.cms.command.CategoryCommand;
 import com.kalgookso.august.cms.entity.Category;
-import com.kalgookso.august.cms.mapper.CategoryMapper;
 import com.kalgookso.august.cms.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +49,7 @@ public class CategoryController {
         if (bindingResult.hasErrors()) {
             return "categories/new";
         }
-        Category category = CategoryMapper.INSTANCE.toEntity(command);
+        Category category = Category.create(command.getName(), command.getType());
         Category savedCategory = categoryService.create(category);
         return "redirect:/categories/" + savedCategory.getId();
     }
