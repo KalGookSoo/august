@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 import static com.kalgookso.august.cms.query.ArticleSpecification.categoryIdEquals;
 import static com.kalgookso.august.cms.query.ArticleSpecification.idEquals;
 
+/**
+ * TODO 게시글을 생성할 때 카테고리의 타입이 공개인 경우 BasePermission을 BasePermission.ADMINISTRATION으로 설정합니다.
+ * TODO 게시글을 생성할 때 카테고리의 타입이 비공개인 경우 READ 현재 인증 주체가 해당 아티클에 READ 권한이 있는 경우에만 조회할 수 있도록 합니다.
+ */
 @Service
 @Transactional
 public class DefaultArticleService implements ArticleService {
