@@ -25,31 +25,31 @@ public class AclConfiguration {
 
     @Bean
     public MutableAclService mutableAclService() {
-        return new JdbcMutableAclService(dataSource, this.lookupStrategy(), this.aclCache());
+        return new JdbcMutableAclService(dataSource, lookupStrategy(), aclCache());
     }
 
     @Bean
     public LookupStrategy lookupStrategy() {
-        return new BasicLookupStrategy(dataSource, this.aclCache(), this.aclAuthorizationStrategy(), new ConsoleAuditLogger());
+        return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
     }
 
     @Bean
     public AclCache aclCache() {
         return new SpringCacheBasedAclCache(
             new ConcurrentMapCache("aclCache"), // Specify the cache name
-            this.permissionGrantingStrategy(),
-            this.aclAuthorizationStrategy()
+            permissionGrantingStrategy(),
+            aclAuthorizationStrategy()
         );
-    }
-
-    @Bean
-    public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Bean
     public PermissionGrantingStrategy permissionGrantingStrategy() {
         return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
+    }
+
+    @Bean
+    public AclAuthorizationStrategy aclAuthorizationStrategy() {
+        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
 }
