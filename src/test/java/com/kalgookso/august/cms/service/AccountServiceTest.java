@@ -2,7 +2,6 @@ package com.kalgookso.august.cms.service;
 
 import com.kalgookso.august.cms.command.AccountUpdateCommand;
 import com.kalgookso.august.cms.entity.Account;
-import com.kalgookso.august.cms.entity.Authority;
 import com.kalgookso.august.cms.exception.UsernameAlreadyExistsException;
 import com.kalgookso.august.cms.query.AccountCriteria;
 import com.kalgookso.august.cms.repository.AccountRepository;
@@ -42,21 +41,15 @@ public class AccountServiceTest {
     @BeforeEach
     public void setup() {
         accountService = new DefaultAccountService(accountRepository, passwordEncoder);
-        Account account = createDummyEntity("tester", "1234", "테스터", "ROLE_USER");
+        Account account = Account.create("tester", "1234", "테스터");
         testAccount = accountService.create(account);
-    }
-
-    private Account createDummyEntity(String username, String password, String name, String authorityName) {
-        Account account = Account.create(username, password, name);
-        account.getAuthorities().add(new Authority(authorityName));
-        return account;
     }
 
     @Test
     @DisplayName("계정을 생성합니다.")
     public void createAccountTest() {
         // Given
-        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+        Account account = Account.create("tester2", "1234", "테스터2");
 
         try {
             // When
@@ -73,10 +66,10 @@ public class AccountServiceTest {
     @DisplayName("계정 생성 시 이미 존재하는 아이디를 입력하면 UsernameAlreadyExistsException 예외를 발생시킵니다.")
     public void createAccountWithExistingUsernameTest() {
         // Given
-        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+        Account account = Account.create("tester2", "1234", "테스터2");
         accountService.create(account);
 
-        Account invalidAccount = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+        Account invalidAccount = Account.create("tester2", "1234", "테스터2");
 
         // Then
         assertThrows(UsernameAlreadyExistsException.class, () -> accountService.create(invalidAccount));
@@ -86,7 +79,7 @@ public class AccountServiceTest {
     @DisplayName("계정 생성 시 계정 정책 날짜를 확인합니다.")
     public void createAccountWithPolicyTest() {
         // Given
-        Account account = createDummyEntity("tester2", "1234", "테스터2", "ROLE_USER");
+        Account account = Account.create("tester2", "1234", "테스터2");
 
         try {
             // When
