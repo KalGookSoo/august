@@ -82,49 +82,67 @@ public class Account extends BaseEntity {
      */
     private LocalDateTime credentialsExpiredAt;
 
+    protected Account() {
+
+    }
+
+    public static Account create(String username, String password,String name) {
+        Account account = new Account();
+        account.username = username;
+        account.password = password;
+        account.name = name;
+        return account;
+    }
+
+    public static Account create(String username, String password,String name, Email email, ContactNumber contactNumber) {
+        Account account = new Account();
+        account.username = username;
+        account.password = password;
+        account.name = name;
+        account.email = email;
+        account.contactNumber = contactNumber;
+        return account;
+    }
+
+    public Account update(String name, Email email, ContactNumber contactNumber) {
+        this.name = name;
+        this.email = email;
+        this.contactNumber = contactNumber;
+        return this;
+    }
+
     public void changePassword(String password) {
         Assert.notNull(password, "Password must not be null");
         this.password = password;
+    }
+
+    /**
+     * 만료 일시는 금일(00:00)로부터 2년 후 까지로 설정합니다.
+     * 패스워드 만료 일시는 생성일(00:00)로부터 180일 후 까지로 설정합니다.
+     */
+    public void initializeAccountPolicy() {
+        expiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusYears(2L);
+        credentialsExpiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusDays(180L);
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Email getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
-    }
-
     public ContactNumber getContactNumber() {
         return contactNumber;
-    }
-
-    public void setContactNumber(ContactNumber contactNumber) {
-        this.contactNumber = contactNumber;
     }
 
     public List<Authority> getAuthorities() {
@@ -141,15 +159,6 @@ public class Account extends BaseEntity {
 
     public LocalDateTime getCredentialsExpiredAt() {
         return credentialsExpiredAt;
-    }
-
-    /**
-     * 만료 일시는 금일(00:00)로부터 2년 후 까지로 설정합니다.
-     * 패스워드 만료 일시는 생성일(00:00)로부터 180일 후 까지로 설정합니다.
-     */
-    public void initializeAccountPolicy() {
-        expiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusYears(2L);
-        credentialsExpiredAt = LocalDate.now().atTime(LocalTime.MIDNIGHT).plusDays(180L);
     }
 
 }

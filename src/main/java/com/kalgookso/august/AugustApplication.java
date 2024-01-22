@@ -43,10 +43,7 @@ public class AugustApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         executeSqlScript();
-        Account account = new Account();
-        account.setUsername("admin");
-        account.setPassword("1234");
-        account.setName("관리자");
+        Account account = Account.create("admin", "1234", "관리자");
         account.getAuthorities().add(new Authority("ROLE_ADMIN"));
         try {
             this.accountService.create(account);

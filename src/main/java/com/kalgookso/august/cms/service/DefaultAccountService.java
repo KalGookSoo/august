@@ -58,9 +58,7 @@ public class DefaultAccountService implements AccountService {
         String name = command.getName();
         Email email = new Email(command.getEmailId(), command.getEmailDomain());
         ContactNumber contactNumber = new ContactNumber(command.getFirstContactNumber(), command.getMiddleContactNumber(), command.getLastContactNumber());
-        account.setName(name);
-        account.setEmail(email);
-        account.setContactNumber(contactNumber);
+        account.update(name, email, contactNumber);
         return account;
     }
 

@@ -47,10 +47,7 @@ public class AccountServiceTest {
     }
 
     private Account createDummyEntity(String username, String password, String name, String authorityName) {
-        Account account = new Account();
-        account.setUsername(username);
-        account.setPassword(password);
-        account.setName(name);
+        Account account = Account.create(username, password, name);
         account.getAuthorities().add(new Authority(authorityName));
         return account;
     }

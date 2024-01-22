@@ -25,7 +25,7 @@ class AccountControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/accounts"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("accounts/list"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("pagedModel"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("page"))
                 .andDo(MockMvcResultHandlers.print());
     }
 

@@ -3,7 +3,6 @@ package com.kalgookso.august.cms.controller;
 import com.kalgookso.august.cms.command.AccountCreateCommand;
 import com.kalgookso.august.cms.entity.Account;
 import com.kalgookso.august.cms.exception.UsernameAlreadyExistsException;
-import com.kalgookso.august.cms.mapper.AccountMapper;
 import com.kalgookso.august.cms.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -64,7 +63,7 @@ public class SignController {
         if (result.hasErrors()) {
             return "sign-up";
         }
-        Account account = AccountMapper.INSTANCE.toEntity(command);
+        Account account = Account.create(command.getUsername(), command.getPassword(), command.getName(), command.getEmail(), command.getContactNumber());
         try {
             Account savedAccount = accountService.create(account);
             redirectAttributes.addFlashAttribute("account", savedAccount);

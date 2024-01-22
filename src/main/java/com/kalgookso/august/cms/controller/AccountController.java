@@ -1,11 +1,10 @@
 package com.kalgookso.august.cms.controller;
 
 import com.kalgookso.august.cms.command.AccountCreateCommand;
-import com.kalgookso.august.cms.command.AccountUpdateCommand;
 import com.kalgookso.august.cms.command.AccountPasswordCommand;
+import com.kalgookso.august.cms.command.AccountUpdateCommand;
 import com.kalgookso.august.cms.entity.Account;
 import com.kalgookso.august.cms.exception.UsernameAlreadyExistsException;
-import com.kalgookso.august.cms.mapper.AccountMapper;
 import com.kalgookso.august.cms.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +50,6 @@ public class AccountController {
     public String getAll(@PageableDefault Pageable pageable, Model model) {
         Page<Account> page = accountService.findAll(pageable);
         model.addAttribute("page", page);
-        model.addAttribute("pageSize", pageable.getPageSize());
         return "accounts/list";
     }
 
@@ -90,7 +88,7 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "accounts/new";
         }
-        Account account = AccountMapper.INSTANCE.toEntity(command);
+        Account account = Account.create(command.getUsername(), command.getPassword(), command.getName(), command.getEmail(), command.getContactNumber());
         try {
             Account savedAccount = accountService.create(account);
             return "redirect:/accounts/" + savedAccount.getId() + "/edit";
